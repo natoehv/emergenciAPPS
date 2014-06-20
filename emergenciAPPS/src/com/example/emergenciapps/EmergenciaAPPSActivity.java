@@ -9,6 +9,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -85,6 +86,7 @@ public class EmergenciaAPPSActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -211,4 +213,10 @@ public class EmergenciaAPPSActivity extends Activity {
             return rootView;
         }
     }
+    
+    public static void call(Activity activity, String numero){ 
+		 Intent intent = new Intent(Intent.ACTION_CALL); 
+		 intent.setData(Uri.parse("tel:92876346")); 
+		 activity.startActivity(intent); 
+	}
 }
