@@ -136,7 +136,9 @@ public class EmergenciaAPPSActivity extends Activity {
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
     	items.add(new Item("Carabinero", R.drawable.carabinero));
+    	items.add(new Item("Ayuda", R.drawable.carabinero));
     	items.add(new Item("Configurar", R.drawable.carabinero));
+    	
     }
     private void selectItem(int position) {
         // update the main content by replacing fragments
