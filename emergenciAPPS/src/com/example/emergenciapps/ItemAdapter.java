@@ -26,10 +26,23 @@ public class ItemAdapter extends ArrayAdapter<Item>{
 		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = inflater.inflate(R.layout.drawer_list_item, null);
 		Item item = objects.get(position);
-		TextView titulo = (TextView) v.findViewById(R.id.titulo);
-		ImageView icon = (ImageView) v.findViewById(R.id.icon);
-		titulo.setText(item.getTitulo());
-		icon.setImageResource(item.getIdIcon());
+		if(position == 0){
+			/*
+			 * fila de usuario
+			 */
+			TextView titulo = (TextView) v.findViewById(R.id.titulo);
+			ImageView icon = (ImageView) v.findViewById(R.id.icon);
+			icon.setImageBitmap(EmergenciUTIL.getRoundedCornerBitmap(context.getResources().getDrawable(R.drawable.anonimo), true));
+			//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
+			titulo.setText(item.getTitulo());
+			icon.setImageResource(item.getIdIcon());
+		}else{
+			TextView titulo = (TextView) v.findViewById(R.id.titulo);
+			ImageView icon = (ImageView) v.findViewById(R.id.icon);
+			titulo.setText(item.getTitulo());
+			icon.setImageResource(item.getIdIcon());
+		}
+		
 		return v;
 	}
 	
