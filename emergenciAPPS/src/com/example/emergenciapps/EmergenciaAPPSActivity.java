@@ -3,6 +3,9 @@ package com.example.emergenciapps;
 import java.util.ArrayList;
 import java.util.Locale;
 
+
+
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,6 +39,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private ArrayList<Item> items;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private String numero = "82806080";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,19 @@ public class EmergenciaAPPSActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        
+        final Button btnLlamarCarabinero = (Button) this.findViewById(R.id.btnCarabinero);
+        
+        btnLlamarCarabinero.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				 
+				//llamada(this, numero);
+
+			}
+			
+			});
     }
 
     @Override
@@ -214,9 +232,9 @@ public class EmergenciaAPPSActivity extends Activity {
         }
     }
     
-    public static void call(Activity activity, String numero){ 
+    public static void llamada(Activity activity, String numero){ 
 		 Intent intent = new Intent(Intent.ACTION_CALL); 
-		 intent.setData(Uri.parse("tel:92876346")); 
+		 intent.setData(Uri.parse(numero)); 
 		 activity.startActivity(intent); 
 	}
 }
