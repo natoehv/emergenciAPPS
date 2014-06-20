@@ -6,6 +6,10 @@ import java.util.Locale;
 
 
 
+
+
+
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +44,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private ArrayList<Item> items;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String numero = "82806080";
+    private String numero;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,18 +91,7 @@ public class EmergenciaAPPSActivity extends Activity {
             selectItem(0);
         }
         
-        final Button btnLlamarCarabinero = (Button) this.findViewById(R.id.btnCarabinero);
         
-        btnLlamarCarabinero.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				 
-				//llamada(this, numero);
-
-			}
-			
-			});
     }
 
     @Override
@@ -237,4 +231,30 @@ public class EmergenciaAPPSActivity extends Activity {
 		 intent.setData(Uri.parse(numero)); 
 		 activity.startActivity(intent); 
 	}
+    
+    
+    public void llamar(View v){
+    	
+    	String numero = "tel:92876346";
+    	int id = v.getId();
+    	if(id == R.id.btnCarabinero){
+    		Log.d("llamada", "llamando a carabinero");
+    		Intent intent = new Intent(Intent.ACTION_CALL); 
+   		 	intent.setData(Uri.parse(numero)); 
+   		    this.startActivity(intent); 
+    	}else{
+    		if(id == R.id.btnBombero){
+    			Log.d("llamada", "llamando a bombero");
+        		Intent intent = new Intent(Intent.ACTION_CALL); 
+       		 	intent.setData(Uri.parse(numero)); 
+       		    this.startActivity(intent); 
+        	}else{
+        		Log.d("llamada", "llamando a hospital");
+        		Intent intent = new Intent(Intent.ACTION_CALL); 
+       		 	intent.setData(Uri.parse(numero)); 
+       		    this.startActivity(intent);
+        	}
+    	}
+    	
+    }
 }
