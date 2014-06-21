@@ -3,16 +3,25 @@ package com.example.emergenciapps;
 import java.util.ArrayList;
 import java.util.Locale;
 
+
+
+
+
+
+
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -34,6 +44,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private ArrayList<Item> items;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private String numero;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +90,15 @@ public class EmergenciaAPPSActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
+        
+        
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -132,15 +146,12 @@ public class EmergenciaAPPSActivity extends Activity {
     
     private void generaItems(){
     	items = new ArrayList<Item>();
-    	
     	items.add(new Item("Bienvenido", R.drawable.anonimo));
     	items.add(new Item("Ambulancia", R.drawable.hospital));
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
     	items.add(new Item("Carabinero", R.drawable.carabinero));
-    	items.add(new Item("Ayuda", R.drawable.carabinero));
     	items.add(new Item("Configurar", R.drawable.carabinero));
-    	
     }
     private void selectItem(int position) {
         // update the main content by replacing fragments
@@ -213,5 +224,37 @@ public class EmergenciaAPPSActivity extends Activity {
 //            getActivity().setTitle(planet);
             return rootView;
         }
+    }
+    
+    public static void llamada(Activity activity, String numero){ 
+		 Intent intent = new Intent(Intent.ACTION_CALL); 
+		 intent.setData(Uri.parse(numero)); 
+		 activity.startActivity(intent); 
+	}
+    
+    
+    public void llamar(View v){
+    	
+    	String numero = "tel:92876346";
+    	int id = v.getId();
+    	if(id == R.id.btnCarabinero){
+    		Log.d("llamada", "llamando a carabinero");
+    		Intent intent = new Intent(Intent.ACTION_CALL); 
+   		 	intent.setData(Uri.parse(numero)); 
+   		    this.startActivity(intent); 
+    	}else{
+    		if(id == R.id.btnBombero){
+    			Log.d("llamada", "llamando a bombero");
+        		Intent intent = new Intent(Intent.ACTION_CALL); 
+       		 	intent.setData(Uri.parse(numero)); 
+       		    this.startActivity(intent); 
+        	}else{
+        		Log.d("llamada", "llamando a hospital");
+        		Intent intent = new Intent(Intent.ACTION_CALL); 
+       		 	intent.setData(Uri.parse(numero)); 
+       		    this.startActivity(intent);
+        	}
+    	}
+    	
     }
 }
