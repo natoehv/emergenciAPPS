@@ -1,20 +1,13 @@
 package com.example.emergenciapps;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
-
-
-
-
-
-
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,10 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -234,27 +225,58 @@ public class EmergenciaAPPSActivity extends Activity {
     
     
     public void llamar(View v){
+    	SharedPreferences prefs =
+				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
     	
-    	String numero = "tel:92876346";
+    	String llamarA;
+    	
     	int id = v.getId();
     	if(id == R.id.btnCarabinero){
     		Log.d("llamada", "llamando a carabinero");
+    		String numeroCarabinero = prefs.getString("numeroCarabinero", "86575038");
+    		Log.d("numero",numeroCarabinero);
+    		llamarA = "tel:"+numeroCarabinero;
     		Intent intent = new Intent(Intent.ACTION_CALL); 
-   		 	intent.setData(Uri.parse(numero)); 
+   		 	intent.setData(Uri.parse(llamarA)); 
    		    this.startActivity(intent); 
-    	}else{
+   		}else{
     		if(id == R.id.btnBombero){
     			Log.d("llamada", "llamando a bombero");
-        		Intent intent = new Intent(Intent.ACTION_CALL); 
-       		 	intent.setData(Uri.parse(numero)); 
+    			String numeroBombero = prefs.getString("numeroBombero", "86575038");
+        		llamarA = "tel:"+numeroBombero;
+        		Intent intent = new Intent(Intent.ACTION_CALL);
+        		intent.setData(Uri.parse(llamarA)); 
        		    this.startActivity(intent); 
         	}else{
-        		Log.d("llamada", "llamando a hospital");
-        		Intent intent = new Intent(Intent.ACTION_CALL); 
-       		 	intent.setData(Uri.parse(numero)); 
-       		    this.startActivity(intent);
+        		if(id == R.id.btnHospital){
+	        		Log.d("llamada", "llamando a hospital");
+	        		String numeroHospital = prefs.getString("numeroHospital", "82998988");
+	        		llamarA = "tel:"+numeroHospital;
+	        		Intent intent = new Intent(Intent.ACTION_CALL);
+	        		intent.setData(Uri.parse(llamarA)); 
+	       		    this.startActivity(intent); 
+        		}
         	}
     	}
     	
+    }
+    
+    public void actualizaPantallaInicio(){
+    	setContentView(R.layout.fragment_inicio);
+        final TextView numeroCarabinero = (TextView) findViewById(R.id.textView2);
+        final TextView numeroBombero = (TextView) findViewById(R.id.textView3);
+        final TextView numeroHospital = (TextView) findViewById(R.id.textView4);
+        
+        SharedPreferences prefs =
+				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+        
+    	String carabinero = prefs.getString("numeroCarabinero", "82806080");
+    	numeroCarabinero.setText(carabinero);
+    	
+    	String bombero = prefs.getString("numeroBombero", "86575038");
+    	numeroBombero.setText(bombero);
+    	
+    	String hospital = prefs.getString("numeroHospital", "82998988");
+    	numeroHospital.setText(hospital);
     }
 }
