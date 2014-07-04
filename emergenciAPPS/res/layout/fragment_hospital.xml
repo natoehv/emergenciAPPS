@@ -15,7 +15,15 @@
 	    android:id="@+id/listaNroHospital"
 		android:layout_width="match_parent">
 	</ListView>
-	
+	<com.mapquest.android.maps.MapView
+		    android:id="@+id/map"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:clickable="true"
+		    android:enabled="true"
+		    android:apiKey="Fmjtd%7Cluur2g0bnd%2C8s%3Do5-9at21r"
+		    
+		/>
 	
 </LinearLayout>
 
