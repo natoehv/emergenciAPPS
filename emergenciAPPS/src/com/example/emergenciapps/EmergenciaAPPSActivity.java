@@ -261,14 +261,15 @@ public class EmergenciaAPPSActivity extends Activity {
         }
         
         private void setupMapHospitalView(GeoPoint pt, int zoom, MapView maps){
-        	MyLocationOverlay myLoc = new MyLocationOverlay(maps.getContext(), maps);
-        	myLoc.enableMyLocation();
+        	MyLocationExtends myLoc = new MyLocationExtends(maps.getContext(), maps);
         	MapView map = maps;
         	
         	map.getController().setZoom(zoom);
-        	
+        	try{
         	map.getController().setCenter(myLoc.getMyLocation());
-        	
+        	}catch(NullPointerException e){
+        		Log.d("hola", "Null pointer");
+        	}
         	map.setBuiltInZoomControls(true);
         	
         }
