@@ -228,6 +228,17 @@ public class EmergenciaAPPSActivity extends Activity {
             	break;
             	case 1: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             	break;
+            	case 2: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+            	break;
+            	case 3: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+            	break;
+            	case 4: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+            	break;
+            	case 5: rootView = inflater.inflate(R.layout.fragment_configuracion, container, false);
+            	/*
+            	 * 
+            	 */
+            	break;
             }
 //            int i = getArguments().getInt(ARG_PLANET_NUMBER);
 //            String planet = getResources().getStringArray(R.array.planets_array)[i];
