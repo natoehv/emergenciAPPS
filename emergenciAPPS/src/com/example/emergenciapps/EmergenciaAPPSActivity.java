@@ -226,7 +226,7 @@ public class EmergenciaAPPSActivity extends Activity {
             	String hospital = prefs.getString("numeroHospital", "82998988");
             	numeroHospital.setText(hospital);
             	break;
-            	case 1: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+            	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
             	break;
             	case 2: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             	break;
