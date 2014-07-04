@@ -41,7 +41,15 @@ public class EmergenciaAPPSActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
+        SharedPreferences prefs =
+				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putString("numeroCarabinero", "78529632");
+		editor.putString("numeroBombero", "78541255");
+		editor.putString("numeroHospital", "62581455");
+		editor.commit();
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -52,7 +60,7 @@ public class EmergenciaAPPSActivity extends Activity {
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(itemAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
+        
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -81,7 +89,7 @@ public class EmergenciaAPPSActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-        
+       
         
     }
 
@@ -198,10 +206,25 @@ public class EmergenciaAPPSActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
+        		
             View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             int i = getArguments().getInt(SERVICE_NUMBER);
             switch(i){
             	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
+            	final TextView numeroCarabinero = (TextView) rootView.findViewById(R.id.textView2);
+                final TextView numeroBombero = (TextView) rootView.findViewById(R.id.textView3);
+                final TextView numeroHospital = (TextView) rootView.findViewById(R.id.textView4);
+                
+                SharedPreferences prefs = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
+                
+            	String carabinero = prefs.getString("numeroCarabinero", "x");
+            	numeroCarabinero.setText(carabinero);
+            	
+            	String bombero = prefs.getString("numeroBombero", "86575038");
+            	numeroBombero.setText(bombero);
+            	
+            	String hospital = prefs.getString("numeroHospital", "82998988");
+            	numeroHospital.setText(hospital);
             	break;
             	case 1: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             	break;
@@ -262,7 +285,7 @@ public class EmergenciaAPPSActivity extends Activity {
     }
     
     public void actualizaPantallaInicio(){
-    	setContentView(R.layout.fragment_inicio);
+    	//setContentView(R.layout.fragment_inicio);
         final TextView numeroCarabinero = (TextView) findViewById(R.id.textView2);
         final TextView numeroBombero = (TextView) findViewById(R.id.textView3);
         final TextView numeroHospital = (TextView) findViewById(R.id.textView4);
