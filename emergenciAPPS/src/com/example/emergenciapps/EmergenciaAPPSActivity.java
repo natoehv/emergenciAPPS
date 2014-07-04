@@ -2,6 +2,10 @@ package com.example.emergenciapps;
 
 import java.util.ArrayList;
 
+import com.mapquest.android.maps.GeoPoint;
+import com.mapquest.android.maps.MapView;
+import com.mapquest.android.maps.MyLocationOverlay;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -227,6 +231,12 @@ public class EmergenciaAPPSActivity extends Activity {
             	numeroHospital.setText(hospital);
             	break;
             	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
+            	setupMapHospitalView(new GeoPoint(-36.6094, -72.1024), 20, (MapView)rootView.findViewById(R.id.mapHospital));
+            	/*
+            	 * TODO Generar metodo el cual se conecte al servidor y retorne un arreglo con los puntos más cercanos
+            	 * al dispositivo
+            	 */
+            	
             	break;
             	case 2: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             	break;
@@ -248,6 +258,19 @@ public class EmergenciaAPPSActivity extends Activity {
 //            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
 //            getActivity().setTitle(planet);
             return rootView;
+        }
+        
+        private void setupMapHospitalView(GeoPoint pt, int zoom, MapView maps){
+        	MyLocationOverlay myLoc = new MyLocationOverlay(maps.getContext(), maps);
+        	myLoc.enableMyLocation();
+        	MapView map = maps;
+        	
+        	map.getController().setZoom(zoom);
+        	
+        	map.getController().setCenter(myLoc.getMyLocation());
+        	
+        	map.setBuiltInZoomControls(true);
+        	
         }
     }
     
