@@ -15,4 +15,7 @@
 	    android:id="@+id/listaNroHospital"
 		android:layout_width="match_parent">
 	</ListView>
+	
+	
 </LinearLayout>
+
