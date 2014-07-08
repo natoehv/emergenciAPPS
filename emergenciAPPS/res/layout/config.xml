@@ -1,0 +1,177 @@
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent"
+    tools:context="com.example.tarjetascredito.MainActivity"
+    tools:ignore="MergeRootFrame" 
+    android:id="@+id/scroll"
+    
+    > 
+<RelativeLayout 
+    
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:background="#000">
+    
+   
+       <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/config"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFF"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+       <View
+            android:id="@+id/separador0"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+			android:background="@drawable/separador"
+			android:layout_below="@+id/textView1"
+			android:layout_width="wrap_content"
+			android:layout_height="1dp">
+		</View>
+       
+       <TextView
+        android:id="@+id/textView2"
+        android:textColor="#FF0000"
+        android:paddingTop="15dp"
+        android:paddingLeft="10dp"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@+id/separador0"
+        android:layout_height="wrap_content"
+        android:text="@string/numeroBombero"
+       
+         />
+       
+        <EditText
+           android:id="@+id/editText1"
+           android:layout_centerHorizontal="true"
+           android:layout_width="300dp"
+           android:layout_height="30dp"
+           android:layout_below="@+id/textView2"
+           android:background="#ffffff"
+           android:inputType="number"
+         >
+        </EditText>
+        
+        <TextView
+	        android:id="@+id/textView3"
+	        android:paddingTop="15dp"
+	        android:paddingLeft="10dp"
+	        android:layout_width="wrap_content"
+	        android:textSize="20sp"
+	        android:layout_below="@+id/editText1"
+	        android:layout_height="wrap_content"
+	        android:text="@string/numeroCarabinero"
+	       android:textColor="#FF0000"
+         />
+        <EditText
+           android:id="@+id/editText2"
+           android:layout_centerHorizontal="true"
+           android:layout_width="300dp"
+           android:layout_height="30dp"
+           android:layout_below="@+id/textView3"
+           android:background="#ffffff"
+           android:inputType="number"
+         >
+        </EditText>
+        
+        <TextView
+	        android:id="@+id/textView4"
+	        android:paddingLeft="10dp"
+	        android:paddingTop="15dp"
+	        android:layout_width="wrap_content"
+	        android:textSize="20sp"
+	        android:layout_below="@+id/editText2"
+	        android:layout_height="wrap_content"
+	        android:text="@string/numeroHospital"
+	        android:textColor="#FF0000"
+         />
+        <EditText
+           android:id="@+id/editText3"
+           android:layout_centerHorizontal="true"
+           android:layout_width="300dp"
+           android:layout_height="30dp"
+           android:layout_below="@+id/textView4"
+           android:background="#ffffff"
+           android:inputType="number"
+         >
+        </EditText>
+        <View
+            android:id="@+id/separador1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+			android:background="@drawable/separador"
+			android:layout_below="@+id/editText3"
+			android:layout_width="wrap_content"
+			android:layout_height="1dp">
+		</View>
+		<TextView
+	        android:id="@+id/textView5"
+	        android:paddingLeft="10dp"
+	       
+	        android:layout_width="wrap_content"
+	        android:textSize="20sp"
+	        android:layout_below="@+id/separador1"
+	        android:layout_height="wrap_content"
+	        android:text="@string/contactoFavorito"
+	        android:textColor="#FF0000"
+         />
+		<EditText
+           android:id="@+id/editText4"
+           android:layout_centerHorizontal="true"
+           android:layout_width="300dp"
+           android:layout_height="30dp"
+           android:layout_below="@+id/textView5"
+           android:background="#ffffff"
+           android:inputType="number"
+         >
+        </EditText>
+        <TextView
+	        android:id="@+id/textView6"
+	        android:paddingLeft="10dp"
+	        android:paddingTop="10dp"
+	        android:layout_width="wrap_content"
+	        android:textSize="20sp"
+	        android:layout_below="@+id/editText4"
+	        android:layout_height="wrap_content"
+	        android:text="@string/mensajeAlerta"
+	        android:textColor="#FF0000"
+         />
+        <EditText
+           android:id="@+id/editText5"
+           android:layout_centerHorizontal="true"
+           android:layout_width="300dp"
+           android:layout_height="100dp"
+           android:maxLength="50"
+           android:layout_below="@+id/textView6"
+           android:background="#ffffff"
+           android:inputType="text"
+         >
+        </EditText>
+        <View
+            android:id="@+id/separador2"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+			android:background="@drawable/separador"
+			android:layout_below="@+id/editText5"
+			android:layout_width="wrap_content"
+			android:layout_height="1dp">
+		</View>
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="120dp" 
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/separador2"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/boton"
+            android:drawableRight="@drawable/guardar"
+            android:text="@string/guardar" />
+
+</RelativeLayout>
+</ScrollView>
