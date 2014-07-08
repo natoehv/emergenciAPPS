@@ -26,6 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -239,15 +241,55 @@ public class EmergenciaAPPSActivity extends Activity {
             	
             	break;
             	case 2: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+            		
+            			
             	break;
             	case 3: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             	break;
             	case 4: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             	break;
-            	case 5: rootView = inflater.inflate(R.layout.fragment_configuracion, container, false);
-            	/*
-            	 * 
-            	 */
+            	case 5: 
+            			
+            		
+            			rootView = inflater.inflate(R.layout.config, container, false);
+            			EditText editBombero = (EditText)rootView.findViewById(R.id.editText1);
+            			EditText editCarabinero = (EditText)rootView.findViewById(R.id.editText2);
+            			EditText editHospital = (EditText)rootView.findViewById(R.id.editText3);
+            			EditText editFavorito = (EditText)rootView.findViewById(R.id.editText4);
+            			EditText editMensaje = (EditText)rootView.findViewById(R.id.editText5);
+            			Button btnGuardar = (Button)rootView.findViewById(R.id.btnGuardar);
+                        SharedPreferences pref = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
+                        final SharedPreferences.Editor editor = pref.edit();
+                        
+                        final String bom = pref.getString("numeroBombero", "132");
+                    	editBombero.setText(bom);
+                        final String car = pref.getString("numeroCarabinero", "133");
+                        editCarabinero.setText(car);
+                    	final String hos = pref.getString("numeroHospital", "131");
+                    	editHospital.setText(hos);
+                    	final String fav = pref.getString("numeroFavorito", "911");
+                    	editFavorito.setText(fav);
+                    	final String msj = pref.getString("mensaje", "Help!");
+                    	editMensaje.setText(msj);
+                    	
+                    	
+                    	
+                    	btnGuardar.setOnClickListener(new View.OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								editor.putString("numeroBombero",bom);
+								editor.putString("numeroCarabinero",car);
+								editor.putString("numeroHospital",hos);
+								editor.putString("numeroFavorito",fav);
+								editor.putString("mensaje",msj);
+								editor.commit();
+								
+								
+								
+								
+							}
+						});
             	break;
             }
 //            int i = getArguments().getInt(ARG_PLANET_NUMBER);

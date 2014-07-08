@@ -20,4 +20,13 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="action_websearch">Buscar</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <string name="config">Configuración</string>
+    <string name="numeroBombero">Número Bombero</string>
+    <string name="numeroCarabinero">Número Carabinero</string>
+    <string name="numeroHospital">Número Hospital</string>
+    <string name="contactoFavorito">Contacto Favorito</string>
+    <string name="mensajeAlerta">Mensaje de Alerta</string>
+    <string name="guardar">Guardar</string>
+    
+    
 </resources>
