@@ -2,7 +2,11 @@ package com.example.emergenciapps;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
+import com.mapquest.android.maps.OverlayItem;
 
 /**
  * Fragment that appears in the "content_frame", shows a planet
@@ -21,6 +27,7 @@ public class ServiceFragment extends Fragment {
     public static final String SERVICE_NUMBER = "servicio_number";
     public MapView map;
     public MyLocationExtends myLoc;
+    public DefaultItemizedOverlay overlay;
     public ServiceFragment() {
         // Empty constructor required for fragment subclasses
     }
@@ -119,6 +126,9 @@ public class ServiceFragment extends Fragment {
     }
     
     private void setupMapHospitalView(GeoPoint pt, int zoom, MapView maps){
+    	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
+    	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
+    	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -131,7 +141,10 @@ public class ServiceFragment extends Fragment {
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
+            OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+            overlay.addItem(miPocision);
             map.getOverlays().add(myLoc);
+            map.getOverlays().add(overlay);
             myLoc.disableMyLocation();
             myLoc.setFollowing(true);
           }
