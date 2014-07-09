@@ -43,9 +43,12 @@ import com.mapquest.android.maps.OverlayItem;
  */
 public class ServiceFragment extends Fragment {
     public static final String SERVICE_NUMBER = "servicio_number";
+    public static final int RADIO_BUSQUEDA = 5;
+    public static final int ZOOM = 20;
     public MapView map;
     public MyLocationExtends myLoc;
     public DefaultItemizedOverlay overlay;
+    public DefaultItemizedOverlay overlayCarabinero;
     public ServiceFragment() {
         // Empty constructor required for fragment subclasses
     }
@@ -172,7 +175,10 @@ public class ServiceFragment extends Fragment {
     private void setupMapCarabineroView(int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
     	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
+    	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorcarabinero);
+    	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
     	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
+    	overlayCarabinero = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -186,15 +192,17 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Carabinero> lista = (List<Carabinero>) postCercanos(currentLocation, 8, "carabinero");
+            List<Carabinero> lista = (List<Carabinero>) postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
+            Log.d("holo", lista.get(0).getComuna());
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Carabinero c: lista){
             	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
-            	overlay.addItem(item);
+            	overlayCarabinero.addItem(item);
             }
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
+            map.getOverlays().add(overlayCarabinero);
             myLoc.disableMyLocation();
             myLoc.setFollowing(true);
           }
