@@ -1,0 +1,32 @@
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:layout_gravity="right"
+        android:id="@+id/llamar131"
+        android:layout_width="300dp"
+        android:layout_height="90dp"
+        android:background="@drawable/llamarcarabinero"
+         />
+	<ListView 
+	    android:id="@+id/listaNroCarabinero"
+	    android:background="#3879CF"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+	</ListView>
+	<com.mapquest.android.maps.MapView
+	    android:id="@+id/mapCarabinero"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:clickable="true"
+	    android:enabled="true"
+	    android:apiKey="Fmjtd%7Cluur2g0bn0%2Cb0%3Do5-9at2qu"
+	    />
+
+	
+</LinearLayout>
+
