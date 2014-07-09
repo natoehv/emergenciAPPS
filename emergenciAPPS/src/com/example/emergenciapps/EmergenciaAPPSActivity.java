@@ -157,6 +157,7 @@ public class EmergenciaAPPSActivity extends Activity {
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
     	items.add(new Item("Configurar", R.drawable.configuracion));
+    	items.add(new Item("Ayuda", R.drawable.help));
     }
     private void selectItem(int position) {
         // update the main content by replacing fragments
@@ -199,7 +200,6 @@ public class EmergenciaAPPSActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    
     
     public static void llamada(Activity activity, String numero){ 
 		 Intent intent = new Intent(Intent.ACTION_CALL); 
