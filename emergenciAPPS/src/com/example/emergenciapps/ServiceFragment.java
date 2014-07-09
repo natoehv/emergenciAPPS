@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,8 +32,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.emergenciapps.R.id;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
@@ -269,5 +272,9 @@ public class ServiceFragment extends Fragment {
     		
     	}
     	return null;
+    }
+    
+    private void generaListaNumeros(Context context, List datos){
+    	ListView lista = (ListView) context.getResources().getLayout(id.lista_boton_llamar);
     }
 }
