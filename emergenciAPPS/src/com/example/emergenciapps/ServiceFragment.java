@@ -258,7 +258,9 @@ public class ServiceFragment extends Fragment {
 					carabinero.setTelefono(telefono);
 					carabinero.setX(Float.valueOf(lat));
 					carabinero.setY(Float.valueOf(lng));
+					carabinero.setDistancia(Float.valueOf(distancia2));
 				    resultados.add(carabinero);
+				    
 				}
 				return resultados;
     		}catch(JSONException e){

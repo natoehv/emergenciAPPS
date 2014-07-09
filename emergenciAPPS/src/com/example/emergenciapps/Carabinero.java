@@ -7,11 +7,12 @@ public class Carabinero {
 	private String telefono;
 	private String comuna;
 	private Float x, y;
+	private Float distancia;
 	
 	public Carabinero(){
 	}
 	public Carabinero(int id, String nombre, String direccion, String telefono,
-			String comuna, Float x, Float y) {
+			String comuna, Float x, Float y, Float distancia) {
 		this.id = id;
 		this.nombre = nombre;
 		this.direccion = direccion;
@@ -19,6 +20,15 @@ public class Carabinero {
 		this.comuna = comuna;
 		this.x = x;
 		this.y = y;
+		this.distancia = distancia;
+	}
+	
+	
+	public Float getDistancia() {
+		return distancia;
+	}
+	public void setDistancia(Float distancia) {
+		this.distancia = distancia;
 	}
 	public int getId() {
 		return id;
@@ -62,5 +72,6 @@ public class Carabinero {
 	public void setY(Float y) {
 		this.y = y;
 	}
+	
 	
 }
