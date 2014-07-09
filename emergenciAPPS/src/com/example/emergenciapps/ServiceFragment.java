@@ -196,7 +196,6 @@ public class ServiceFragment extends Fragment {
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             List<Carabinero> lista = (List<Carabinero>) postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
-            Log.d("holo", lista.get(0).getComuna());
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Carabinero c: lista){
@@ -254,9 +253,12 @@ public class ServiceFragment extends Fragment {
 					String direccion = aux.getString("direccion");
 					String telefono = aux.getString("telefono");
 					String distancia2 = aux.getString("distancia");
-					carabinero.setComuna("");
+					int id = aux.getInt("id");
+					String comuna = aux.getString("comuna");
+					
+					carabinero.setComuna(comuna);
 					carabinero.setDireccion(direccion);
-					carabinero.setId(0);
+					carabinero.setId(id);
 					carabinero.setNombre(nombre);
 					carabinero.setTelefono(telefono);
 					carabinero.setX(Float.valueOf(lat));
