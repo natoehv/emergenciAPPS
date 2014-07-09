@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,9 +53,9 @@ public class EmergenciaAPPSActivity extends Activity {
 				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 		
-		editor.putString("numeroCarabinero", "78529632");
-		editor.putString("numeroBombero", "78541255");
-		editor.putString("numeroHospital", "62581455");
+		editor.putString("numeroCarabinero", "133");
+		editor.putString("numeroBombero", "132");
+		editor.putString("numeroHospital", "131");
 		editor.commit();
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -103,7 +104,7 @@ public class EmergenciaAPPSActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_websearch).getActionView();
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -151,12 +152,11 @@ public class EmergenciaAPPSActivity extends Activity {
     
     private void generaItems(){
     	items = new ArrayList<Item>();
-    	items.add(new Item("Bienvenido", R.drawable.anonimo));
+    	items.add(new Item("Inicio", R.drawable.home));
     	items.add(new Item("Ambulancia", R.drawable.hospital));
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
-    	items.add(new Item("Carabinero", R.drawable.carabinero));
-    	items.add(new Item("Configurar", R.drawable.carabinero));
+    	items.add(new Item("Configurar", R.drawable.configuracion));
     }
     private void selectItem(int position) {
         // update the main content by replacing fragments

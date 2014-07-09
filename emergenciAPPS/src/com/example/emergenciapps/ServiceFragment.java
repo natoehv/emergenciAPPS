@@ -58,7 +58,7 @@ public class ServiceFragment extends Fragment {
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
         	setupMapHospitalView(new GeoPoint(-36.6094, -72.1024), 20, (MapView)rootView.findViewById(R.id.mapHospital));
         	/*
-        	 * TODO Generar metodo el cual se conecte al servidor y retorne un arreglo con los puntos más cercanos
+        	 * TODO Generar metodo el cual se conecte al servidor y retorne un arreglo con los puntos mï¿½s cercanos
         	 * al dispositivo
         	 */
         	
@@ -69,11 +69,8 @@ public class ServiceFragment extends Fragment {
         	break;
         	case 3: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
         	break;
-        	case 4: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-        	break;
-        	case 5: 
-        			
-        		
+        	case 4: 
+        				
         			rootView = inflater.inflate(R.layout.config, container, false);
         			EditText editBombero = (EditText)rootView.findViewById(R.id.editText1);
         			EditText editCarabinero = (EditText)rootView.findViewById(R.id.editText2);
