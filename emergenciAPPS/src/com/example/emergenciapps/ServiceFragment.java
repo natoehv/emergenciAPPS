@@ -89,15 +89,18 @@ public class ServiceFragment extends Fragment {
         	 */
         	
         	break;
-        	case 2: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+        	case 2: rootView = inflater.inflate(R.layout.fragment_bombero, container, false);
         			
         	break;
         	case 3: rootView = inflater.inflate(R.layout.fragment_carabinero, container, false);
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
         	setupMapCarabineroView(20, (MapView)rootView.findViewById(R.id.mapCarabinero));
-        	
+        	break;        	
+        	case 4: rootView = inflater.inflate(R.layout.fragment_pdi, container, false);
+			
+
         	break;
-        	case 4: 
+        	case 5: 
         				
         			rootView = inflater.inflate(R.layout.config, container, false);
         			EditText editBombero = (EditText)rootView.findViewById(R.id.editText1);
