@@ -1,6 +1,7 @@
 package com.example.emergenciapps;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
@@ -13,6 +14,9 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -245,6 +249,60 @@ public class EmergenciaAPPSActivity extends Activity {
     	}
     	
     }
+    
+    public void enviarAlerta(View v){
+    	 SharedPreferences prefs = getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+    	 String correo = prefs.getString("correo", "correoDefault@gmail.com");
+    	 
+    	 LocationManager locManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
+    	 
+    	 
+    	 LocationListener locListener = new LocationListener() {
+    	        public void onLocationChanged(Location location) {
+    	            List<String>posicion = mostrarPosicion(location);
+    	            Log.d("posicion",posicion.get(0)+", "+posicion.get(1));
+    	        }
+
+				@Override
+				public void onStatusChanged(String provider, int status,
+						Bundle extras) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onProviderEnabled(String provider) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onProviderDisabled(String provider) {
+					// TODO Auto-generated method stub
+					
+				}
+    	        
+    	 
+    	    };
+    	    
+    	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
+    	    
+    	    
+    	    
+     }
+    
+    private List<String> mostrarPosicion(Location loc){
+    	if(loc != null){
+    		List<String> posicion = new ArrayList<String>();
+    		posicion.add(String.valueOf(loc.getLatitude()));
+    		posicion.add(String.valueOf(loc.getAltitude()));
+    		return posicion;
+    	}
+    	return null;
+    }
+    
+   
+    
     
     public void actualizaPantallaInicio(){
     	//setContentView(R.layout.fragment_inicio);
