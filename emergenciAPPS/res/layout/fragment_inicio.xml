@@ -21,6 +21,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
 		    android:background="@drawable/ayuda"
+		    android:onClick="enviarAlerta"
 		    />
         
     </RelativeLayout>
