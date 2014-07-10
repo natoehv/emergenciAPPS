@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class listaAdapter  extends ArrayAdapter{
+public class ListaAdapter  extends ArrayAdapter{
 	private ArrayList objects;
 	private Context context;
-	public listaAdapter(Context context, int resource, int textViewResourceId,
+	public ListaAdapter(Context context, int textViewResourceId,
 			ArrayList objects) {
-		super(context, resource, textViewResourceId, objects);
+		super(context, textViewResourceId, objects);
 		// TODO Auto-generated constructor stub
 		this.objects = objects;
 	}

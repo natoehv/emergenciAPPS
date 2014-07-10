@@ -49,6 +49,7 @@ public class ServiceFragment extends Fragment {
     public static final int RADIO_BUSQUEDA = 5;
     public static final int ZOOM = 20;
     public MapView map;
+    public ListView listaTelefonos;
     public MyLocationExtends myLoc;
     public DefaultItemizedOverlay overlay;
     public DefaultItemizedOverlay overlayCarabinero;
@@ -64,6 +65,7 @@ public class ServiceFragment extends Fragment {
         int i = getArguments().getInt(SERVICE_NUMBER);
         switch(i){
         	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
+        	
         	final TextView numeroCarabinero = (TextView) rootView.findViewById(R.id.textView2);
             final TextView numeroBombero = (TextView) rootView.findViewById(R.id.textView3);
             final TextView numeroHospital = (TextView) rootView.findViewById(R.id.textView4);
@@ -88,10 +90,10 @@ public class ServiceFragment extends Fragment {
         	
         	break;
         	case 2: rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-        		
         			
         	break;
         	case 3: rootView = inflater.inflate(R.layout.fragment_carabinero, container, false);
+        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
         	setupMapCarabineroView(20, (MapView)rootView.findViewById(R.id.mapCarabinero));
         	
         	break;
@@ -202,6 +204,7 @@ public class ServiceFragment extends Fragment {
             	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
             	overlayCarabinero.addItem(item);
             }
+            generaListaNumeros(map.getContext(), lista);
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
             map.getOverlays().add(overlayCarabinero);
@@ -277,6 +280,8 @@ public class ServiceFragment extends Fragment {
     }
     
     private void generaListaNumeros(Context context, List datos){
-    	ListView lista = (ListView) context.getResources().getLayout(id.lista_boton_llamar);
+    	ListaAdapter Adaptador = new ListaAdapter(context, R.layout.lista_telefonos, (ArrayList)datos);
+    	if(listaTelefonos.getId() == R.id.listaNroCarabinero)
+    	listaTelefonos.setAdapter(Adaptador);
     }
 }
