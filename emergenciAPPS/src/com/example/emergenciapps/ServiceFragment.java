@@ -200,7 +200,7 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Carabinero> lista = (List<Carabinero>) postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
+            List<Carabinero> lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Carabinero c: lista){
@@ -221,70 +221,6 @@ public class ServiceFragment extends Fragment {
           
         });
     	
-    }
-    
-    private List postCercanos(GeoPoint punto, int distancia, String tabla){
-    	String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicioweb.php";
-    	HttpParams httpParameters = new BasicHttpParams();
-    	String jsonReturnText="";
-    	String respuesta;
-    	List resultados = new ArrayList();
-    	int timeoutConnection = 10000;
-    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-    	int timeoutSocket = 30000;
-    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
-    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
-    	if(tabla.equalsIgnoreCase("carabinero")){
-    		try{
-    			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
-    			oPostParam.add(new BasicNameValuePair("tabla",tabla));
-    			oPostParam.add(new BasicNameValuePair("lat",punto.getLatitude()+""));
-    			oPostParam.add(new BasicNameValuePair("lng",punto.getLongitude()+""));
-    			oPostParam.add(new BasicNameValuePair("distancia",distancia+""));
-    			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
-    			HttpResponse oResp = httpclient.execute(oPost);
-    			HttpEntity r_entity = oResp.getEntity();
-    			jsonReturnText = EntityUtils.toString(r_entity);
-    			
-    		}catch(Exception e){
-    			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
-    		}
-    		
-    		try{
-    			JSONObject json = new JSONObject(jsonReturnText);
-    			JSONArray jArray = json.getJSONArray(tabla);
-    			Carabinero carabinero;
-				for(int i=0; i<jArray.length(); i++){
-					carabinero = new Carabinero();
-					JSONObject aux = jArray.getJSONObject(i);
-					String nombre = aux.getString("nombre");
-					String lat  = aux.getString("lat");
-					String lng = aux.getString("lng");
-					String direccion = aux.getString("direccion");
-					String telefono = aux.getString("telefono");
-					String distancia2 = aux.getString("distancia");
-					int id = aux.getInt("id");
-					String comuna = aux.getString("comuna");
-					
-					carabinero.setComuna(comuna);
-					carabinero.setDireccion(direccion);
-					carabinero.setId(id);
-					carabinero.setNombre(nombre);
-					carabinero.setTelefono(telefono);
-					carabinero.setX(Float.valueOf(lat));
-					carabinero.setY(Float.valueOf(lng));
-					carabinero.setDistancia(Float.valueOf(distancia2));
-				    resultados.add(carabinero);
-				    
-				}
-				return resultados;
-    		}catch(JSONException e){
-    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
-    		}
-    		
-    	}
-    	return null;
     }
     
 //    private void generaListaNumeros(Context context, List datos){
