@@ -16,9 +16,8 @@
         >
         <Button 
             android:id="@+id/btnEmergencia"
-            android:layout_width="230dp"  
-           
-            android:layout_height="233dp"
+            android:layout_width="230dp"       
+            android:layout_height="240dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
 		    android:background="@drawable/ayuda"
@@ -49,7 +48,7 @@
             android:onClick="llamar"
             android:paddingLeft="3dp"
 		    android:layout_alignParentTop="true"
-		    android:background="@drawable/carabinero"
+		    android:background="@drawable/botoncarabineropulsado"
 		    />
 
             <ImageView
@@ -88,7 +87,7 @@
 		    android:layout_height="100dp"
 		    android:onClick="llamar"
 		   	android:layout_centerVertical="true"
-		    android:background="@drawable/bombero"
+		    android:background="@drawable/botonbomberopulsado"
 
             
             />
@@ -129,7 +128,7 @@
             android:onClick="llamar" 
 		    android:layout_height="100dp"
 		    android:layout_alignParentTop="true"
-		    android:background="@drawable/hospital"
+		    android:background="@drawable/botonhospitalpulsado"
 
             
             />
