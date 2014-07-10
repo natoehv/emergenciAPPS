@@ -3,6 +3,7 @@ package com.example.emergenciapps;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class ListaAdapter  extends ArrayAdapter{
 		v = inflater.inflate(R.layout.lista_telefonos, null);
 		 
 		 if(objects.get(position) instanceof Carabinero){
-			 Carabinero carabinero = (Carabinero) objects.get(position);
+			 final Carabinero carabinero = (Carabinero) objects.get(position);
 					/*
 					 * fila de usuario
 					 */
@@ -37,7 +38,7 @@ public class ListaAdapter  extends ArrayAdapter{
 						
 						@Override
 						public void onClick(View v) {
-							// TODO llamar a telefono de carabinero
+							Log.d("emergencia", carabinero.getTelefono());
 							
 						}
 					});

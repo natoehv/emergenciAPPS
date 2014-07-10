@@ -8,12 +8,14 @@
         android:id="@+id/numero"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
+        android:textColor="#FFF"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="17dp" />
         
     <TextView
         android:id="@+id/direccion"
+        android:textColor="#FFF"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
