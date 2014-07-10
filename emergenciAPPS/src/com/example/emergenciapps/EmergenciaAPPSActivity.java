@@ -156,6 +156,7 @@ public class EmergenciaAPPSActivity extends Activity {
     	items.add(new Item("Ambulancia", R.drawable.hospital));
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
+    	items.add(new Item("PDI", R.drawable.pdi));
     	items.add(new Item("Configurar", R.drawable.configuracion));
     	items.add(new Item("Ayuda", R.drawable.help));
     }
