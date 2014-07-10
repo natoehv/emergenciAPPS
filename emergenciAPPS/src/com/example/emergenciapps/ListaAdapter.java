@@ -15,9 +15,9 @@ public class ListaAdapter  extends ArrayAdapter{
 	private ArrayList objects;
 	private Context context;
 	public ListaAdapter(Context context, int textViewResourceId,
-			ArrayList objects) {
-		super(context, textViewResourceId, objects);
-		this.objects = objects;
+			ArrayList values) {
+		super(context, textViewResourceId, values);
+		this.objects = values;
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

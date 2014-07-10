@@ -204,8 +204,11 @@ public class ServiceFragment extends Fragment {
             	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
             	overlayCarabinero.addItem(item);
             }
-            if(lista.size()>0)
-            	generaListaNumeros(map.getContext(), lista);
+            TareaLlenaNumeros tarea;
+			if(lista.size()>0){
+				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+				tarea.execute();
+			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
             map.getOverlays().add(overlayCarabinero);
@@ -281,8 +284,8 @@ public class ServiceFragment extends Fragment {
     	return null;
     }
     
-    private void generaListaNumeros(Context context, List datos){
-    	ListaAdapter Adaptador = new ListaAdapter(listaTelefonos.getContext(), R.layout.lista_telefonos, (ArrayList)datos);
-    	listaTelefonos.setAdapter(Adaptador);
-    }
+//    private void generaListaNumeros(Context context, List datos){
+//    	ListaAdapter Adaptador = new ListaAdapter(listaTelefonos.getContext(), R.layout.lista_telefonos, (ArrayList)datos);
+//    	listaTelefonos.setAdapter(Adaptador);
+//    }
 }
