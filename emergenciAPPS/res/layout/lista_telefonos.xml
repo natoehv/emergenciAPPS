@@ -7,7 +7,8 @@
         <TextView
         android:id="@+id/numero"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
         android:textColor="#FFF"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -17,15 +18,17 @@
         android:id="@+id/direccion"
         android:textColor="#FFF"
         android:layout_width="wrap_content"
-        android:layout_height="80dp"
+        android:layout_height="45dp"
+        android:layout_margin="5dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
     
     <Button
         android:id="@+id/lista_boton_llamar"
-        android:background="@drawable/telefono"
-        android:layout_width="55dp"
-        android:layout_height="80dp"
+        android:background="@drawable/fono"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="5dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 
