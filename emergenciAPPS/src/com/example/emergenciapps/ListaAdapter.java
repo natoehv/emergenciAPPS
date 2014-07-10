@@ -45,6 +45,27 @@ public class ListaAdapter  extends ArrayAdapter{
 					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 					numero.setText(carabinero.getTelefono());
 					direccion.setText(carabinero.getDireccion());
+		 }else{
+			 if(objects.get(position) instanceof PDI){
+				 final PDI pdi = (PDI) objects.get(position);
+					/*
+					 * fila de usuario
+					 */
+					TextView numero = (TextView) v.findViewById(R.id.numero);
+					TextView direccion = (TextView) v.findViewById(R.id.direccion);
+					Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+					llamar.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							Log.d("emergencia", pdi.getTelefono());
+							
+						}
+					});
+					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
+					numero.setText(pdi.getTelefono());
+					direccion.setText(pdi.getDireccion());
+			 }
 		 }
 
 		return v;

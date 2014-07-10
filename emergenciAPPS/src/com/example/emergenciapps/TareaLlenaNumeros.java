@@ -21,11 +21,9 @@ public class TareaLlenaNumeros extends AsyncTask<Void, Object, Boolean>{
 	}
 	@Override
     protected void onProgressUpdate(Object... values) {
-		ArrayList carabineros = ((ArrayList)values[0]);
-		if(carabineros.get(0) instanceof Carabinero){
-			
-			ListaAdapter list = new ListaAdapter(lista.getContext(), R.id.lista_boton_llamar, carabineros);
-			lista.setAdapter(list);
-		}
+		ArrayList listaServicios = ((ArrayList)values[0]);
+		ListaAdapter list = new ListaAdapter(lista.getContext(), R.id.lista_boton_llamar, listaServicios);
+		lista.setAdapter(list);
+
     }
 }

@@ -36,7 +36,7 @@ public class ServicioWeb {
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
     	HttpPost oPost = new HttpPost(URL);
-    	if(tabla.equalsIgnoreCase("carabinero")){
+    	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
     			oPostParam.add(new BasicNameValuePair("tabla",tabla));
@@ -51,40 +51,40 @@ public class ServicioWeb {
     		}catch(Exception e){
     			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
     		}
+    		if(tabla.equalsIgnoreCase("carabinero")){	
+	    		try{
+	    			JSONObject json = new JSONObject(jsonReturnText);
+	    			JSONArray jArray = json.getJSONArray(tabla);
+	    			Carabinero carabinero;
+					for(int i=0; i<jArray.length(); i++){
+						carabinero = new Carabinero();
+						JSONObject aux = jArray.getJSONObject(i);
+						String nombre = aux.getString("nombre");
+						String lat  = aux.getString("lat");
+						String lng = aux.getString("lng");
+						String direccion = aux.getString("direccion");
+						String telefono = aux.getString("telefono");
+						String distancia2 = aux.getString("distancia");
+						int id = aux.getInt("id");
+						String comuna = aux.getString("comuna");
+						
+						carabinero.setComuna(comuna);
+						carabinero.setDireccion(direccion);
+						carabinero.setId(id);
+						carabinero.setNombre(nombre);
+						carabinero.setTelefono(telefono);
+						carabinero.setX(Float.valueOf(lat));
+						carabinero.setY(Float.valueOf(lng));
+						carabinero.setDistancia(Float.valueOf(distancia2));
+					    resultados.add(carabinero);
+					    
+					}
+					return resultados;
+	    		}catch(JSONException e){
+	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+	    		}
     		
-    		try{
-    			JSONObject json = new JSONObject(jsonReturnText);
-    			JSONArray jArray = json.getJSONArray(tabla);
-    			Carabinero carabinero;
-				for(int i=0; i<jArray.length(); i++){
-					carabinero = new Carabinero();
-					JSONObject aux = jArray.getJSONObject(i);
-					String nombre = aux.getString("nombre");
-					String lat  = aux.getString("lat");
-					String lng = aux.getString("lng");
-					String direccion = aux.getString("direccion");
-					String telefono = aux.getString("telefono");
-					String distancia2 = aux.getString("distancia");
-					int id = aux.getInt("id");
-					String comuna = aux.getString("comuna");
-					
-					carabinero.setComuna(comuna);
-					carabinero.setDireccion(direccion);
-					carabinero.setId(id);
-					carabinero.setNombre(nombre);
-					carabinero.setTelefono(telefono);
-					carabinero.setX(Float.valueOf(lat));
-					carabinero.setY(Float.valueOf(lng));
-					carabinero.setDistancia(Float.valueOf(distancia2));
-				    resultados.add(carabinero);
-				    
-				}
-				return resultados;
-    		}catch(JSONException e){
-    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
     		}
-    		
-    	}
     	return null;
     }
 }

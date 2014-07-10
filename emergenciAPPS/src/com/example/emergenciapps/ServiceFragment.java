@@ -53,6 +53,8 @@ public class ServiceFragment extends Fragment {
     public MyLocationExtends myLoc;
     public DefaultItemizedOverlay overlay;
     public DefaultItemizedOverlay overlayCarabinero;
+    public DefaultItemizedOverlay overlayBombero;
+    public DefaultItemizedOverlay overlayPDI;
     public ServiceFragment() {
         // Empty constructor required for fragment subclasses
     }
@@ -97,7 +99,8 @@ public class ServiceFragment extends Fragment {
         	setupMapCarabineroView(20, (MapView)rootView.findViewById(R.id.mapCarabinero));
         	break;        	
         	case 4: rootView = inflater.inflate(R.layout.fragment_pdi, container, false);
-			
+        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroPdi);
+        	setupMapPDIView(20, (MapView)rootView.findViewById(R.id.mapPdi));
 
         	break;
         	case 5: 
@@ -179,7 +182,11 @@ public class ServiceFragment extends Fragment {
         });
     	
     }
-    
+    /**
+     * Metodo encargado de cargar mapa de carabineros
+     * @param zoom
+     * @param maps
+     */
     private void setupMapCarabineroView(int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
     	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
@@ -223,8 +230,87 @@ public class ServiceFragment extends Fragment {
     	
     }
     
-//    private void generaListaNumeros(Context context, List datos){
-//    	ListaAdapter Adaptador = new ListaAdapter(listaTelefonos.getContext(), R.layout.lista_telefonos, (ArrayList)datos);
-//    	listaTelefonos.setAdapter(Adaptador);
-//    }
+    private void setupMapBomberoView(int zoom, MapView maps){
+    	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
+    	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
+    	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
+    	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
+    	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
+    	overlayBombero = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+    	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
+    	map = maps;
+    	
+    	map.getController().setZoom(zoom);
+    	myLoc.enableMyLocation();
+    	myLoc.runOnFirstFix(new Runnable() {
+          @Override
+          public void run() {
+            GeoPoint currentLocation = myLoc.getMyLocation();
+            map.getController().animateTo(currentLocation);
+            map.getController().setCenter(myLoc.getMyLocation());
+            map.getController().setZoom(14);
+            OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+            List<Carabinero> lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "bombero");
+            OverlayItem item;
+            overlay.addItem(miPocision);
+            for(Carabinero c: lista){
+            	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
+            	overlayBombero.addItem(item);
+            }
+            TareaLlenaNumeros tarea;
+			if(lista.size()>0){
+				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+				tarea.execute();
+			}
+            map.getOverlays().add(myLoc);
+            map.getOverlays().add(overlay);
+            map.getOverlays().add(overlayBombero);
+            myLoc.disableMyLocation();
+            myLoc.setFollowing(true);
+          }
+          
+        });
+    }
+    	private void setupMapPDIView(int zoom, MapView maps){
+        	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
+        	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
+        	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
+        	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
+        	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
+        	overlayPDI = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+        	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
+        	map = maps;
+        	
+        	map.getController().setZoom(zoom);
+        	myLoc.enableMyLocation();
+        	myLoc.runOnFirstFix(new Runnable() {
+              @Override
+              public void run() {
+                GeoPoint currentLocation = myLoc.getMyLocation();
+                map.getController().animateTo(currentLocation);
+                map.getController().setCenter(myLoc.getMyLocation());
+                map.getController().setZoom(14);
+                OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+                List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "pdi");
+                OverlayItem item;
+                overlay.addItem(miPocision);
+                for(PDI c: lista){
+                	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
+                	overlayPDI.addItem(item);
+                }
+                TareaLlenaNumeros tarea;
+    			if(lista.size()>0){
+    				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+    				tarea.execute();
+    			}
+                map.getOverlays().add(myLoc);
+                map.getOverlays().add(overlay);
+                map.getOverlays().add(overlayPDI);
+                myLoc.disableMyLocation();
+                myLoc.setFollowing(true);
+              }
+              
+            });
+    	
+    }
 }
