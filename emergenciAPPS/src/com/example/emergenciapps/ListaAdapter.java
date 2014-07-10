@@ -17,7 +17,6 @@ public class ListaAdapter  extends ArrayAdapter{
 	public ListaAdapter(Context context, int textViewResourceId,
 			ArrayList objects) {
 		super(context, textViewResourceId, objects);
-		// TODO Auto-generated constructor stub
 		this.objects = objects;
 	}
 	@Override
