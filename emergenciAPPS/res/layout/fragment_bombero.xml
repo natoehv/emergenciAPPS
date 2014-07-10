@@ -13,23 +13,23 @@
         android:background="@drawable/llamarbombero" />
     
     <ScrollView 
-	    android:id="@+id/scroll"
+	    android:id="@+id/scrollb"
 	    android:layout_width="match_parent" 
-	    android:layout_height="match_parent">
+	    android:layout_height="100dp">
 	    
 		    <RelativeLayout 
-		        android:id="@+id/relative"
+		        android:id="@+id/relative_b"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 			    android:background="#961717" >
 			    
 		    	<RelativeLayout 
-			        android:id="@+id/relative1"
+			        android:id="@+id/relativeb_1"
 				    android:layout_width="fill_parent"
 				    android:layout_height="40dp" >
 				    
 				    <TextView
-				        android:id="@+id/numero"
+				        android:id="@+id/numero_b"
 				        android:layout_width="wrap_content"
 				        android:layout_height="80dp"
 				        android:layout_alignParentLeft="true"
@@ -40,7 +40,7 @@
 				        android:text="@string/numeroCabecera" />
 				        
 				    <TextView
-				        android:id="@+id/direccion"
+				        android:id="@+id/direccion_b"
 				        android:layout_width="wrap_content"
 				        android:layout_height="80dp"
 				        android:layout_alignParentTop="true"
@@ -54,7 +54,7 @@
 			    <View
 		            android:id="@+id/separador"
 		            android:background="@drawable/separador_lista_bombero"
-					android:layout_below="@+id/relative1"
+					android:layout_below="@+id/relativeb_1"
 					android:layout_width="wrap_content"
 					android:layout_height="2dp">
 				</View>
