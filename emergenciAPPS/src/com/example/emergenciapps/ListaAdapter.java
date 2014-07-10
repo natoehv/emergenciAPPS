@@ -3,6 +3,8 @@ package com.example.emergenciapps;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ public class ListaAdapter  extends ArrayAdapter{
 			ArrayList values) {
 		super(context, textViewResourceId, values);
 		this.objects = values;
+		this.context = context;
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -39,6 +42,10 @@ public class ListaAdapter  extends ArrayAdapter{
 						@Override
 						public void onClick(View v) {
 							Log.d("emergencia", carabinero.getTelefono());
+							Intent intent = new Intent(Intent.ACTION_CALL);
+							String llamarA = "tel:"+carabinero.getTelefono();
+			        		intent.setData(Uri.parse(llamarA)); 
+			       		    context.startActivity(intent); 
 							
 						}
 					});
