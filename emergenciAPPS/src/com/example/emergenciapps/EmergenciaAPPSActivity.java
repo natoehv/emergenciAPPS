@@ -12,6 +12,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ public class EmergenciaAPPSActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         SharedPreferences prefs =
 				getSharedPreferences("MisContactos", this.MODE_PRIVATE);

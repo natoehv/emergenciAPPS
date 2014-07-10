@@ -11,17 +11,13 @@
         android:layout_width="300dp"
         android:layout_height="90dp"
         android:background="@drawable/botonllamarpdi" />
-    
-    <ScrollView 
-	    android:id="@+id/scroll"
-	    android:layout_width="match_parent" 
-	    android:layout_height="match_parent">
+
 	    
 		    <RelativeLayout 
 		        android:id="@+id/relative"
 			    android:layout_width="fill_parent"
 			    android:layout_height="100dp"
-			    android:background="#38276F" >
+			    android:background="#1142BD" >
 			    
 		    	<RelativeLayout 
 			        android:id="@+id/relative1"
@@ -34,9 +30,9 @@
 				        android:layout_height="80dp"
 				        android:layout_alignParentLeft="true"
 				        android:layout_alignParentTop="true"
-				        android:textColor="#7B5FD8"
+				        android:textColor="#90A8E3"
 				        android:layout_marginTop="10dp"
-				        android:layout_marginLeft="17dp"
+				        android:layout_marginLeft="12dp"
 				        android:text="@string/numeroCabecera" />
 				        
 				    <TextView
@@ -46,8 +42,19 @@
 				        android:layout_alignParentTop="true"
 				        android:layout_centerHorizontal="true"
 				        android:layout_marginTop="10dp"
-				        android:textColor="#7B5FD8"
+				        android:textColor="#90A8E3"
 				        android:text="@string/direccionCabecera" />
+				    
+				    <TextView
+				        android:id="@+id/llamar_d"
+				        android:layout_width="wrap_content"
+				        android:layout_height="80dp"
+				        android:layout_alignParentTop="true"
+				        android:layout_alignParentRight="true"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginRight="12dp"
+				        android:textColor="#90A8E3"
+				        android:text="@string/llamarCabecera" />
 				    
 			    </RelativeLayout>
 			    
@@ -59,23 +66,17 @@
 					android:layout_height="2dp">
 				</View>
 			    
-			    <RelativeLayout 
-			        android:id="@+id/relative2"
-			        android:layout_below="@+id/separador"
-				    android:layout_width="fill_parent"
-				    android:layout_height="fill_parent" >
+
 				    
 				    <ListView 
 					    android:id="@+id/listaNroPdi"
 					    android:layout_width="match_parent"
 						android:layout_height="100dp">
 					</ListView>
-					
-				</RelativeLayout>  
+					 
 				
 			 </RelativeLayout>
-			
-		</ScrollView>
+
 	
     
     

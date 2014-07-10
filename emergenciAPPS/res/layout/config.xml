@@ -36,7 +36,7 @@
        
        <TextView
         android:id="@+id/textView2"
-        android:textColor="#FF0000"
+        android:textColor="#FFF"
         android:paddingTop="15dp"
         android:paddingLeft="10dp"
         android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
 	        android:layout_below="@+id/editText1"
 	        android:layout_height="wrap_content"
 	        android:text="@string/numeroCarabinero"
-	       android:textColor="#FF0000"
+	       android:textColor="#FFF"
          />
         <EditText
            android:id="@+id/editText2"
@@ -89,7 +89,7 @@
 	        android:layout_below="@+id/editText2"
 	        android:layout_height="wrap_content"
 	        android:text="@string/numeroHospital"
-	        android:textColor="#FF0000"
+	        android:textColor="#FFF"
          />
         <EditText
            android:id="@+id/editText3"
@@ -119,7 +119,7 @@
 	        android:layout_below="@+id/separador1"
 	        android:layout_height="wrap_content"
 	        android:text="@string/contactoFavorito"
-	        android:textColor="#FF0000"
+	        android:textColor="#FFF"
          />
 		<EditText
            android:id="@+id/editText4"
@@ -140,7 +140,7 @@
 	        android:layout_below="@+id/editText4"
 	        android:layout_height="wrap_content"
 	        android:text="@string/mensajeAlerta"
-	        android:textColor="#FF0000"
+	        android:textColor="#FFF"
          />
         <EditText
            android:id="@+id/editText5"

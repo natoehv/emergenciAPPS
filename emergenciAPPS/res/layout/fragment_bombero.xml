@@ -36,7 +36,7 @@
 				        android:layout_alignParentTop="true"
 				        android:textColor="#F0742C"
 				        android:layout_marginTop="10dp"
-				        android:layout_marginLeft="17dp"
+				        android:layout_marginLeft="12dp"
 				        android:text="@string/numeroCabecera" />
 				        
 				    <TextView
@@ -48,6 +48,17 @@
 				        android:layout_marginTop="10dp"
 				        android:textColor="#F0742C"
 				        android:text="@string/direccionCabecera" />
+				    
+				    <TextView
+				        android:id="@+id/llamar_b"
+				        android:layout_width="wrap_content"
+				        android:layout_height="80dp"
+				        android:layout_alignParentTop="true"
+				        android:layout_alignParentRight="true"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginRight="12dp"
+				        android:textColor="#F0742C"
+				        android:text="@string/llamarCabecera" />
 				    
 			    </RelativeLayout>
 			    

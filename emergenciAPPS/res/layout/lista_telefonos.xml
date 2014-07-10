@@ -28,7 +28,7 @@
         android:background="@drawable/fono"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 

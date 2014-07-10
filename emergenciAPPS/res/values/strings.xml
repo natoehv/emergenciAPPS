@@ -29,6 +29,7 @@
     <string name="guardar">Guardar</string>
     <string name="numeroCabecera">Número</string>
     <string name="direccionCabecera">Dirección</string>
+    <string name="llamarCabecera">Llamar</string>
     
     
 </resources>
