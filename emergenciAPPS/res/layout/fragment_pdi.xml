@@ -10,7 +10,7 @@
         android:id="@+id/llamar134"
         android:layout_width="300dp"
         android:layout_height="90dp"
-        android:background="@drawable/llamarpdi" />
+        android:background="@drawable/botonllamarpdi" />
     
     <ScrollView 
 	    android:id="@+id/scroll"
