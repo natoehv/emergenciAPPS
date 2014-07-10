@@ -27,6 +27,8 @@
     <string name="contactoFavorito">Contacto Favorito</string>
     <string name="mensajeAlerta">Mensaje de Alerta</string>
     <string name="guardar">Guardar</string>
+    <string name="numeroCabecera">Número</string>
+    <string name="direccionCabecera">Dirección</string>
     
     
 </resources>

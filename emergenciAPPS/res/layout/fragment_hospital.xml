@@ -12,12 +12,80 @@
         android:layout_height="90dp"
         android:background="@drawable/llamarambulancia"
          />
-	<ListView 
-	    android:id="@+id/listaNroHospital"
-	    android:background="#3879CF"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content">
-	</ListView>
+	<ScrollView 
+	    android:id="@+id/scroll"
+	    android:layout_width="match_parent" 
+	    android:layout_height="match_parent">
+	    
+		    <RelativeLayout 
+		        android:id="@+id/relative"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:background="#116d97" >
+			    
+		    	<RelativeLayout 
+			        android:id="@+id/relative1"
+				    android:layout_width="fill_parent"
+				    android:layout_height="40dp" >
+				    
+				    <TextView
+				        android:id="@+id/numero"
+				        android:layout_width="wrap_content"
+				        android:layout_height="80dp"
+				        android:layout_alignParentLeft="true"
+				        android:layout_alignParentTop="true"
+				        android:textColor="#2FEDF3"
+				        android:layout_marginTop="10dp"
+				        android:layout_marginLeft="17dp"
+				        android:text="@string/numeroCabecera" />
+				        
+				    <TextView
+				        android:id="@+id/direccion"
+				        android:layout_width="wrap_content"
+				        android:layout_height="80dp"
+				        android:layout_alignParentTop="true"
+				        android:layout_centerHorizontal="true"
+				        android:layout_marginTop="10dp"
+				        android:textColor="#2FEDF3"
+				        android:text="@string/direccionCabecera" />
+				    
+			    </RelativeLayout>
+			    
+			    <View
+		            android:id="@+id/separador"
+		            android:background="@drawable/separador_lista_hospital"
+					android:layout_below="@+id/relative1"
+					android:layout_width="wrap_content"
+					android:layout_height="2dp">
+				</View>
+			    
+			    <RelativeLayout 
+			        android:id="@+id/relative2"
+			        android:layout_below="@+id/separador"
+				    android:layout_width="fill_parent"
+				    android:layout_height="fill_parent" >
+				    
+				    <ListView 
+					    android:id="@+id/listaNroCarabinero"
+					    android:layout_width="match_parent"
+						android:layout_height="100dp">
+					</ListView>
+					
+				</RelativeLayout>  
+				
+			 </RelativeLayout>
+			
+		</ScrollView>
+	
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	<com.mapquest.android.maps.MapView
 	    android:id="@+id/mapHospital"
 	    android:layout_width="fill_parent"
