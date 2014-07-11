@@ -259,11 +259,12 @@ public class EmergenciaAPPSActivity extends Activity {
     	 
     	 LocationManager locManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
     	 
-    	 
     	 LocationListener locListener = new LocationListener() {
     	        public void onLocationChanged(Location location) {
     	            List<String>posicion = mostrarPosicion(location);
     	            Log.d("posicion",posicion.get(0)+", "+posicion.get(1));
+    	            String lat = posicion.get(0);
+    	            String alt = posicion.get(1);
     	        }
 
 				@Override
