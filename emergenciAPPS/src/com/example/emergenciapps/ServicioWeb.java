@@ -121,4 +121,37 @@ public class ServicioWeb {
     		}
     	return null;
     }
+	
+	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
+		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/sendMail.php";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("lat",lat));
+			oPostParam.add(new BasicNameValuePair("lng",lng));
+			oPostParam.add(new BasicNameValuePair("correo",correo));
+			oPostParam.add(new BasicNameValuePair("mensaje",msj));
+			oPostParam.add(new BasicNameValuePair("miNombre",miNombre));
+			oPostParam.add(new BasicNameValuePair("miNumero",miNumero));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+			
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return "El mensaje no ha podido ser enviado";
+    	}
+    	
+		return respuesta;
+		
+	}
 }

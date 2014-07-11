@@ -48,6 +48,9 @@ public class EmergenciaAPPSActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String numero;
+    private static String TAG = "emergenciAPPS";
+    
+    LocationManager locManager ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,45 +257,20 @@ public class EmergenciaAPPSActivity extends Activity {
     }
     
     public void enviarAlerta(View v){
+    	Log.d(TAG, "Inicia eventeo enviarAlerta");
     	 SharedPreferences prefs = getSharedPreferences("MisContactos", this.MODE_PRIVATE);
-    	 String correo = prefs.getString("correo", "correoDefault@gmail.com");
+    	 String correo = prefs.getString("correo", "ivcontre@alumnos.ubiobio.cl");
+    	 String msje = prefs.getString("mensaje", "Help!");
+    	 String miNombre = prefs.getString("miNombre", "Unknow");
+    	 String miNumero = prefs.getString("miNumero", "Sin numero");
+    	 String lat;
+    	 String lng;
     	 
-    	 LocationManager locManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
+    	 locManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
     	 
-    	 LocationListener locListener = new LocationListener() {
-    	        public void onLocationChanged(Location location) {
-    	            List<String>posicion = mostrarPosicion(location);
-    	            Log.d("posicion",posicion.get(0)+", "+posicion.get(1));
-    	            String lat = posicion.get(0);
-    	            String alt = posicion.get(1);
-    	        }
-
-				@Override
-				public void onStatusChanged(String provider, int status,
-						Bundle extras) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onProviderEnabled(String provider) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onProviderDisabled(String provider) {
-					// TODO Auto-generated method stub
-					
-				}
-    	        
-    	 
-    	    };
-    	    
+    	 LocationListener locListener = new LocationListenerMensaje( correo, msje, miNombre, miNumero,  locManager);
     	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
-    	    
-    	    
-    	    
+ 
      }
     
     private List<String> mostrarPosicion(Location loc){
