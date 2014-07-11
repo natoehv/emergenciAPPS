@@ -20,7 +20,7 @@
             android:layout_height="240dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-		    android:background="@drawable/ayuda"
+		    android:background="@drawable/botonayudapulsado"
 		    android:onClick="enviarAlerta"
 		    />
         
