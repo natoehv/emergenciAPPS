@@ -84,6 +84,40 @@ public class ServicioWeb {
 	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
 	    		}
     		
+    		}else{
+    			if(tabla.equalsIgnoreCase("pdi")){
+    				try{
+    	    			JSONObject json = new JSONObject(jsonReturnText);
+    	    			JSONArray jArray = json.getJSONArray(tabla);
+    	    			PDI pdi;
+    					for(int i=0; i<jArray.length(); i++){
+    						pdi = new PDI();
+    						JSONObject aux = jArray.getJSONObject(i);
+    						String nombre = aux.getString("nombre");
+    						String lat  = aux.getString("lat");
+    						String lng = aux.getString("lng");
+    						String direccion = aux.getString("direccion");
+    						String telefono = aux.getString("telefono");
+    						String distancia2 = aux.getString("distancia");
+    						int id = aux.getInt("id");
+    						String comuna = aux.getString("comuna");
+    						
+    						pdi.setComuna(comuna);
+    						pdi.setDireccion(direccion);
+    						pdi.setId(id);
+    						pdi.setNombre(nombre);
+    						pdi.setTelefono(telefono);
+    						pdi.setX(Float.valueOf(lat));
+    						pdi.setY(Float.valueOf(lng));
+    						pdi.setDistancia(Float.valueOf(distancia2));
+    					    resultados.add(pdi);
+    					    
+    					}
+    					return resultados;
+    	    		}catch(JSONException e){
+    	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+    	    		}
+    			}
     		}
     	return null;
     }
