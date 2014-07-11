@@ -24,12 +24,13 @@
     <string name="numeroBombero">Número Bombero</string>
     <string name="numeroCarabinero">Número Carabinero</string>
     <string name="numeroHospital">Número Hospital</string>
-    <string name="contactoFavorito">Contacto Favorito</string>
+    <string name="correoFavorito">Correo contacto</string>
     <string name="mensajeAlerta">Mensaje de Alerta</string>
     <string name="guardar">Guardar</string>
     <string name="numeroCabecera">Número</string>
     <string name="direccionCabecera">Dirección</string>
     <string name="llamarCabecera">Llamar</string>
+    <string name="radioCobertura">Radio Cobertura (km)</string>
     
     
 </resources>

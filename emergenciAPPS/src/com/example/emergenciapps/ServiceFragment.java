@@ -1,26 +1,8 @@
 package com.example.emergenciapps;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Fragment;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.emergenciapps.R.id;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
@@ -50,11 +34,25 @@ public class ServiceFragment extends Fragment {
     public static final int ZOOM = 20;
     public MapView map;
     public ListView listaTelefonos;
+    public int progressChanged;
     public MyLocationExtends myLoc;
     public DefaultItemizedOverlay overlay;
     public DefaultItemizedOverlay overlayCarabinero;
     public DefaultItemizedOverlay overlayBombero;
     public DefaultItemizedOverlay overlayPDI;
+    
+    
+    
+    public int progreso_a_guardar = 0;
+    
+    public boolean ok_bom =  false;
+    public boolean ok_hos = false;
+    public boolean ok_car = false;
+    public boolean ok_corr = false;
+    public boolean ok_msj = false;
+   ;
+   
+    
     public ServiceFragment() {
         // Empty constructor required for fragment subclasses
     }
@@ -106,12 +104,12 @@ public class ServiceFragment extends Fragment {
         	case 5: 
         				
         			rootView = inflater.inflate(R.layout.config, container, false);
-        			EditText editBombero = (EditText)rootView.findViewById(R.id.editText1);
-        			EditText editCarabinero = (EditText)rootView.findViewById(R.id.editText2);
-        			EditText editHospital = (EditText)rootView.findViewById(R.id.editText3);
-        			EditText editFavorito = (EditText)rootView.findViewById(R.id.editText4);
-        			EditText editMensaje = (EditText)rootView.findViewById(R.id.editText5);
-        			Button btnGuardar = (Button)rootView.findViewById(R.id.btnGuardar);
+        			final EditText editBombero = (EditText)rootView.findViewById(R.id.editText1);
+        			final EditText editCarabinero = (EditText)rootView.findViewById(R.id.editText2);
+        			final EditText editHospital = (EditText)rootView.findViewById(R.id.editText3);
+        			final EditText editFavorito = (EditText)rootView.findViewById(R.id.editText4);
+        			final EditText editMensaje = (EditText)rootView.findViewById(R.id.editText5);
+        			final Button btnGuardar = (Button)rootView.findViewById(R.id.btnGuardar);
                     SharedPreferences pref = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
                     final SharedPreferences.Editor editor = pref.edit();
                     
@@ -121,23 +119,113 @@ public class ServiceFragment extends Fragment {
                     editCarabinero.setText(car);
                 	final String hos = pref.getString("numeroHospital", "131");
                 	editHospital.setText(hos);
-                	final String fav = pref.getString("numeroFavorito", "911");
+                	final String fav = pref.getString("correoContacto", "");
                 	editFavorito.setText(fav);
                 	final String msj = pref.getString("mensaje", "Help!");
                 	editMensaje.setText(msj);
                 	
+                	int radio = pref.getInt("ratio", 1);
+                	
+                	
+                	
+                	SeekBar radioControl = null;
+                	radioControl = (SeekBar) rootView.findViewById(R.id.volume_bar);
+                	radioControl.setProgress(radio);
+                	radioControl.setMax(20);
+                	
+                	
+                    radioControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+            			int progressChanged = 0;
+            			
+            			@Override
+            			public void onStartTrackingTouch(SeekBar seekBar) {
+            				// TODO Auto-generated method stub
+            			}
+            			@Override
+            			public void onStopTrackingTouch(SeekBar seekBar) {
+            				//Log.d("llamada", ""+progressChanged);
+            			}
+						@Override
+						public void onProgressChanged(SeekBar seekBar,int progress, boolean fromUser) {
+							Log.d("llamada", ""+progressChanged);
+							progressChanged = progress;
+							progreso_a_guardar = progress;
+							
+							
+						}
+            		});
+            		
                 	
                 	
                 	btnGuardar.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
 						public void onClick(View v) {
-							editor.putString("numeroBombero",bom);
-							editor.putString("numeroCarabinero",car);
-							editor.putString("numeroHospital",hos);
-							editor.putString("numeroFavorito",fav);
-							editor.putString("mensaje",msj);
-							editor.commit();
+							if(!editBombero.getText().toString().equals("")){
+								ok_bom = true;
+							}else{
+								ok_bom = false;
+								editBombero.setError("Ingrese datos");
+							}
+							
+							if(!editCarabinero.getText().toString().equals("")){
+								ok_car = true;
+							}else{
+								ok_car = false;
+								editCarabinero.setError("Ingrese datos");
+							}
+							
+							if(!editHospital.getText().toString().equals("")){
+								ok_hos = true;
+							}else{
+								ok_hos = false;
+								editHospital.setError("Ingrese datos");
+							}
+							
+							if(!editFavorito.getText().toString().equals("")){
+								ok_corr = true;
+							}else{
+								ok_corr = false;
+								editFavorito.setError("Ingrese datos");
+							}
+							
+							if(!editMensaje.getText().toString().equals("")){
+								ok_msj = true;
+							}else{
+								ok_msj = false;
+								editMensaje.setError("Ingrese datos");
+							}
+							
+							
+							
+							if(ok_bom == true && ok_car == true && ok_hos==true && ok_corr == true && ok_msj == true ){
+								Log.d("true","campos completos");
+								editor.putString("numeroBombero",editBombero.getText().toString());
+								editor.putString("numeroCarabinero",editCarabinero.getText().toString());
+								editor.putString("numeroHospital",editHospital.getText().toString());
+								editor.putString("correoContacto",editFavorito.getText().toString());
+								editor.putString("mensaje",editMensaje.getText().toString());
+								if(progreso_a_guardar == 0){
+									editor.putInt("ratio",1);
+								}else{
+									editor.putInt("ratio",progreso_a_guardar);
+								}
+								
+								editor.commit();
+								
+							}else{
+								Log.d("false","hay campos vacios");
+								
+								//Toast.makeText(rootView.getContext(),
+					             //      "Llene los campos indicados", Toast.LENGTH_SHORT).show();
+							}
+						
+							
+							
+							
+							
+							
+							
 							
 							
 							
