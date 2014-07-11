@@ -37,9 +37,7 @@ public class ServiceFragment extends Fragment {
     public int progressChanged;
     public MyLocationExtends myLoc;
     public DefaultItemizedOverlay overlay;
-    public DefaultItemizedOverlay overlayCarabinero;
-    public DefaultItemizedOverlay overlayBombero;
-    public DefaultItemizedOverlay overlayPDI;
+    public DefaultItemizedOverlay overlayServicio;
     
     
     
@@ -83,14 +81,12 @@ public class ServiceFragment extends Fragment {
         	break;
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
         	setupMapHospitalView(20, (MapView)rootView.findViewById(R.id.mapHospital));
-        	/*
-        	 * TODO Generar metodo el cual se conecte al servidor y retorne un arreglo con los puntos m�s cercanos
-        	 * al dispositivo
-        	 */
         	
         	break;
         	case 2: rootView = inflater.inflate(R.layout.fragment_bombero, container, false);
-        			
+        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroBombero);
+        	setupMapBomberoView(20, (MapView)rootView.findViewById(R.id.mapBombero));
+        	
         	break;
         	case 3: rootView = inflater.inflate(R.layout.fragment_carabinero, container, false);
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
@@ -243,11 +239,18 @@ public class ServiceFragment extends Fragment {
 //        getActivity().setTitle(planet);
         return rootView;
     }
-    
+    /**
+     * Metodo encargado de crear mapa para hospital
+     * @param zoom
+     * @param maps
+     */
     private void setupMapHospitalView(int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
     	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
+    	Drawable iconHospital = maps.getContext().getResources().getDrawable(R.drawable.marcadorhospital);
+    	Bitmap hospNuevo = EmergenciUTIL.resizeImage(iconHospital, 100, 100);
     	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
+    	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), hospNuevo));;
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -261,12 +264,25 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
+            OverlayItem item;
             overlay.addItem(miPocision);
+            for(Hospital h: lista){
+            	item = new OverlayItem(new GeoPoint(h.getX(),h.getY()), h.getNombre(), h.getDireccion());
+            	overlayServicio.addItem(item);
+            }
+            TareaLlenaNumeros tarea;
+			if(lista.size()>0){
+				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+				tarea.execute();
+			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
+            map.getOverlays().add(overlayServicio);
             myLoc.disableMyLocation();
             myLoc.setFollowing(true);
           }
+          
         });
     	
     }
@@ -281,7 +297,7 @@ public class ServiceFragment extends Fragment {
     	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorcarabinero);
     	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
     	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-    	overlayCarabinero = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+    	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -300,7 +316,7 @@ public class ServiceFragment extends Fragment {
             overlay.addItem(miPocision);
             for(Carabinero c: lista){
             	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
-            	overlayCarabinero.addItem(item);
+            	overlayServicio.addItem(item);
             }
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
@@ -309,7 +325,7 @@ public class ServiceFragment extends Fragment {
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
-            map.getOverlays().add(overlayCarabinero);
+            map.getOverlays().add(overlayServicio);
             myLoc.disableMyLocation();
             myLoc.setFollowing(true);
           }
@@ -324,7 +340,7 @@ public class ServiceFragment extends Fragment {
     	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
     	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
     	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-    	overlayBombero = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+    	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -338,12 +354,13 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Carabinero> lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "bombero");
+            @SuppressWarnings("unchecked")
+			List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "bombero");
             OverlayItem item;
             overlay.addItem(miPocision);
-            for(Carabinero c: lista){
-            	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
-            	overlayBombero.addItem(item);
+            for(Bombero b: lista){
+            	item = new OverlayItem(new GeoPoint(b.getX(),b.getY()), b.getNombre(), b.getDireccion());
+            	overlayServicio.addItem(item);
             }
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
@@ -352,20 +369,20 @@ public class ServiceFragment extends Fragment {
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
-            map.getOverlays().add(overlayBombero);
+            map.getOverlays().add(overlayServicio);
             myLoc.disableMyLocation();
             myLoc.setFollowing(true);
           }
           
         });
     }
-    	private void setupMapPDIView(int zoom, MapView maps){
+    private void setupMapPDIView(int zoom, MapView maps){
         	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
         	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
         	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
         	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
         	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-        	overlayPDI = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+        	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
         	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
         	map = maps;
         	
@@ -384,7 +401,7 @@ public class ServiceFragment extends Fragment {
                 overlay.addItem(miPocision);
                 for(PDI c: lista){
                 	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
-                	overlayPDI.addItem(item);
+                	overlayServicio.addItem(item);
                 }
                 TareaLlenaNumeros tarea;
     			if(lista.size()>0){
@@ -393,12 +410,11 @@ public class ServiceFragment extends Fragment {
     			}
                 map.getOverlays().add(myLoc);
                 map.getOverlays().add(overlay);
-                map.getOverlays().add(overlayPDI);
+                map.getOverlays().add(overlayServicio);
                 myLoc.disableMyLocation();
                 myLoc.setFollowing(true);
               }
               
-            });
-    	
+            });	
     }
 }

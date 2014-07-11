@@ -66,12 +66,64 @@ public class ListaAdapter  extends ArrayAdapter{
 						@Override
 						public void onClick(View v) {
 							Log.d("emergencia", pdi.getTelefono());
+							Intent intent = new Intent(Intent.ACTION_CALL);
+							String llamarA = "tel:"+pdi.getTelefono();
+			        		intent.setData(Uri.parse(llamarA)); 
+			       		    context.startActivity(intent); 
 							
 						}
 					});
 					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 					numero.setText(pdi.getTelefono());
 					direccion.setText(pdi.getDireccion());
+			 }else{
+				 if(objects.get(position) instanceof Bombero){
+					 final Bombero bombero = (Bombero) objects.get(position);
+						/*
+						 * fila de usuario
+						 */
+						TextView numero = (TextView) v.findViewById(R.id.numero);
+						TextView direccion = (TextView) v.findViewById(R.id.direccion);
+						Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+						llamar.setOnClickListener(new View.OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								Log.d("emergencia", bombero.getTelefono());
+								Intent intent = new Intent(Intent.ACTION_CALL);
+								String llamarA = "tel:"+bombero.getTelefono();
+				        		intent.setData(Uri.parse(llamarA)); 
+				       		    context.startActivity(intent); 
+							}
+						});
+						//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
+						numero.setText(bombero.getTelefono());
+						direccion.setText(bombero.getDireccion());
+				 }else{
+					 if(objects.get(position) instanceof Hospital){
+						 final Hospital hospital = (Hospital) objects.get(position);
+							/*
+							 * fila de usuario
+							 */
+							TextView numero = (TextView) v.findViewById(R.id.numero);
+							TextView direccion = (TextView) v.findViewById(R.id.direccion);
+							Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+							llamar.setOnClickListener(new View.OnClickListener() {
+								
+								@Override
+								public void onClick(View v) {
+									Log.d("emergencia", hospital.getTelefono());
+									Intent intent = new Intent(Intent.ACTION_CALL);
+									String llamarA = "tel:"+hospital.getTelefono();
+					        		intent.setData(Uri.parse(llamarA)); 
+					       		    context.startActivity(intent); 
+								}
+							});
+							//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
+							numero.setText(hospital.getTelefono());
+							direccion.setText(hospital.getDireccion());
+					 }
+				 }
 			 }
 		 }
 

@@ -117,9 +117,77 @@ public class ServicioWeb {
     	    		}catch(JSONException e){
     	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
     	    		}
+    			}else{
+    				if(tabla.equalsIgnoreCase("bombero")){
+    					try{
+        	    			JSONObject json = new JSONObject(jsonReturnText);
+        	    			JSONArray jArray = json.getJSONArray(tabla);
+        	    			Bombero bombero;
+        					for(int i=0; i<jArray.length(); i++){
+        						bombero = new Bombero();
+        						JSONObject aux = jArray.getJSONObject(i);
+        						String nombre = aux.getString("nombre");
+        						String lat  = aux.getString("lat");
+        						String lng = aux.getString("lng");
+        						String direccion = aux.getString("direccion");
+        						String telefono = aux.getString("telefono");
+        						String distancia2 = aux.getString("distancia");
+        						int id = aux.getInt("id");
+        						String comuna = aux.getString("comuna");
+        						
+        						bombero.setComuna(comuna);
+        						bombero.setDireccion(direccion);
+        						bombero.setId(id);
+        						bombero.setNombre(nombre);
+        						bombero.setTelefono(telefono);
+        						bombero.setX(Float.valueOf(lat));
+        						bombero.setY(Float.valueOf(lng));
+        						bombero.setDistancia(Float.valueOf(distancia2));
+        					    resultados.add(bombero);
+        					    
+        					}
+        					return resultados;
+        	    		}catch(JSONException e){
+        	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+        	    		}
+    				}else{
+    					if(tabla.equalsIgnoreCase("hospital")){
+        					try{
+            	    			JSONObject json = new JSONObject(jsonReturnText);
+            	    			JSONArray jArray = json.getJSONArray(tabla);
+            	    			Hospital hospital;
+            					for(int i=0; i<jArray.length(); i++){
+            						hospital = new Hospital();
+            						JSONObject aux = jArray.getJSONObject(i);
+            						String nombre = aux.getString("nombre");
+            						String lat  = aux.getString("lat");
+            						String lng = aux.getString("lng");
+            						String direccion = aux.getString("direccion");
+            						String telefono = aux.getString("telefono");
+            						String distancia2 = aux.getString("distancia");
+            						int id = aux.getInt("id");
+            						String comuna = aux.getString("comuna");
+            						
+            						hospital.setComuna(comuna);
+            						hospital.setDireccion(direccion);
+            						hospital.setId(id);
+            						hospital.setNombre(nombre);
+            						hospital.setTelefono(telefono);
+            						hospital.setX(Float.valueOf(lat));
+            						hospital.setY(Float.valueOf(lng));
+            						hospital.setDistancia(Float.valueOf(distancia2));
+            					    resultados.add(hospital);
+            					    
+            					}
+            					return resultados;
+            	    		}catch(JSONException e){
+            	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+            	    		}
+    					}
+    				}
     			}
     		}
-    	return null;
+    	return resultados;
     }
 	
 	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
