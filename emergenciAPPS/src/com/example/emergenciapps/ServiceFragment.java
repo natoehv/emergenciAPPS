@@ -264,7 +264,7 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
+            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "hospital");
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Hospital h: lista){
