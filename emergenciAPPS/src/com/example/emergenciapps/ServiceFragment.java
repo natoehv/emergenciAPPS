@@ -80,6 +80,7 @@ public class ServiceFragment extends Fragment {
         	numeroHospital.setText(hospital);
         	break;
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
+        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroHospital);
         	setupMapHospitalView(20, (MapView)rootView.findViewById(R.id.mapHospital));
         	
         	break;
