@@ -115,11 +115,11 @@ public class ServiceFragment extends Fragment {
                     SharedPreferences pref = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
                     final SharedPreferences.Editor editor = pref.edit();
                     
-                    final String bom = pref.getString("numeroBombero", "132");
+                    final String bom = pref.getString("numeroBombero", "");
                 	editBombero.setText(bom);
-                    final String car = pref.getString("numeroCarabinero", "133");
+                    final String car = pref.getString("numeroCarabinero", "");
                     editCarabinero.setText(car);
-                	final String hos = pref.getString("numeroHospital", "131");
+                	final String hos = pref.getString("numeroHospital", "");
                 	editHospital.setText(hos);
                 	final String miNombre = pref.getString("miNombre", "");
                 	editMiNombre.setText(miNombre);
