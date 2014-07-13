@@ -130,7 +130,7 @@ public class ServiceFragment extends Fragment {
                 	final String msj = pref.getString("mensaje", "Help!");
                 	editMensaje.setText(msj);
                 	
-                	int radio = pref.getInt("ratio", 1);
+                	final int radio = pref.getInt("ratio", 1);
                 	
                 	
                 	
@@ -227,9 +227,15 @@ public class ServiceFragment extends Fragment {
 								editor.putString("miNumero", editMiNumero.getText().toString());
 								editor.putString("correoContacto",editFavorito.getText().toString());
 								editor.putString("mensaje",editMensaje.getText().toString());
-								
+								if(progreso_a_guardar == 0){
+									editor.putInt("ratio",radio);
+									Log.d("progreso1",""+radio);
+								}else{
 									editor.putInt("ratio",progreso_a_guardar);
-								Log.d("progreso",""+progreso_a_guardar);
+									Log.d("progreso2",""+progreso_a_guardar);
+								}
+							    
+								
 								
 								editor.commit();
 								
