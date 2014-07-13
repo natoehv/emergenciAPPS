@@ -3,10 +3,12 @@ package com.example.emergenciapps;
 import java.util.List;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +53,7 @@ public class ServiceFragment extends Fragment {
     public boolean ok_miNom = false;
     public boolean ok_miNum = false;
    
-   
+    
     
     public ServiceFragment() {
         // Empty constructor required for fragment subclasses
@@ -81,7 +83,22 @@ public class ServiceFragment extends Fragment {
         	String hospital = prefs.getString("numeroHospital", "82998988");
         	numeroHospital.setText(hospital);
         	break;
+        	
+        	
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
+        	Button btnHospital = (Button)rootView.findViewById(R.id.llamar131);
+        	
+        	btnHospital.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Intent.ACTION_CALL);
+					intent.setData(Uri.parse("tel:131")); 
+					//this.startActivity(intent);
+				}
+        	});
+        	 
+   		    
+   		    
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroHospital);
         	setupMapHospitalView(20, (MapView)rootView.findViewById(R.id.mapHospital));
         	
