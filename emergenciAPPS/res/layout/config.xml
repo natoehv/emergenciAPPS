@@ -140,7 +140,7 @@
            android:layout_height="25dp"
            android:layout_below="@+id/textView50"
            android:background="@drawable/editredondos"
-           android:inputType="number"
+           android:inputType="text"
          >
          </EditText>
          <TextView
