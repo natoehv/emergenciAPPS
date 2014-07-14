@@ -200,6 +200,7 @@ public class ServicioWeb {
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
     	HttpPost oPost = new HttpPost(URL);
     	String respuesta;
+    	String descripcion = "";
     	
     	try{
     		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -219,7 +220,15 @@ public class ServicioWeb {
     		return "El mensaje no ha podido ser enviado";
     	}
     	
-		return respuesta;
+    	try{
+    		JSONObject reader = new JSONObject(respuesta);
+    		JSONObject sys  = reader.getJSONObject("respuesta");
+    		descripcion = sys.getString("descripcion");
+    	}catch(JSONException e){
+    		Log.e("emergenciAPPS", "Error al parsear "+respuesta, e);
+    	}
+    	
+		return descripcion;
 		
 	}
 }

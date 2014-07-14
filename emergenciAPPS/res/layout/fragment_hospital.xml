@@ -12,10 +12,7 @@
         android:layout_height="90dp"
         android:background="@drawable/botonllamarhospital"
          />
-	<ScrollView 
-	    android:id="@+id/scroll"
-	    android:layout_width="match_parent" 
-	    android:layout_height="100dp">
+	
 	    
 		    <RelativeLayout 
 		        android:id="@+id/relative"
@@ -70,23 +67,20 @@
 					android:layout_height="2dp">
 				</View>
 			    
-			    <RelativeLayout 
-			        android:id="@+id/relative2"
-			        android:layout_below="@+id/separador"
-				    android:layout_width="fill_parent"
-				    android:layout_height="fill_parent" >
+			    </RelativeLayout> 
 				    
 				    <ListView 
 					    android:id="@+id/listaNroHospital"
 					    android:layout_width="match_parent"
-						android:layout_height="100dp">
+						android:layout_height="100dp"
+						android:background="#116d97">
 					</ListView>
 					
-				</RelativeLayout>  
+				 
 				
-			 </RelativeLayout>
+			 
 			
-		</ScrollView>
+		
 	
     
     

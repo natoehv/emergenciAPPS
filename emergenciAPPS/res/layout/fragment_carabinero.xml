@@ -70,7 +70,7 @@
 				
 			 </RelativeLayout>
 			
-		 <ListView 
+		 			<ListView 
 					    android:id="@+id/listaNroCarabinero"
 					    android:background="#3e5d24"
 					    android:layout_width="match_parent"
