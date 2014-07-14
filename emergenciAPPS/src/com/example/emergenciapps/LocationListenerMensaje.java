@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 public class LocationListenerMensaje implements LocationListener {
 	private static String TAG = "emergenciAPPS";
@@ -46,6 +47,8 @@ public class LocationListenerMensaje implements LocationListener {
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
+				//Toast.makeText,
+		         //         "El correo ha llegado a su destinatario", Toast.LENGTH_SHORT).show();
 			}
 			
 		};
