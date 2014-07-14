@@ -33,6 +33,7 @@ import com.mapquest.android.maps.OverlayItem;
 public class ServiceFragment extends Fragment {
     public static final String SERVICE_NUMBER = "servicio_number";
     public static final int RADIO_BUSQUEDA = 5;
+    public static  int radioBusqueda;
     public static final int ZOOM = 20;
     public MapView map;
     public ListView listaTelefonos;
@@ -64,6 +65,9 @@ public class ServiceFragment extends Fragment {
             Bundle savedInstanceState) {
     		
         View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+        SharedPreferences prefe = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
+        radioBusqueda = prefe.getInt("ratio", 1);
+        Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
         switch(i){
         	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
@@ -83,7 +87,6 @@ public class ServiceFragment extends Fragment {
         	String hospital = prefs.getString("numeroHospital", "82998988");
         	numeroHospital.setText(hospital);
         	break;
-        	
         	
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
         	Button btnHospital = (Button)rootView.findViewById(R.id.llamar131);
@@ -311,7 +314,10 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "hospital");
+           
+           
+            int radio  ;
+            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "hospital");
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Hospital h: lista){
@@ -358,7 +364,7 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Carabinero> lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "carabinero");
+            List<Carabinero> lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Carabinero c: lista){
@@ -402,7 +408,7 @@ public class ServiceFragment extends Fragment {
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             @SuppressWarnings("unchecked")
-			List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "bombero");
+			List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Bombero b: lista){
@@ -443,7 +449,7 @@ public class ServiceFragment extends Fragment {
                 map.getController().setCenter(myLoc.getMyLocation());
                 map.getController().setZoom(14);
                 OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-                List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, RADIO_BUSQUEDA, "pdi");
+                List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
                 OverlayItem item;
                 overlay.addItem(miPocision);
                 for(PDI c: lista){
