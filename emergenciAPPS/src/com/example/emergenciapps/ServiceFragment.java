@@ -96,7 +96,7 @@ public class ServiceFragment extends Fragment {
 				public void onClick(View v) {
 					Intent intent = new Intent(Intent.ACTION_CALL);
 					intent.setData(Uri.parse("tel:131")); 
-					//this.startActivity(intent);
+					v.getContext().startActivity(intent);
 				}
         	});
         	 
@@ -107,11 +107,33 @@ public class ServiceFragment extends Fragment {
         	
         	break;
         	case 2: rootView = inflater.inflate(R.layout.fragment_bombero, container, false);
+        	
+        	Button btnBombero = (Button)rootView.findViewById(R.id.llamar132);
+        	
+        	btnBombero.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Intent.ACTION_CALL);
+					intent.setData(Uri.parse("tel:132")); 
+					v.getContext().startActivity(intent);
+				}
+        	});
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroBombero);
         	setupMapBomberoView(20, (MapView)rootView.findViewById(R.id.mapBombero));
         	
         	break;
         	case 3: rootView = inflater.inflate(R.layout.fragment_carabinero, container, false);
+        	
+        	Button btnCarabinero = (Button)rootView.findViewById(R.id.llamar133);
+        	
+        	btnCarabinero.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Intent.ACTION_CALL);
+					intent.setData(Uri.parse("tel:133")); 
+					v.getContext().startActivity(intent);
+				}
+        	});
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
         	setupMapCarabineroView(20, (MapView)rootView.findViewById(R.id.mapCarabinero));
         	break;        	
@@ -258,12 +280,14 @@ public class ServiceFragment extends Fragment {
 								
 								
 								editor.commit();
+								Toast.makeText(v.getContext(),
+						                  "Se ha guardado la configuración", Toast.LENGTH_SHORT).show();
 								
 							}else{
 								Log.d("false","hay campos vacios");
 								
-								//Toast.makeText(rootView.getContext(),
-					             //      "Llene los campos indicados", Toast.LENGTH_SHORT).show();
+								Toast.makeText(v.getContext(),
+					                  "Llene los campos indicados", Toast.LENGTH_SHORT).show();
 							}
 						
 							

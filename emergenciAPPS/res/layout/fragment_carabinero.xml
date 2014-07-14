@@ -7,7 +7,7 @@
 
     <Button
         android:layout_gravity="right"
-        android:id="@+id/llamar131"
+        android:id="@+id/llamar133"
         android:layout_width="300dp"
         android:layout_height="90dp"
         android:background="@drawable/botonllamarcarabinero" />
