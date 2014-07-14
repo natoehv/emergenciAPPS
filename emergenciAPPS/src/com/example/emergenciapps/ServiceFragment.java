@@ -78,7 +78,7 @@ public class ServiceFragment extends Fragment {
             
             SharedPreferences prefs = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
             
-        	String carabinero = prefs.getString("numeroCarabinero", "x");
+        	String carabinero = prefs.getString("numeroCarabinero", "5255");
         	numeroCarabinero.setText(carabinero);
         	
         	String bombero = prefs.getString("numeroBombero", "86575038");
