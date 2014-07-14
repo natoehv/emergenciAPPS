@@ -259,7 +259,7 @@ public class EmergenciaAPPSActivity extends Activity {
     public void enviarAlerta(View v){
     	Log.d(TAG, "Inicia eventeo enviarAlerta");
     	 SharedPreferences prefs = getSharedPreferences("MisContactos", this.MODE_PRIVATE);
-    	 String correo = prefs.getString("correo", "ivcontre@alumnos.ubiobio.cl");
+    	 String correo = prefs.getString("correoContacto", "");
     	 String msje = prefs.getString("mensaje", "Help!");
     	 String miNombre = prefs.getString("miNombre", "Unknow");
     	 String miNumero = prefs.getString("miNumero", "Sin numero");
