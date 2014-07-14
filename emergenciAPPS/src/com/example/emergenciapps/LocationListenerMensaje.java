@@ -5,6 +5,7 @@ import java.util.List;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -31,7 +32,24 @@ public class LocationListenerMensaje implements LocationListener {
 		Log.d(TAG, "se captura localizacion");
         String lat = String.valueOf(location.getLatitude());
         String lng = String.valueOf(location.getLongitude());
-        ServicioWeb.sendMail(lat, lng, correo, msje, miNombre, miNumero);
+        /*
+         * Se crea hilo para enviar mensaje
+         *  
+         */
+        AsyncTask<String, Void, String> enviarMail = new AsyncTask<String, Void, String>() {
+
+			@Override
+			protected String doInBackground(String... params) {	
+				return ServicioWeb.sendMail(params[0], params[1], correo, msje, miNombre, miNumero);
+			}
+
+			@Override
+			protected void onPostExecute(String result) {
+				super.onPostExecute(result);
+			}
+			
+		};
+        enviarMail.execute(lat,lng);
         locManager.removeUpdates(this);
 		
 		
