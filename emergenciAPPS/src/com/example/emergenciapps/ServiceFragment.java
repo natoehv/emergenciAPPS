@@ -96,7 +96,7 @@ public class ServiceFragment extends Fragment {
 				public void onClick(View v) {
 					Intent intent = new Intent(Intent.ACTION_CALL);
 					intent.setData(Uri.parse("tel:131")); 
-					//this.startActivity(intent);
+					v.getContext().startActivity(intent);
 				}
         	});
         	 
