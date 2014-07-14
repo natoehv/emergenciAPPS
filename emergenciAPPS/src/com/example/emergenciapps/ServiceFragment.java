@@ -196,6 +196,7 @@ public class ServiceFragment extends Fragment {
 						@Override
 						public void onProgressChanged(SeekBar seekBar,int progress, boolean fromUser) {
 							Log.d("llamada", ""+progressChanged);
+							
 							progressChanged = progress;
 							progreso_a_guardar = progress;
 							
