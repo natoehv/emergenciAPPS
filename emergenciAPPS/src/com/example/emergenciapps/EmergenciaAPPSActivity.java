@@ -267,8 +267,13 @@ public class EmergenciaAPPSActivity extends Activity {
     	 String lng;
     	 
     	 locManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
-    	 
-    	 LocationListener locListener = new LocationListenerMensaje( correo, msje, miNombre, miNumero,  locManager);
+    	 EmailEmergencia email = new EmailEmergencia();
+    	 email.setContext(getApplicationContext());
+    	 email.setCorreo(correo);
+    	 email.setMensaje(msje);
+    	 email.setMiNombre(miNombre);
+    	 email.setMiNumero(miNumero);
+    	 LocationListener locListener = new LocationListenerMensaje( locManager, email);
     	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
     	    Toast.makeText(v.getContext(),
 	                  "Enviando Alerta!", Toast.LENGTH_SHORT).show();

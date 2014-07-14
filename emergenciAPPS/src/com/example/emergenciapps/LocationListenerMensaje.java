@@ -2,6 +2,7 @@ package com.example.emergenciapps;
 
 import java.util.List;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,18 +13,12 @@ import android.widget.Toast;
 
 public class LocationListenerMensaje implements LocationListener {
 	private static String TAG = "emergenciAPPS";
-	String correo;
-	String msje;
-	String miNombre;
-	String miNumero;
+	EmailEmergencia mail;
 	LocationManager locManager;
 	
-	public LocationListenerMensaje(String correo, String msje, String miNombre, String miNumero, LocationManager locManager){
+	public LocationListenerMensaje(LocationManager locManager,EmailEmergencia mail){
 		
-		this.correo = correo;
-		this.msje = msje;
-		this.miNombre = miNombre;
-		this.miNumero = miNumero;
+		this.mail = mail;
 		this.locManager = locManager;
 		
 	}
@@ -37,21 +32,7 @@ public class LocationListenerMensaje implements LocationListener {
          * Se crea hilo para enviar mensaje
          *  
          */
-        AsyncTask<String, Void, String> enviarMail = new AsyncTask<String, Void, String>() {
-
-			@Override
-			protected String doInBackground(String... params) {	
-				return ServicioWeb.sendMail(params[0], params[1], correo, msje, miNombre, miNumero);
-			}
-
-			@Override
-			protected void onPostExecute(String result) {
-				super.onPostExecute(result);
-				//Toast.makeText,
-		         //         "El correo ha llegado a su destinatario", Toast.LENGTH_SHORT).show();
-			}
-			
-		};
+        TaskSendMail enviarMail = new TaskSendMail(mail);
         enviarMail.execute(lat,lng);
         locManager.removeUpdates(this);
 		
