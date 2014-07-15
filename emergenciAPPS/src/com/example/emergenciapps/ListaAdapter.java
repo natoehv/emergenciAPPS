@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class ListaAdapter  extends ArrayAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = inflater.inflate(R.layout.lista_telefonos, null);
 		 
 		 if(objects.get(position) instanceof Carabinero){
@@ -60,10 +61,14 @@ public class ListaAdapter  extends ArrayAdapter{
 						long inicio;
 						long total;
 						@Override
-						public boolean onTouch(View v, MotionEvent arg1) {					
+						public boolean onTouch(View v, MotionEvent arg1) {
+							View aView = inflater.inflate(R.layout.lista_telefonos, null);
+							TextView tv  = (TextView) aView.findViewById(R.id.numero);
 							switch(arg1.getAction()){
+							
 							case MotionEvent.ACTION_DOWN: 
 										inicio = System.currentTimeMillis();
+										
 										numero.setTextColor(Color.GREEN);
 										Log.d("emergenciapps", "tocaste a las: "+inicio);
 								break;
@@ -72,8 +77,9 @@ public class ListaAdapter  extends ArrayAdapter{
 								Log.d("emergenciapps", "soltaste con duracion: "+total);
 								if(total > 2000){
 									Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
-									//TODO guardar numero
-									
+									// guardar numero
+									tv.setTextColor(Color.WHITE);
+									numero.setTextColor(Color.GREEN);
 									SharedPreferences.Editor editor = pref.edit();
 									editor.putString("numeroCarabinero", numero.getText().toString());
 									editor.commit();
