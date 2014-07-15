@@ -22,8 +22,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapquest.android.maps.AnnotationView;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
+import com.mapquest.android.maps.ItemizedOverlay;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.OverlayItem;
 
@@ -41,7 +43,7 @@ public class ServiceFragment extends Fragment {
     public MyLocationExtends myLoc;
     public DefaultItemizedOverlay overlay;
     public DefaultItemizedOverlay overlayServicio;
-    
+    public AnnotationView annotation;
     
     
     public int progreso_a_guardar = 0;
@@ -483,8 +485,22 @@ public class ServiceFragment extends Fragment {
                 	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
                 	overlayServicio.addItem(item);
                 }
+                annotation = new AnnotationView(map);
                 TareaLlenaNumeros tarea;
     			if(lista.size()>0){
+    				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+    					
+						@Override
+						public void onTap(GeoPoint arg0, MapView arg1) {
+							int lastTouchedIndex = overlay.getLastFocusedIndex();
+							if(lastTouchedIndex > -1){
+								OverlayItem tapped =  overlay.getItem(lastTouchedIndex);
+								annotation.showAnnotationView(tapped);
+							}
+							
+						}
+    					
+    				});
     				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
     				tarea.execute();
     			}
