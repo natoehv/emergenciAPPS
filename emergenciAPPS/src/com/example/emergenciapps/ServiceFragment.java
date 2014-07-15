@@ -221,14 +221,14 @@ public class ServiceFragment extends Fragment {
 								ok_car = true;
 							}else{
 								ok_car = false;
-								editCarabinero.setError("Ingrese número favorito de Carabinero");
+								editCarabinero.setError("Ingrese nï¿½mero favorito de Carabinero");
 							}
 							
 							if(!editHospital.getText().toString().equals("")){
 								ok_hos = true;
 							}else{
 								ok_hos = false;
-								editHospital.setError("Ingrese número favorito de Hospital");
+								editHospital.setError("Ingrese nï¿½mero favorito de Hospital");
 							}
 							
 							if(!editMiNombre.getText().toString().equals("")){
@@ -242,14 +242,14 @@ public class ServiceFragment extends Fragment {
 								ok_miNum = true;
 							}else{
 								ok_miNum = false;
-								editMiNumero.setError("Ingrese su número de contacto");
+								editMiNumero.setError("Ingrese su nï¿½mero de contacto");
 							}
 							
 							if(!editFavorito.getText().toString().equals("")){
 								ok_corr = true;
 							}else{
 								ok_corr = false;
-								editFavorito.setError("Ingrese correo electrónico para alertar");
+								editFavorito.setError("Ingrese correo electrï¿½nico para alertar");
 							}
 							
 							if(!editMensaje.getText().toString().equals("")){
@@ -282,7 +282,7 @@ public class ServiceFragment extends Fragment {
 								
 								editor.commit();
 								Toast.makeText(v.getContext(),
-						                  "Se ha guardado la configuración", Toast.LENGTH_SHORT).show();
+						                  "Se ha guardado la configuraciï¿½n", Toast.LENGTH_SHORT).show();
 								
 							}else{
 								Log.d("false","hay campos vacios");
@@ -303,6 +303,8 @@ public class ServiceFragment extends Fragment {
 							
 						}
 					});
+        	break;
+        	case 6: rootView = inflater.inflate(R.layout.fragmento_tutorial, container, false);
         	break;
         }
 //        int i = getArguments().getInt(ARG_PLANET_NUMBER);
