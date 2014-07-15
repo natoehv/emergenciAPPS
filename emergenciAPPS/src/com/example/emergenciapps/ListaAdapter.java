@@ -155,9 +155,10 @@ public class ListaAdapter  extends ArrayAdapter{
 							/*
 							 * fila de usuario
 							 */
-							TextView numero = (TextView) v.findViewById(R.id.numero);
+							final TextView numero = (TextView) v.findViewById(R.id.numero);
 							TextView direccion = (TextView) v.findViewById(R.id.direccion);
 							Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+							final SharedPreferences prefh = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
 							llamar.setOnClickListener(new View.OnClickListener() {
 								
 								@Override
@@ -168,6 +169,44 @@ public class ListaAdapter  extends ArrayAdapter{
 					        		intent.setData(Uri.parse(llamarA)); 
 					       		    context.startActivity(intent); 
 								}
+							});
+							
+							numero.setOnTouchListener(new OnTouchListener(){
+								long inicio;
+								long total;
+								@Override
+								public boolean onTouch(View v, MotionEvent arg1) {
+									View aView = inflater.inflate(R.layout.lista_telefonos, null);
+									TextView tv  = (TextView) aView.findViewById(R.id.numero);
+									switch(arg1.getAction()){
+									
+									case MotionEvent.ACTION_DOWN: 
+												inicio = System.currentTimeMillis();
+												
+												numero.setTextColor(Color.GREEN);
+												Log.d("emergenciapps", "tocaste a las: "+inicio);
+										break;
+									case MotionEvent.ACTION_UP:
+										total = System.currentTimeMillis() - inicio;
+										Log.d("emergenciapps", "soltaste con duracion: "+total);
+										if(total > 2000){
+											Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
+											// guardar numero
+											tv.setTextColor(Color.WHITE);
+											numero.setTextColor(Color.GREEN);
+											SharedPreferences.Editor editor = prefh.edit();
+											editor.putString("numeroCarabinero", numero.getText().toString());
+											editor.commit();
+											Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+										}else{
+											numero.setTextColor(Color.WHITE);
+										}
+										break;
+									}
+									Log.d("emergenciapps", "evento touch");
+									return true;
+								}
+								
 							});
 							//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 							numero.setText(hospital.getTelefono());
