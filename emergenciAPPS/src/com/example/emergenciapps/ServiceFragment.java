@@ -485,22 +485,22 @@ public class ServiceFragment extends Fragment {
                 	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
                 	overlayServicio.addItem(item);
                 }
-                annotation = new AnnotationView(map);
+//                annotation = new AnnotationView(map);
                 TareaLlenaNumeros tarea;
     			if(lista.size()>0){
-    				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
-    					
-						@Override
-						public void onTap(GeoPoint arg0, MapView arg1) {
-							int lastTouchedIndex = overlay.getLastFocusedIndex();
-							if(lastTouchedIndex > -1){
-								OverlayItem tapped =  overlay.getItem(lastTouchedIndex);
-								annotation.showAnnotationView(tapped);
-							}
-							
-						}
-    					
-    				});
+//    				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+//    					
+//						@Override
+//						public void onTap(GeoPoint arg0, MapView arg1) {
+//							int lastTouchedIndex = overlay.getLastFocusedIndex();
+//							if(lastTouchedIndex > -1){
+//								OverlayItem tapped =  overlay.getItem(lastTouchedIndex);
+//								annotation.showAnnotationView(tapped);
+//							}
+//							
+//						}
+//    					
+//    				});
     				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
     				tarea.execute();
     			}

@@ -2,17 +2,23 @@ package com.example.emergenciapps;
 
 import java.util.ArrayList;
 
+import android.R.color;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ListaAdapter  extends ArrayAdapter{
 	private ArrayList objects;
@@ -34,9 +40,10 @@ public class ListaAdapter  extends ArrayAdapter{
 					/*
 					 * fila de usuario
 					 */
-					TextView numero = (TextView) v.findViewById(R.id.numero);
+					final TextView numero = (TextView) v.findViewById(R.id.numero);
 					TextView direccion = (TextView) v.findViewById(R.id.direccion);
 					Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+					final SharedPreferences pref = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
 					llamar.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
@@ -49,7 +56,43 @@ public class ListaAdapter  extends ArrayAdapter{
 							
 						}
 					});
+					numero.setOnTouchListener(new OnTouchListener(){
+						long inicio;
+						long total;
+						@Override
+						public boolean onTouch(View v, MotionEvent arg1) {					
+							switch(arg1.getAction()){
+							case MotionEvent.ACTION_DOWN: 
+										inicio = System.currentTimeMillis();
+										numero.setTextColor(Color.GREEN);
+										Log.d("emergenciapps", "tocaste a las: "+inicio);
+								break;
+							case MotionEvent.ACTION_UP:
+								total = System.currentTimeMillis() - inicio;
+								Log.d("emergenciapps", "soltaste con duracion: "+total);
+								if(total > 2000){
+									Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
+									//TODO guardar numero
+									
+									SharedPreferences.Editor editor = pref.edit();
+									editor.putString("numeroCarabinero", numero.getText().toString());
+									editor.commit();
+									Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+								}else{
+									numero.setTextColor(Color.WHITE);
+								}
+								break;
+							}
+							Log.d("emergenciapps", "evento touch");
+							return true;
+						}
+						
+					});
 					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
+					String numeroPref = pref.getString("numeroCarabinero", "");
+					if(numeroPref.equalsIgnoreCase(carabinero.getTelefono())){
+						numero.setTextColor(Color.GREEN);
+					}
 					numero.setText(carabinero.getTelefono());
 					direccion.setText(carabinero.getDireccion());
 		 }else{
@@ -58,7 +101,7 @@ public class ListaAdapter  extends ArrayAdapter{
 					/*
 					 * fila de usuario
 					 */
-					TextView numero = (TextView) v.findViewById(R.id.numero);
+					final TextView numero = (TextView) v.findViewById(R.id.numero);
 					TextView direccion = (TextView) v.findViewById(R.id.direccion);
 					Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
 					llamar.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +116,7 @@ public class ListaAdapter  extends ArrayAdapter{
 							
 						}
 					});
+					
 					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 					numero.setText(pdi.getTelefono());
 					direccion.setText(pdi.getDireccion());
