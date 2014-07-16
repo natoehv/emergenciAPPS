@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -29,10 +31,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -49,7 +55,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private CharSequence mTitle;
     private String numero;
     private static String TAG = "emergenciAPPS";
-    
+
     LocationManager locManager ;
 
     @Override
@@ -62,7 +68,8 @@ public class EmergenciaAPPSActivity extends Activity {
         SharedPreferences prefs =
 				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-		
+       
+
 		editor.putString("numeroCarabinero", "133");
 		editor.putString("numeroBombero", "132");
 		editor.putString("numeroHospital", "131");
@@ -311,4 +318,7 @@ public class EmergenciaAPPSActivity extends Activity {
     	String hospital = prefs.getString("numeroHospital", "82998988");
     	numeroHospital.setText(hospital);
     }
+
+
+    
 }

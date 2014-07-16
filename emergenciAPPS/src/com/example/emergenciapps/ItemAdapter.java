@@ -32,7 +32,7 @@ public class ItemAdapter extends ArrayAdapter<Item>{
 			 */
 			TextView titulo = (TextView) v.findViewById(R.id.titulo);
 			ImageView icon = (ImageView) v.findViewById(R.id.icon);
-			icon.setImageBitmap(EmergenciUTIL.getRoundedCornerBitmap(context.getResources().getDrawable(R.drawable.anonimo), true));
+			//icon.setImageBitmap(EmergenciUTIL.getRoundedCornerBitmap(context.getResources().getDrawable(R.drawable.anonimo), true));
 			//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 			titulo.setText(item.getTitulo());
 			icon.setImageResource(item.getIdIcon());
