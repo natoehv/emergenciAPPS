@@ -323,11 +323,9 @@ public class ServiceFragment extends Fragment {
      */
     private void setupMapHospitalView(int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-    	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
     	Drawable iconHospital = maps.getContext().getResources().getDrawable(R.drawable.marcadorhospital);
-    	Bitmap hospNuevo = EmergenciUTIL.resizeImage(iconHospital, 100, 100);
-    	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-    	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), hospNuevo));;
+    	overlay = new DefaultItemizedOverlay(iconMiPosicion);
+    	overlayServicio = new DefaultItemizedOverlay(iconHospital);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -373,11 +371,9 @@ public class ServiceFragment extends Fragment {
      */
     private void setupMapCarabineroView(int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-    	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
     	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorcarabinero);
-    	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
-    	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-    	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+    	overlay = new DefaultItemizedOverlay(iconMiPosicion);
+    	overlayServicio = new DefaultItemizedOverlay(iconCarabinero);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -416,11 +412,9 @@ public class ServiceFragment extends Fragment {
     
     private void setupMapBomberoView(int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-    	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
-    	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
-    	Bitmap carabNuevo = EmergenciUTIL.resizeImage(iconCarabinero, 100, 100);
-    	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-    	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), carabNuevo));;
+    	Drawable iconBombero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
+    	overlay = new DefaultItemizedOverlay(iconMiPosicion);
+    	overlayServicio = new DefaultItemizedOverlay(iconBombero);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	
@@ -458,11 +452,9 @@ public class ServiceFragment extends Fragment {
     }
     private void setupMapPDIView(int zoom, MapView maps){
         	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-        	Bitmap iconNew = EmergenciUTIL.resizeImage(iconMiPosicion, 100, 100);
         	Drawable iconPDI = maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
-        	Bitmap pdiNuevo = EmergenciUTIL.resizeImage(iconPDI, 100, 100);
-        	overlay = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), iconNew));
-        	overlayServicio = new DefaultItemizedOverlay(new BitmapDrawable(maps.getContext().getResources(), pdiNuevo));;
+        	overlay = new DefaultItemizedOverlay(iconMiPosicion);
+        	overlayServicio = new DefaultItemizedOverlay(iconPDI);
         	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
         	map = maps;
         	annotation = new AnnotationView(maps);
