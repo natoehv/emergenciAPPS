@@ -68,11 +68,14 @@ public class EmergenciaAPPSActivity extends Activity {
         SharedPreferences prefs =
 				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-       
-
-		editor.putString("numeroCarabinero", "133");
-		editor.putString("numeroBombero", "132");
-		editor.putString("numeroHospital", "131");
+        int cargaApp = prefs.getInt("carga", 0);
+        String numeroCarabinero = prefs.getString("numeroCarabinero", "133");
+        String numeroBombero = prefs.getString("numeroBombero", "132");
+        String numeroHospital = prefs.getString("numeroHospital", "131");
+        
+		editor.putString("numeroCarabinero", numeroCarabinero);
+		editor.putString("numeroBombero", numeroBombero);
+		editor.putString("numeroHospital", numeroHospital);
 		editor.commit();
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,8 +114,16 @@ public class EmergenciaAPPSActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+        	if(cargaApp == 0){
+        		editor.putInt("carga", 1);
+        		editor.commit();
+        		selectItem(5);
+        	}else{
+        		selectItem(0);
+        	}
+            
         }
+        
        
         
     }
