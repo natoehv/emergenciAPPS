@@ -34,7 +34,7 @@
     
     <Button
         android:id="@+id/lista_boton_llamar"
-        android:background="@drawable/fono"
+        android:background="@drawable/botonfonopulsado"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="10dp"
