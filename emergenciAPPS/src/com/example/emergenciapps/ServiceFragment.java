@@ -328,7 +328,7 @@ public class ServiceFragment extends Fragment {
     	overlayServicio = new DefaultItemizedOverlay(iconHospital);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
-    	
+    	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
@@ -351,6 +351,18 @@ public class ServiceFragment extends Fragment {
             }
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
+				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+					@Override
+					public void onTap(GeoPoint arg0, MapView arg1) {
+						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
+						if(lastTouchedIndex > -1){
+							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							annotation.showAnnotationView(tapped);
+						}
+						
+					}
+					
+				});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}
@@ -376,7 +388,7 @@ public class ServiceFragment extends Fragment {
     	overlayServicio = new DefaultItemizedOverlay(iconCarabinero);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
-    	
+    	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
@@ -396,6 +408,18 @@ public class ServiceFragment extends Fragment {
             }
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
+				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+					@Override
+					public void onTap(GeoPoint arg0, MapView arg1) {
+						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
+						if(lastTouchedIndex > -1){
+							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							annotation.showAnnotationView(tapped);
+						}
+						
+					}
+					
+				});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}
@@ -417,7 +441,7 @@ public class ServiceFragment extends Fragment {
     	overlayServicio = new DefaultItemizedOverlay(iconBombero);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
-    	
+    	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
@@ -438,6 +462,19 @@ public class ServiceFragment extends Fragment {
             }
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
+				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+					
+					@Override
+					public void onTap(GeoPoint arg0, MapView arg1) {
+						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
+						if(lastTouchedIndex > -1){
+							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							annotation.showAnnotationView(tapped);
+						}
+						
+					}
+					
+				});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}
