@@ -22,11 +22,11 @@
         android:textSize="12sp"
         android:layout_marginTop="5dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_toLeftOf="@+id/lista_boton_llamar" />
     <TextView
         android:id="@+id/direccion"
         android:layout_below="@id/nombre"
-        android:layout_centerHorizontal="true"
+        android:layout_alignRight="@id/nombre"
         android:textColor="#FFF"
         android:textSize="10sp"
         android:layout_width="wrap_content"

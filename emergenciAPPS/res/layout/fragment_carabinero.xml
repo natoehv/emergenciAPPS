@@ -22,7 +22,7 @@
 		    	<RelativeLayout 
 			        android:id="@+id/relative1"
 				    android:layout_width="fill_parent"
-				    android:layout_height="40dp" >
+				    android:layout_height="30dp" >
 				    
 				    <TextView
 				        android:id="@+id/numero"
@@ -31,7 +31,7 @@
 				        android:layout_alignParentLeft="true"
 				        android:layout_alignParentTop="true"
 				        android:textColor="#6AC62D"
-				        android:layout_marginTop="10dp"
+				        android:layout_marginTop="5dp"
 				        android:layout_marginLeft="12dp"
 				        android:text="@string/numeroCabecera" />
 				        
@@ -41,20 +41,10 @@
 				        android:layout_height="80dp"
 				        android:layout_alignParentTop="true"
 				        android:layout_centerHorizontal="true"
-				        android:layout_marginTop="10dp"
+				        android:layout_marginTop="5dp"
 				        android:textColor="#6AC62D"
-				        android:text="@string/direccionCabecera" />
-				    
-				    <TextView
-				        android:id="@+id/llamar"
-				        android:layout_width="wrap_content"
-				        android:layout_height="80dp"
-				        android:layout_alignParentTop="true"
-				        android:layout_alignParentRight="true"
-				        android:layout_marginTop="10dp"
-				        android:layout_marginRight="12dp"
-				        android:textColor="#6AC62D"
-				        android:text="@string/llamarCabecera" />
+				        android:text="@string/descripcionCabecera" />
+
 				    
 			    </RelativeLayout>
 			    

@@ -31,7 +31,7 @@
     <string name="fonoUser">Mi Número</string>
     <string name="guardar">Guardar</string>
     <string name="numeroCabecera">Número</string>
-    <string name="direccionCabecera">Dirección</string>
+    <string name="descripcionCabecera">Descripción</string>   
     <string name="llamarCabecera">Llamar</string>
     <string name="radioCobertura">Radio Cobertura (km)</string>
      
