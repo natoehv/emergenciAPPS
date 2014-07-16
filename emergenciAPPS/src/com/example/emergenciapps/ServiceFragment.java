@@ -176,7 +176,7 @@ public class ServiceFragment extends Fragment {
                 	final String msj = pref.getString("mensaje", "Help!");
                 	editMensaje.setText(msj);
                 	
-                	final int radio = pref.getInt("ratio", 1);
+                	final int radio = pref.getInt("ratio", 6);
                 	
                 	
                 	
