@@ -44,6 +44,7 @@ public class ListaAdapter  extends ArrayAdapter{
 					final TextView numero = (TextView) v.findViewById(R.id.numero);
 					TextView direccion = (TextView) v.findViewById(R.id.direccion);
 					Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+					TextView nombre = (TextView) v.findViewById(R.id.nombre);
 					final SharedPreferences pref = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
 					llamar.setOnClickListener(new View.OnClickListener() {
 						
@@ -101,6 +102,7 @@ public class ListaAdapter  extends ArrayAdapter{
 					}
 					numero.setText(carabinero.getTelefono());
 					direccion.setText(carabinero.getDireccion());
+					nombre.setText(carabinero.getNombre());
 		 }else{
 			 if(objects.get(position) instanceof PDI){
 				 final PDI pdi = (PDI) objects.get(position);
@@ -110,6 +112,7 @@ public class ListaAdapter  extends ArrayAdapter{
 					final TextView numero = (TextView) v.findViewById(R.id.numero);
 					TextView direccion = (TextView) v.findViewById(R.id.direccion);
 					Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+					TextView nombre = (TextView) v.findViewById(R.id.nombre);
 					llamar.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
@@ -126,6 +129,7 @@ public class ListaAdapter  extends ArrayAdapter{
 					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 					numero.setText(pdi.getTelefono());
 					direccion.setText(pdi.getDireccion());
+					nombre.setText(pdi.getNombre());
 			 }else{
 				 if(objects.get(position) instanceof Bombero){
 					 final Bombero bombero = (Bombero) objects.get(position);
@@ -135,6 +139,7 @@ public class ListaAdapter  extends ArrayAdapter{
 						final TextView numero = (TextView) v.findViewById(R.id.numero);
 						TextView direccion = (TextView) v.findViewById(R.id.direccion);
 						Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+						TextView nombre = (TextView) v.findViewById(R.id.nombre);
 						final SharedPreferences prefb = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
 
 						llamar.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +198,7 @@ public class ListaAdapter  extends ArrayAdapter{
 						};
 						numero.setText(bombero.getTelefono());
 						direccion.setText(bombero.getDireccion());
+						nombre.setText(bombero.getNombre());
 				 }else{
 					 if(objects.get(position) instanceof Hospital){
 						 final Hospital hospital = (Hospital) objects.get(position);
@@ -202,6 +208,7 @@ public class ListaAdapter  extends ArrayAdapter{
 							final TextView numero = (TextView) v.findViewById(R.id.numero);
 							TextView direccion = (TextView) v.findViewById(R.id.direccion);
 							Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
+							TextView nombre = (TextView) v.findViewById(R.id.nombre);
 							final SharedPreferences prefh = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
 							llamar.setOnClickListener(new View.OnClickListener() {
 								
@@ -260,6 +267,7 @@ public class ListaAdapter  extends ArrayAdapter{
 							}
 							numero.setText(hospital.getTelefono());
 							direccion.setText(hospital.getDireccion());
+							nombre.setText(hospital.getNombre());
 					 }
 				 }
 			 }
