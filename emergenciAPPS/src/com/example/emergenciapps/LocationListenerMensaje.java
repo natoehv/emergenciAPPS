@@ -9,16 +9,19 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 public class LocationListenerMensaje implements LocationListener {
 	private static String TAG = "emergenciAPPS";
 	EmailEmergencia mail;
+	View v;
 	LocationManager locManager;
-	
-	public LocationListenerMensaje(LocationManager locManager,EmailEmergencia mail){
-		
+	TaskSendMail enviarMail;
+	public LocationListenerMensaje(LocationManager locManager,EmailEmergencia mail,View v){
+		this.enviarMail = TaskSendMail.getInstance();
 		this.mail = mail;
+		this.v = v;
 		this.locManager = locManager;
 		
 	}
@@ -32,8 +35,13 @@ public class LocationListenerMensaje implements LocationListener {
          * Se crea hilo para enviar mensaje
          *  
          */
-        TaskSendMail enviarMail = new TaskSendMail(mail);
-        enviarMail.execute(lat,lng);
+        Log.d("emergenciAPPS",enviarMail.getStatus().toString());
+        if(enviarMail.getStatus() == AsyncTask.Status.RUNNING){
+        	//new TareaMuestraMensaje(mail.getContext()).execute("Su mensaje ya está siendo enviado");
+        }else{
+        	enviarMail.execute(lat,lng,mail,v);
+        }
+        	
         locManager.removeUpdates(this);
 		
 		

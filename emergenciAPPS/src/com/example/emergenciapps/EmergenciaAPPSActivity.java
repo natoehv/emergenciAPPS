@@ -264,7 +264,10 @@ public class EmergenciaAPPSActivity extends Activity {
     	 email.setMensaje(msje);
     	 email.setMiNombre(miNombre);
     	 email.setMiNumero(miNumero);
-    	 LocationListener locListener = new LocationListenerMensaje( locManager, email);
+    	 Button button = (Button) v.findViewById(R.id.btnEmergencia);
+    	 
+    	 button.setBackgroundResource(R.drawable.ayuda_pulsado);
+    	 LocationListener locListener = new LocationListenerMensaje( locManager, email,v);
     	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
     	    Toast.makeText(v.getContext(),
 	                  "Enviando Alerta!", Toast.LENGTH_SHORT).show();

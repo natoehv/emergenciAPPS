@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -79,7 +80,11 @@ public class ServiceFragment extends Fragment {
         	final TextView numeroCarabinero = (TextView) rootView.findViewById(R.id.textView2);
             final TextView numeroBombero = (TextView) rootView.findViewById(R.id.textView3);
             final TextView numeroHospital = (TextView) rootView.findViewById(R.id.textView4);
-            
+            Button btnAyuda = (Button) rootView.findViewById(R.id.btnEmergencia);
+            TaskSendMail mail = TaskSendMail.getInstance();
+            if(mail.getStatus() == AsyncTask.Status.RUNNING){
+            	btnAyuda.setBackgroundResource(R.drawable.ayuda_pulsado);
+            }
             SharedPreferences prefs = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
             
         	String carabinero = prefs.getString("numeroCarabinero", "5255");
@@ -365,6 +370,8 @@ public class ServiceFragment extends Fragment {
 				});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
+			}else{
+//				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de Hospitales");
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -422,6 +429,8 @@ public class ServiceFragment extends Fragment {
 				});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
+			}else{
+//				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de Carabineros");
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -477,6 +486,8 @@ public class ServiceFragment extends Fragment {
 				});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
+			}else{
+//				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de Bomberos");
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -530,6 +541,8 @@ public class ServiceFragment extends Fragment {
     				});
     				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
     				tarea.execute();
+    			}else{
+//    				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de PDI");
     			}
                 map.getOverlays().add(myLoc);
                 map.getOverlays().add(overlay);
