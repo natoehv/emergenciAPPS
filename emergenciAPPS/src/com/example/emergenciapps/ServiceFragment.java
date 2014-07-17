@@ -147,6 +147,17 @@ public class ServiceFragment extends Fragment {
         	setupMapCarabineroView(20, (MapView)rootView.findViewById(R.id.mapCarabinero));
         	break;        	
         	case 4: rootView = inflater.inflate(R.layout.fragment_pdi, container, false);
+        	Button btnPDI = (Button)rootView.findViewById(R.id.llamar134);
+        	
+        	btnPDI.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Intent.ACTION_CALL);
+					intent.setData(Uri.parse("tel:134")); 
+					v.getContext().startActivity(intent);
+				}
+        	});
+        	
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroPdi);
         	setupMapPDIView(20, (MapView)rootView.findViewById(R.id.mapPdi));
 
