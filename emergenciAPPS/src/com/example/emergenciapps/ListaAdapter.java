@@ -261,7 +261,7 @@ public class ListaAdapter  extends ArrayAdapter{
 							});
 							//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 							
-							String numeroPref = prefh.getString("numeroCarabinero", "");
+							String numeroPref = prefh.getString("numeroHospital", "");
 							if(numeroPref.equalsIgnoreCase(hospital.getTelefono())){
 								numero.setTextColor(Color.GREEN);
 							}
