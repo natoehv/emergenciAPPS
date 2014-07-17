@@ -54,6 +54,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String numero;
+    private String correoContacto;
     private static String TAG = "emergenciAPPS";
 
     LocationManager locManager ;
@@ -68,7 +69,7 @@ public class EmergenciaAPPSActivity extends Activity {
         SharedPreferences prefs =
 				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        int cargaApp = prefs.getInt("carga", 0);
+        correoContacto = prefs.getString("correoContacto", "");
         String numeroCarabinero = prefs.getString("numeroCarabinero", "133");
         String numeroBombero = prefs.getString("numeroBombero", "132");
         String numeroHospital = prefs.getString("numeroHospital", "131");
@@ -114,9 +115,7 @@ public class EmergenciaAPPSActivity extends Activity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-        	if(cargaApp == 0){
-        		editor.putInt("carga", 1);
-        		editor.commit();
+        	if(correoContacto.equals("")){
         		selectItem(5);
         	}else{
         		selectItem(0);
@@ -158,7 +157,12 @@ public class EmergenciaAPPSActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
+        	if(!correoContacto.equals("")){
+        		selectItem(position);
+        	}else{
+        		Toast.makeText(EmergenciaAPPSActivity.this, "Primero debes completar todos los campos", Toast.LENGTH_LONG).show();
+        		mDrawerLayout.closeDrawer(mDrawerList);
+        	}
         }
     }
     

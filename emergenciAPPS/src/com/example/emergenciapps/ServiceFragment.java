@@ -214,7 +214,7 @@ public class ServiceFragment extends Fragment {
             		});
             		
                 	
-                	
+
                 	btnGuardar.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
