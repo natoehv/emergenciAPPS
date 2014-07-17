@@ -55,6 +55,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private CharSequence mTitle;
     private String numero;
     private String correoContacto;
+    SharedPreferences prefs;
     private static String TAG = "emergenciAPPS";
 
     LocationManager locManager ;
@@ -65,9 +66,7 @@ public class EmergenciaAPPSActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        
-        SharedPreferences prefs =
-				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+		prefs =		getSharedPreferences("MisContactos", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         correoContacto = prefs.getString("correoContacto", "");
         String numeroCarabinero = prefs.getString("numeroCarabinero", "133");
@@ -157,6 +156,7 @@ public class EmergenciaAPPSActivity extends Activity {
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        	correoContacto = prefs.getString("correoContacto", "");
         	if(!correoContacto.equals("")){
         		selectItem(position);
         	}else{
