@@ -75,7 +75,8 @@ public class ServiceFragment extends Fragment {
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
         switch(i){
-        	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
+        	//case 0
+        	case -1: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
         	
         	final TextView numeroCarabinero = (TextView) rootView.findViewById(R.id.textView2);
             final TextView numeroBombero = (TextView) rootView.findViewById(R.id.textView3);
@@ -96,7 +97,7 @@ public class ServiceFragment extends Fragment {
         	String hospital = prefs.getString("numeroHospital", "82998988");
         	numeroHospital.setText(hospital);
         	break;
-        	
+        	//case 1
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
         	Button btnHospital = (Button)rootView.findViewById(R.id.llamar131);
         	
@@ -115,6 +116,7 @@ public class ServiceFragment extends Fragment {
         	setupMapHospitalView(20, (MapView)rootView.findViewById(R.id.mapHospital));
         	
         	break;
+        	// case 2
         	case 2: rootView = inflater.inflate(R.layout.fragment_bombero, container, false);
         	
         	Button btnBombero = (Button)rootView.findViewById(R.id.llamar132);
@@ -131,6 +133,8 @@ public class ServiceFragment extends Fragment {
         	setupMapBomberoView(20, (MapView)rootView.findViewById(R.id.mapBombero));
         	
         	break;
+        	
+        	// case 3
         	case 3: rootView = inflater.inflate(R.layout.fragment_carabinero, container, false);
         	
         	Button btnCarabinero = (Button)rootView.findViewById(R.id.llamar133);
@@ -146,6 +150,8 @@ public class ServiceFragment extends Fragment {
         	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
         	setupMapCarabineroView(20, (MapView)rootView.findViewById(R.id.mapCarabinero));
         	break;        	
+        	
+        	// case 4
         	case 4: rootView = inflater.inflate(R.layout.fragment_pdi, container, false);
         	Button btnPDI = (Button)rootView.findViewById(R.id.llamar134);
         	
@@ -162,6 +168,7 @@ public class ServiceFragment extends Fragment {
         	setupMapPDIView(20, (MapView)rootView.findViewById(R.id.mapPdi));
 
         	break;
+        	//case 5
         	case 5: 
         				
         			rootView = inflater.inflate(R.layout.config, container, false);
@@ -320,6 +327,7 @@ public class ServiceFragment extends Fragment {
                 	
                 	
         	break;
+        	//case 6
         	case 6: rootView = inflater.inflate(R.layout.fragmento_tutorial, container, false);
         	break;
         }

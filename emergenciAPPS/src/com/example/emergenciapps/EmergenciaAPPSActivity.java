@@ -115,9 +115,11 @@ public class EmergenciaAPPSActivity extends Activity {
 
         if (savedInstanceState == null) {
         	if(correoContacto.equals("")){
-        		selectItem(5);
+        		//selectItem(5);
+        		selectItem(1);
         	}else{
-        		selectItem(0);
+        		//selectItem(0);
+        		selectItem(1);
         	}
             
         }
@@ -168,13 +170,13 @@ public class EmergenciaAPPSActivity extends Activity {
     
     private void generaItems(){
     	items = new ArrayList<Item>();
-    	items.add(new Item("Inicio", R.drawable.home));
+    	//items.add(new Item("Inicio", R.drawable.home));
     	items.add(new Item("Ambulancia", R.drawable.hospital));
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
     	items.add(new Item("PDI", R.drawable.pdi));
-    	items.add(new Item("Configurar", R.drawable.configuracion));
-    	items.add(new Item("Ayuda", R.drawable.help));
+    	//items.add(new Item("Configurar", R.drawable.configuracion));
+    	//items.add(new Item("Ayuda", R.drawable.help));
     }
     private void selectItem(int position) {
         // update the main content by replacing fragments
