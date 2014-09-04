@@ -170,7 +170,7 @@ public class EmergenciaAPPSActivity extends Activity {
     
     private void generaItems(){
     	items = new ArrayList<Item>();
-    	//items.add(new Item("Inicio", R.drawable.home));
+    	items.add(new Item("Inicio", R.drawable.home));
     	items.add(new Item("Ambulancia", R.drawable.hospital));
     	items.add(new Item("Bomberos", R.drawable.bombero));
     	items.add(new Item("Carabineros", R.drawable.carabinero));
