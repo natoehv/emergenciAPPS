@@ -138,6 +138,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         inflater.inflate(R.menu.main, menu);
         
         MenuItem searchItem = menu.findItem(R.id.buscar);
+        
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setQueryHint("Search...");
         mSearchView.setOnQueryTextListener(this);
@@ -158,11 +159,6 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
          // The action bar home/up action should open or close the drawer.
          // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        switch (item.getItemId()) {
-        case R.id.buscar:
-            Toast.makeText(getApplicationContext(), "BUSCAR", Toast.LENGTH_SHORT).show();
             return true;
         }
         // Handle action buttons
