@@ -155,7 +155,7 @@ public class ServicioWeb {
         	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
         	    		}
     				}else{
-    					if(tabla.equalsIgnoreCase("hospital")){
+    					if(tabla.equalsIgnoreCase("centro_medico")){
         					try{
             	    			JSONObject json = new JSONObject(jsonReturnText);
             	    			JSONArray jArray = json.getJSONArray(tabla);
@@ -319,7 +319,7 @@ public class ServicioWeb {
         	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
         	    		}
     				}else{
-    					if(tabla.equalsIgnoreCase("hospital")){
+    					if(tabla.equalsIgnoreCase("centro_medico")){
         					try{
             	    			JSONObject json = new JSONObject(jsonReturnText);
             	    			JSONArray jArray = json.getJSONArray(tabla);
