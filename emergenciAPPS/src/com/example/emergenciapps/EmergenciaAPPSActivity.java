@@ -24,6 +24,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,12 +43,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class EmergenciaAPPSActivity extends Activity {
+public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListener {
     private DrawerLayout mDrawerLayout;
+    private SearchView mSearchView;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private ItemAdapter itemAdapter;
@@ -132,6 +136,12 @@ public class EmergenciaAPPSActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+        
+        MenuItem searchItem = menu.findItem(R.id.buscar);
+        mSearchView = (SearchView) searchItem.getActionView();
+        mSearchView.setQueryHint("Search...");
+        mSearchView.setOnQueryTextListener(this);
+        
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -148,6 +158,11 @@ public class EmergenciaAPPSActivity extends Activity {
          // The action bar home/up action should open or close the drawer.
          // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+        case R.id.buscar:
+            Toast.makeText(getApplicationContext(), "BUSCAR", Toast.LENGTH_SHORT).show();
             return true;
         }
         // Handle action buttons
@@ -193,7 +208,6 @@ public class EmergenciaAPPSActivity extends Activity {
         setTitle(items.get(position).getTitulo());
         mDrawerLayout.closeDrawer(mDrawerList);
     }
-
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
@@ -218,7 +232,21 @@ public class EmergenciaAPPSActivity extends Activity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+    @Override
+    public boolean onQueryTextChange(String newText) {
+    	//metodo el cual se ejecuta cada vez que se teclea en la busqueda
+    	//TODO realizar autocompletar para comunas
+        //Toast.makeText(this, newText, Toast.LENGTH_SHORT).show();
 
+        return false;
+    }
+   @Override
+    public boolean onQueryTextSubmit(String text) {
+	   // metodo el cual se ejecuta al momento de realizar la busqueda
+        Toast.makeText(this, "Searching for " + text, Toast.LENGTH_LONG).show();
+
+        return false;
+    }
     
     public static void llamada(Activity activity, String numero){ 
 		 Intent intent = new Intent(Intent.ACTION_CALL); 

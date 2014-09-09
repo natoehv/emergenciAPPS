@@ -190,6 +190,10 @@ public class ServicioWeb {
     	return resultados;
     }
 	
+	public static List buscaPorComuna(String comuna, String tabla){
+		
+		return null;
+	}
 	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
 		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/sendMail.php";
 		HttpParams httpParameters = new BasicHttpParams();
