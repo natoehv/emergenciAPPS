@@ -19,7 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mapquest.android.maps.GeoPoint;
 
@@ -82,6 +84,8 @@ public class ServicioWeb {
 					return resultados;
 	    		}catch(JSONException e){
 	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+	    			
+	    			
 	    		}
     		
     		}else{

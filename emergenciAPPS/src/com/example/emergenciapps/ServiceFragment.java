@@ -3,6 +3,7 @@ package com.example.emergenciapps;
 import java.util.List;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -45,6 +46,7 @@ public class ServiceFragment extends Fragment {
     public DefaultItemizedOverlay overlay;
     public DefaultItemizedOverlay overlayServicio;
     public AnnotationView annotation;
+    public Context contexto;
     
     
     public int progreso_a_guardar = 0;
@@ -72,6 +74,7 @@ public class ServiceFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
         SharedPreferences prefe = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
         radioBusqueda = prefe.getInt("ratio", 1);
+        contexto = rootView.getContext();
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
         switch(i){
@@ -390,7 +393,8 @@ public class ServiceFragment extends Fragment {
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
-//				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de Hospitales");
+				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+				 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -449,7 +453,9 @@ public class ServiceFragment extends Fragment {
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
-//				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de Carabineros");
+				 TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+				 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+    			
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -506,7 +512,8 @@ public class ServiceFragment extends Fragment {
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
-//				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de Bomberos");
+			     TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+				 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -561,7 +568,8 @@ public class ServiceFragment extends Fragment {
     				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
     				tarea.execute();
     			}else{
-//    				new TareaMuestraMensaje(getActivity()).execute("No se han encontrado resultados de PDI");
+    				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+   				 	mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
     			}
                 map.getOverlays().add(myLoc);
                 map.getOverlays().add(overlay);
