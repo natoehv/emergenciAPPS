@@ -1,5 +1,6 @@
 package com.example.emergenciapps;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private CharSequence mTitle;
     private String numero;
     private String correoContacto;
+    private Integer posicionActual;
     SharedPreferences prefs;
     private static String TAG = "emergenciAPPS";
 
@@ -181,18 +183,20 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     
     private void generaItems(){
     	items = new ArrayList<Item>();
-    	items.add(new Item("Inicio", R.drawable.home));
-    	items.add(new Item("Ambulancia", R.drawable.hospital));
-    	items.add(new Item("Bomberos", R.drawable.bombero));
-    	items.add(new Item("Carabineros", R.drawable.carabinero));
-    	items.add(new Item("PDI", R.drawable.pdi));
+    	items.add(new Item("Inicio", R.drawable.home,""));
+    	items.add(new Item("Ambulancia", R.drawable.hospital,"centro_medico"));
+    	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
+    	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
+    	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
     	//items.add(new Item("Configurar", R.drawable.configuracion));
     	//items.add(new Item("Ayuda", R.drawable.help));
     }
-    private void selectItem(int position) {
+    private void selectItem(int position, List lista) {
+    	posicionActual = position;
         // update the main content by replacing fragments
         Fragment fragment = new ServiceFragment();
         Bundle args = new Bundle();
+        args.putSerializable("lista", (Serializable) lista);
         args.putInt(ServiceFragment.SERVICE_NUMBER, position);
         fragment.setArguments(args);
 
@@ -203,6 +207,10 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         mDrawerList.setItemChecked(position, true);
         setTitle(items.get(position).getTitulo());
         mDrawerLayout.closeDrawer(mDrawerList);
+    }
+    
+    private void selectItem(int position){
+    	selectItem(position, null);
     }
     @Override
     public void setTitle(CharSequence title) {
@@ -239,7 +247,8 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
    @Override
     public boolean onQueryTextSubmit(String text) {
 	   // metodo el cual se ejecuta al momento de realizar la busqueda
-        Toast.makeText(this, "Searching for " + text, Toast.LENGTH_LONG).show();
+	   List lista = ServicioWeb.buscaPorComuna(text,items.get(posicionActual).getNombreTabla() );
+       
 
         return false;
     }

@@ -60,7 +60,7 @@ public class ServiceFragment extends Fragment {
     public boolean ok_miNum = false;
     
     public boolean guadadoExitoso = false;
-   
+    private List listaServicio;
     
     
     public ServiceFragment() {
@@ -77,6 +77,7 @@ public class ServiceFragment extends Fragment {
         contexto = rootView.getContext();
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
+        listaServicio = (List) getArguments().getSerializable("lista");
         switch(i){
         	//case 0
         	case -1: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
@@ -429,7 +430,13 @@ public class ServiceFragment extends Fragment {
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Carabinero> lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            List<Carabinero> lista;
+            if(listaServicio != null){
+            	lista = listaServicio;
+            }else{
+            	lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            }
+            
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Carabinero c: lista){
