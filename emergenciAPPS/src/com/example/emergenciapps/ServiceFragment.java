@@ -79,7 +79,7 @@ public class ServiceFragment extends Fragment {
         listaServicio = (List) getArguments().getSerializable("lista");
         switch(i){
         	//case 0
-        	case -1: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
+        	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
         	
         	final TextView numeroCarabinero = (TextView) rootView.findViewById(R.id.textView2);
             final TextView numeroBombero = (TextView) rootView.findViewById(R.id.textView3);

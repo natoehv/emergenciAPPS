@@ -124,10 +124,10 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         if (savedInstanceState == null) {
         	if(correoContacto.equals("")){
         		//selectItem(5);
-        		selectItem(1);
+        		selectItem(0);
         	}else{
         		//selectItem(0);
-        		selectItem(1);
+        		selectItem(0);
         	}
             
         }
