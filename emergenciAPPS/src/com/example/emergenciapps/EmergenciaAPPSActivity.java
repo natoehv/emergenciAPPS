@@ -54,7 +54,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private DrawerLayout mDrawerLayout;
     private SearchView mSearchView;
     private ListView mDrawerList;
-    public List listaBusqueda;
+    public RespuestaServicioWeb respuestaBusqueda;
     private ActionBarDrawerToggle mDrawerToggle;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
@@ -200,12 +200,12 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     	//items.add(new Item("Configurar", R.drawable.configuracion,""));
     	//items.add(new Item("Ayuda", R.drawable.help,""));
     }
-    private void selectItem(int position, List lista) {
+    private void selectItem(int position, RespuestaServicioWeb lista) {
     	posicionActual = position;
         // update the main content by replacing fragments
         Fragment fragment = new ServiceFragment();
         Bundle args = new Bundle();
-        args.putSerializable("lista", (Serializable) lista);
+        args.putSerializable("respuesta", (Serializable) lista);
         args.putInt(ServiceFragment.SERVICE_NUMBER, position);
         fragment.setArguments(args);
 
@@ -260,13 +260,13 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 		
 		@Override
 		protected String doInBackground(String... params) {
-			listaBusqueda = ServicioWeb.buscaPorComuna(params[0], items.get(posicionActual).getNombreTabla());
+			respuestaBusqueda = ServicioWeb.buscaPorComuna(params[0], items.get(posicionActual).getNombreTabla());
 			return "";
 		}
 		
 		@Override
 		protected void onPostExecute(String result) {
-			selectItem(posicionActual, listaBusqueda);
+			selectItem(posicionActual, respuestaBusqueda);
 			super.onPostExecute(result);
 		}
 	};

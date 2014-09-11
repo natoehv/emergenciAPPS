@@ -58,7 +58,7 @@ public class ServiceFragment extends Fragment {
     public boolean ok_miNum = false;
     
     public boolean guadadoExitoso = false;
-    private List listaServicio;
+    private RespuestaServicioWeb respuestaBusqueda;
     
     
     public ServiceFragment() {
@@ -76,7 +76,7 @@ public class ServiceFragment extends Fragment {
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
         Bundle a = getArguments();
-        listaServicio = (List) getArguments().getSerializable("lista");
+        respuestaBusqueda = (RespuestaServicioWeb) getArguments().getSerializable("respuesta");
         switch(i){
         	//case 0
         	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
@@ -369,7 +369,21 @@ public class ServiceFragment extends Fragment {
            
            
             int radio  ;
-            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
+            //List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
+            List<Hospital> lista;
+            if(respuestaBusqueda != null){
+            	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
+            	lista = respuestaBusqueda.getLista();
+            	if(lista.size() > 0){
+	            	Float x = ((Hospital)lista.get(0)).getX();
+	            	Float y = ((Hospital)lista.get(0)).getY();
+	            	map.getController().animateTo(new GeoPoint(x,y));
+	                map.getController().setCenter(new GeoPoint(x,y));
+            	}
+            }else{
+            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            	lista = (List<Hospital>)respuestaBusqueda.getLista();
+            }
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Hospital h: lista){
@@ -394,7 +408,19 @@ public class ServiceFragment extends Fragment {
 				tarea.execute();
 			}else{
 				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-				 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+				switch(respuestaBusqueda.getCodigo()){
+				 case ServicioWeb.ERROR_CONEXION: 
+					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+					 break;
+				 case ServicioWeb.ERROR_JSON:
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+					 break;
+				 case ServicioWeb.ERROR_JSON_GPS:
+					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+					 break;
+				 
+				 
+				 }
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -430,17 +456,18 @@ public class ServiceFragment extends Fragment {
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             List<Carabinero> lista;
-            if(listaServicio != null){
+            if(respuestaBusqueda != null){
             	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
-            	lista = listaServicio;
-            	if(listaServicio.size() > 0){
-	            	Float x = ((Carabinero)listaServicio.get(0)).getX();
-	            	Float y = ((Carabinero)listaServicio.get(0)).getY();
+            	lista = respuestaBusqueda.getLista();
+            	if(lista.size() > 0){
+	            	Float x = ((Carabinero)lista.get(0)).getX();
+	            	Float y = ((Carabinero)lista.get(0)).getY();
 	            	map.getController().animateTo(new GeoPoint(x,y));
 	                map.getController().setCenter(new GeoPoint(x,y));
             	}
             }else{
-            	lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            	lista = (List<Carabinero>)respuestaBusqueda.getLista();
             }
             
             OverlayItem item;
@@ -467,10 +494,21 @@ public class ServiceFragment extends Fragment {
 				tarea.execute();
 			}else{
 				 TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-				 if(listaServicio == null)
+				 switch(respuestaBusqueda.getCodigo()){
+				 case ServicioWeb.ERROR_CONEXION: 
+					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+					 break;
+				 case ServicioWeb.ERROR_JSON:
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+					 break;
+				 case ServicioWeb.ERROR_JSON_GPS:
 					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
-				 else
-					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna"); 
+					 break;
+				 
+				 
+				 }
+				 
+				 
     			
 			}
             map.getOverlays().add(myLoc);
@@ -505,7 +543,21 @@ public class ServiceFragment extends Fragment {
             map.getController().setZoom(14);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             @SuppressWarnings("unchecked")
-			List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
+			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
+            List<Bombero> lista;
+            if(respuestaBusqueda != null){
+            	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
+            	lista = respuestaBusqueda.getLista();
+            	if(lista.size() > 0){
+	            	Float x = ((Bombero)lista.get(0)).getX();
+	            	Float y = ((Bombero)lista.get(0)).getY();
+	            	map.getController().animateTo(new GeoPoint(x,y));
+	                map.getController().setCenter(new GeoPoint(x,y));
+            	}
+            }else{
+            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            	lista = (List<Bombero>)respuestaBusqueda.getLista();
+            }
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Bombero b: lista){
@@ -531,7 +583,19 @@ public class ServiceFragment extends Fragment {
 				tarea.execute();
 			}else{
 			     TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-				 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+			     switch(respuestaBusqueda.getCodigo()){
+				 case ServicioWeb.ERROR_CONEXION: 
+					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+					 break;
+				 case ServicioWeb.ERROR_JSON:
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+					 break;
+				 case ServicioWeb.ERROR_JSON_GPS:
+					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+					 break;
+				 
+				 
+				 }
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
@@ -560,7 +624,21 @@ public class ServiceFragment extends Fragment {
                 map.getController().setCenter(myLoc.getMyLocation());
                 map.getController().setZoom(14);
                 OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-                List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
+                //List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
+                List<PDI> lista;
+                if(respuestaBusqueda != null){
+                	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
+                	lista = respuestaBusqueda.getLista();
+                	if(lista.size() > 0){
+    	            	Float x = ((PDI)lista.get(0)).getX();
+    	            	Float y = ((PDI)lista.get(0)).getY();
+    	            	map.getController().animateTo(new GeoPoint(x,y));
+    	                map.getController().setCenter(new GeoPoint(x,y));
+                	}
+                }else{
+                	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+                	lista = (List<PDI>)respuestaBusqueda.getLista();
+                }
                 OverlayItem item;
                 overlay.addItem(miPocision);
                 for(PDI c: lista){
@@ -587,7 +665,19 @@ public class ServiceFragment extends Fragment {
     				tarea.execute();
     			}else{
     				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-   				 	mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+    				switch(respuestaBusqueda.getCodigo()){
+   				 case ServicioWeb.ERROR_CONEXION: 
+   					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+   					 break;
+   				 case ServicioWeb.ERROR_JSON:
+   					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+   					 break;
+   				 case ServicioWeb.ERROR_JSON_GPS:
+   					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+   					 break;
+   				 
+   				 
+   				 }
     			}
                 map.getOverlays().add(myLoc);
                 map.getOverlays().add(overlay);

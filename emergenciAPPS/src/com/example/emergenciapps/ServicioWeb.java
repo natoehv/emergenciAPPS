@@ -26,15 +26,22 @@ import android.widget.Toast;
 import com.mapquest.android.maps.GeoPoint;
 
 public class ServicioWeb {
-	public static List postCercanos(GeoPoint punto, int distancia, String tabla){
+	public static final int OK_CONEXION = 0;
+	public static final int ERROR_CONEXION = 1;
+	public static final int ERROR_JSON = 2;
+	public static final int ERROR_JSON_GPS = 3;
+	
+	public static RespuestaServicioWeb postCercanos(GeoPoint punto, int distancia, String tabla){
     	String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicioweb.php";
     	HttpParams httpParameters = new BasicHttpParams();
+    	Integer codigo = OK_CONEXION;
+    	RespuestaServicioWeb res;
     	String jsonReturnText="";
     	String respuesta;
     	List resultados = new ArrayList();
     	int timeoutConnection = 10000;
     	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-    	int timeoutSocket = 30000;
+    	int timeoutSocket = 10000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
     	HttpPost oPost = new HttpPost(URL);
@@ -52,6 +59,9 @@ public class ServicioWeb {
     			
     		}catch(Exception e){
     			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+    			codigo = ERROR_CONEXION;
+    			res =  new RespuestaServicioWeb(resultados, codigo);
+    	    	return res;
     		}
     		if(tabla.equalsIgnoreCase("carabinero")){	
 	    		try{
@@ -81,10 +91,10 @@ public class ServicioWeb {
 					    resultados.add(carabinero);
 					    
 					}
-					return resultados;
+					
 	    		}catch(JSONException e){
 	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
-	    			
+	    			codigo = ERROR_JSON_GPS;
 	    			
 	    		}
     		
@@ -117,9 +127,10 @@ public class ServicioWeb {
     					    resultados.add(pdi);
     					    
     					}
-    					return resultados;
+    					
     	    		}catch(JSONException e){
     	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+    	    			codigo = ERROR_JSON_GPS;
     	    		}
     			}else{
     				if(tabla.equalsIgnoreCase("bombero")){
@@ -150,9 +161,10 @@ public class ServicioWeb {
         					    resultados.add(bombero);
         					    
         					}
-        					return resultados;
+        					
         	    		}catch(JSONException e){
         	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+        	    			codigo = ERROR_JSON_GPS;
         	    		}
     				}else{
     					if(tabla.equalsIgnoreCase("centro_medico")){
@@ -183,18 +195,22 @@ public class ServicioWeb {
             					    resultados.add(hospital);
             					    
             					}
-            					return resultados;
+            					
             	    		}catch(JSONException e){
             	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+            	    			codigo = ERROR_JSON_GPS;
             	    		}
     					}
     				}
     			}
     		}
-    	return resultados;
+    		res =  new RespuestaServicioWeb(resultados, codigo);
+        	return res;
     }
 	
-	public static List buscaPorComuna(String comunaBuscar, String tabla){
+	public static RespuestaServicioWeb buscaPorComuna(String comunaBuscar, String tabla){
+		RespuestaServicioWeb res;
+		Integer codigo = OK_CONEXION;
 		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_busqueda.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	String jsonReturnText="";
@@ -217,7 +233,10 @@ public class ServicioWeb {
     			jsonReturnText = EntityUtils.toString(r_entity);
     			
     		}catch(Exception e){
+    			codigo = ERROR_CONEXION;
     			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+    			res =  new RespuestaServicioWeb(resultados, codigo);
+    	    	return res;
     		}
     		if(tabla.equalsIgnoreCase("carabinero")){	
 	    		try{
@@ -243,8 +262,9 @@ public class ServicioWeb {
 					    resultados.add(carabinero);
 					    
 					}
-					return resultados;
+					
 	    		}catch(JSONException e){
+	    			codigo = ERROR_JSON;
 	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
 	    		}
     		
@@ -273,9 +293,10 @@ public class ServicioWeb {
     					    resultados.add(pdi);
     					    
     					}
-    					return resultados;
+    					
     	    		}catch(JSONException e){
     	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+    	    			codigo = ERROR_JSON;
     	    		}
     			}else{
     				if(tabla.equalsIgnoreCase("bombero")){
@@ -302,9 +323,10 @@ public class ServicioWeb {
         					    resultados.add(bombero);
         					    
         					}
-        					return resultados;
+        					
         	    		}catch(JSONException e){
         	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+        	    			codigo = ERROR_JSON;
         	    		}
     				}else{
     					if(tabla.equalsIgnoreCase("centro_medico")){
@@ -332,15 +354,17 @@ public class ServicioWeb {
             					    resultados.add(hospital);
             					    
             					}
-            					return resultados;
+            					
             	    		}catch(JSONException e){
             	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+            	    			codigo = ERROR_JSON;
             	    		}
     					}
     				}
     			}
     		}
-    	return resultados;
+        res =  new RespuestaServicioWeb(resultados, codigo);
+    	return res;
 	}
 	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
 		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/sendMail.php";
