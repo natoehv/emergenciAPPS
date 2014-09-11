@@ -6,8 +6,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -433,7 +431,14 @@ public class ServiceFragment extends Fragment {
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             List<Carabinero> lista;
             if(listaServicio != null){
+            	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
             	lista = listaServicio;
+            	if(listaServicio.size() > 0){
+	            	Float x = ((Carabinero)listaServicio.get(0)).getX();
+	            	Float y = ((Carabinero)listaServicio.get(0)).getY();
+	            	map.getController().animateTo(new GeoPoint(x,y));
+	                map.getController().setCenter(new GeoPoint(x,y));
+            	}
             }else{
             	lista = (List<Carabinero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
             }
@@ -462,14 +467,17 @@ public class ServiceFragment extends Fragment {
 				tarea.execute();
 			}else{
 				 TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-				 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+				 if(listaServicio == null)
+					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+				 else
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna"); 
     			
 			}
             map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
             map.getOverlays().add(overlayServicio);
             myLoc.disableMyLocation();
-            myLoc.setFollowing(true);
+            //myLoc.setFollowing(true);
           }
           
         });
@@ -482,6 +490,7 @@ public class ServiceFragment extends Fragment {
     	overlay = new DefaultItemizedOverlay(iconMiPosicion);
     	overlayServicio = new DefaultItemizedOverlay(iconBombero);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
+    
     	map = maps;
     	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
@@ -490,6 +499,7 @@ public class ServiceFragment extends Fragment {
           @Override
           public void run() {
             GeoPoint currentLocation = myLoc.getMyLocation();
+            
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
             map.getController().setZoom(14);
