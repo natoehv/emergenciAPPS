@@ -65,6 +65,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private Integer posicionActual;
     SharedPreferences prefs;
     private static String TAG = "emergenciAPPS";
+    private Menu menu;
 
     LocationManager locManager ;
 
@@ -122,6 +123,8 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
+        	//Se oculta buscar para inicio
+        	posicionActual = 0;
         	if(correoContacto.equals("")){
         		//selectItem(5);
         		selectItem(0);
@@ -138,11 +141,15 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	this.menu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         
         MenuItem searchItem = menu.findItem(R.id.buscar);
-        
+       
+        if(posicionActual == 0 || posicionActual == 5 || posicionActual == 6){
+        	searchItem.setVisible(false);
+        }
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setQueryHint("Search...");
         mSearchView.setOnQueryTextListener(this);
@@ -190,8 +197,8 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
     	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
-    	//items.add(new Item("Configurar", R.drawable.configuracion));
-    	//items.add(new Item("Ayuda", R.drawable.help));
+    	//items.add(new Item("Configurar", R.drawable.configuracion,""));
+    	//items.add(new Item("Ayuda", R.drawable.help,""));
     }
     private void selectItem(int position, List lista) {
     	posicionActual = position;
