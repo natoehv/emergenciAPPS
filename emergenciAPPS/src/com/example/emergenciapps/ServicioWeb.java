@@ -232,18 +232,14 @@ public class ServicioWeb {
 						String lng = aux.getString("lng");
 						String direccion = aux.getString("direccion");
 						String telefono = aux.getString("telefono");
-						String distancia2 = aux.getString("distancia");
 						int id = aux.getInt("id");
-						String comuna = aux.getString("comuna");
 						
-						carabinero.setComuna(comuna);
 						carabinero.setDireccion(direccion);
 						carabinero.setId(id);
 						carabinero.setNombre(nombre);
 						carabinero.setTelefono(telefono);
 						carabinero.setX(Float.valueOf(lat));
 						carabinero.setY(Float.valueOf(lng));
-						carabinero.setDistancia(Float.valueOf(distancia2));
 					    resultados.add(carabinero);
 					    
 					}
@@ -266,18 +262,14 @@ public class ServicioWeb {
     						String lng = aux.getString("lng");
     						String direccion = aux.getString("direccion");
     						String telefono = aux.getString("telefono");
-    						String distancia2 = aux.getString("distancia");
     						int id = aux.getInt("id");
-    						String comuna = aux.getString("comuna");
     						
-    						pdi.setComuna(comuna);
     						pdi.setDireccion(direccion);
     						pdi.setId(id);
     						pdi.setNombre(nombre);
     						pdi.setTelefono(telefono);
     						pdi.setX(Float.valueOf(lat));
     						pdi.setY(Float.valueOf(lng));
-    						pdi.setDistancia(Float.valueOf(distancia2));
     					    resultados.add(pdi);
     					    
     					}
@@ -299,18 +291,14 @@ public class ServicioWeb {
         						String lng = aux.getString("lng");
         						String direccion = aux.getString("direccion");
         						String telefono = aux.getString("telefono");
-        						String distancia2 = aux.getString("distancia");
         						int id = aux.getInt("id");
-        						String comuna = aux.getString("comuna");
         						
-        						bombero.setComuna(comuna);
         						bombero.setDireccion(direccion);
         						bombero.setId(id);
         						bombero.setNombre(nombre);
         						bombero.setTelefono(telefono);
         						bombero.setX(Float.valueOf(lat));
         						bombero.setY(Float.valueOf(lng));
-        						bombero.setDistancia(Float.valueOf(distancia2));
         					    resultados.add(bombero);
         					    
         					}
@@ -332,18 +320,15 @@ public class ServicioWeb {
             						String lng = aux.getString("lng");
             						String direccion = aux.getString("direccion");
             						String telefono = aux.getString("telefono");
-            						String distancia2 = aux.getString("distancia");
             						int id = aux.getInt("id");
-            						String comuna = aux.getString("comuna");
             						
-            						hospital.setComuna(comuna);
+
             						hospital.setDireccion(direccion);
             						hospital.setId(id);
             						hospital.setNombre(nombre);
             						hospital.setTelefono(telefono);
             						hospital.setX(Float.valueOf(lat));
             						hospital.setY(Float.valueOf(lng));
-            						hospital.setDistancia(Float.valueOf(distancia2));
             					    resultados.add(hospital);
             					    
             					}

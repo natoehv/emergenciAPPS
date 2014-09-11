@@ -22,6 +22,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -53,6 +54,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private DrawerLayout mDrawerLayout;
     private SearchView mSearchView;
     private ListView mDrawerList;
+    public List listaBusqueda;
     private ActionBarDrawerToggle mDrawerToggle;
     private ItemAdapter itemAdapter;
     private ArrayList<Item> items;
@@ -247,7 +249,22 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
    @Override
     public boolean onQueryTextSubmit(String text) {
 	   // metodo el cual se ejecuta al momento de realizar la busqueda
-	   List lista = ServicioWeb.buscaPorComuna(text,items.get(posicionActual).getNombreTabla() );
+	   AsyncTask<String, Void, String> busca = new AsyncTask<String, Void, String>() {
+		
+		@Override
+		protected String doInBackground(String... params) {
+			listaBusqueda = ServicioWeb.buscaPorComuna(params[0], items.get(posicionActual).getNombreTabla());
+			return "";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			selectItem(posicionActual, listaBusqueda);
+			super.onPostExecute(result);
+		}
+	};
+	busca.execute(text);
+	   
        
 
         return false;

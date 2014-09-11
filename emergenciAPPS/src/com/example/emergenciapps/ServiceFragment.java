@@ -77,6 +77,7 @@ public class ServiceFragment extends Fragment {
         contexto = rootView.getContext();
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
+        Bundle a = getArguments();
         listaServicio = (List) getArguments().getSerializable("lista");
         switch(i){
         	//case 0
@@ -370,7 +371,7 @@ public class ServiceFragment extends Fragment {
            
            
             int radio  ;
-            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "hospital");
+            List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
             OverlayItem item;
             overlay.addItem(miPocision);
             for(Hospital h: lista){
@@ -587,4 +588,5 @@ public class ServiceFragment extends Fragment {
               
             });	
     }
+    
 }
