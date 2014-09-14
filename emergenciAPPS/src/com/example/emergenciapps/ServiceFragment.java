@@ -381,7 +381,7 @@ public class ServiceFragment extends Fragment {
 	                map.getController().setCenter(new GeoPoint(x,y));
             	}
             }else{
-            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
             	lista = (List<Hospital>)respuestaBusqueda.getLista();
             }
             OverlayItem item;
@@ -555,7 +555,7 @@ public class ServiceFragment extends Fragment {
 	                map.getController().setCenter(new GeoPoint(x,y));
             	}
             }else{
-            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
             	lista = (List<Bombero>)respuestaBusqueda.getLista();
             }
             OverlayItem item;
@@ -636,7 +636,7 @@ public class ServiceFragment extends Fragment {
     	                map.getController().setCenter(new GeoPoint(x,y));
                 	}
                 }else{
-                	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
+                	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
                 	lista = (List<PDI>)respuestaBusqueda.getLista();
                 }
                 OverlayItem item;
