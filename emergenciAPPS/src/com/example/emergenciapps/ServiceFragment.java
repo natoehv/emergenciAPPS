@@ -418,6 +418,9 @@ public class ServiceFragment extends Fragment {
 				 case ServicioWeb.ERROR_JSON_GPS:
 					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
 					 break;
+				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
 				 
 				 
 				 }
@@ -503,6 +506,9 @@ public class ServiceFragment extends Fragment {
 					 break;
 				 case ServicioWeb.ERROR_JSON_GPS:
 					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+					 break;
+				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
 					 break;
 				 
 				 
@@ -593,6 +599,9 @@ public class ServiceFragment extends Fragment {
 				 case ServicioWeb.ERROR_JSON_GPS:
 					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
 					 break;
+				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
 				 
 				 
 				 }
@@ -675,6 +684,9 @@ public class ServiceFragment extends Fragment {
    				 case ServicioWeb.ERROR_JSON_GPS:
    					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
    					 break;
+   				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
    				 
    				 
    				 }

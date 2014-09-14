@@ -30,6 +30,7 @@ public class ServicioWeb {
 	public static final int ERROR_CONEXION = 1;
 	public static final int ERROR_JSON = 2;
 	public static final int ERROR_JSON_GPS = 3;
+	public static final int ERROR_NO_EXISTE_COMUNA = 4;
 	
 	public static RespuestaServicioWeb postCercanos(GeoPoint punto, int distancia, String tabla){
     	String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicioweb.php";
@@ -242,26 +243,34 @@ public class ServicioWeb {
 	    		try{
 	    			JSONObject json = new JSONObject(jsonReturnText);
 	    			JSONArray jArray = json.getJSONArray(tabla);
-	    			Carabinero carabinero;
-					for(int i=0; i<jArray.length(); i++){
-						carabinero = new Carabinero();
-						JSONObject aux = jArray.getJSONObject(i);
-						String nombre = aux.getString("nombre");
-						String lat  = aux.getString("lat");
-						String lng = aux.getString("lng");
-						String direccion = aux.getString("direccion");
-						String telefono = aux.getString("telefono");
-						int id = aux.getInt("id");
-						
-						carabinero.setDireccion(direccion);
-						carabinero.setId(id);
-						carabinero.setNombre(nombre);
-						carabinero.setTelefono(telefono);
-						carabinero.setX(Float.valueOf(lat));
-						carabinero.setY(Float.valueOf(lng));
-					    resultados.add(carabinero);
-					    
-					}
+	    			if(jArray.length() > 0){
+	    				Log.d("comuna1", "Cantidad de resultados carabineros: "+jArray.length());
+	    				Carabinero carabinero;
+						for(int i=0; i<jArray.length(); i++){
+							carabinero = new Carabinero();
+							JSONObject aux = jArray.getJSONObject(i);
+							String nombre = aux.getString("nombre");
+							String lat  = aux.getString("lat");
+							String lng = aux.getString("lng");
+							String direccion = aux.getString("direccion");
+							String telefono = aux.getString("telefono");
+							int id = aux.getInt("id");
+							
+							carabinero.setDireccion(direccion);
+							carabinero.setId(id);
+							carabinero.setNombre(nombre);
+							carabinero.setTelefono(telefono);
+							carabinero.setX(Float.valueOf(lat));
+							carabinero.setY(Float.valueOf(lng));
+						    resultados.add(carabinero);
+						    
+						}
+	    			}else{
+	    				Log.d("comuna2", "Cantidad de resultados: "+jArray.length());
+	    				codigo = ERROR_NO_EXISTE_COMUNA;
+	    				
+	    			}
+	    			
 					
 	    		}catch(JSONException e){
 	    			codigo = ERROR_JSON;
@@ -273,26 +282,31 @@ public class ServicioWeb {
     				try{
     	    			JSONObject json = new JSONObject(jsonReturnText);
     	    			JSONArray jArray = json.getJSONArray(tabla);
-    	    			PDI pdi;
-    					for(int i=0; i<jArray.length(); i++){
-    						pdi = new PDI();
-    						JSONObject aux = jArray.getJSONObject(i);
-    						String nombre = aux.getString("nombre");
-    						String lat  = aux.getString("lat");
-    						String lng = aux.getString("lng");
-    						String direccion = aux.getString("direccion");
-    						String telefono = aux.getString("telefono");
-    						int id = aux.getInt("id");
-    						
-    						pdi.setDireccion(direccion);
-    						pdi.setId(id);
-    						pdi.setNombre(nombre);
-    						pdi.setTelefono(telefono);
-    						pdi.setX(Float.valueOf(lat));
-    						pdi.setY(Float.valueOf(lng));
-    					    resultados.add(pdi);
-    					    
-    					}
+    	    			if(jArray.length() > 0){
+    	    				PDI pdi;
+        					for(int i=0; i<jArray.length(); i++){
+        						pdi = new PDI();
+        						JSONObject aux = jArray.getJSONObject(i);
+        						String nombre = aux.getString("nombre");
+        						String lat  = aux.getString("lat");
+        						String lng = aux.getString("lng");
+        						String direccion = aux.getString("direccion");
+        						String telefono = aux.getString("telefono");
+        						int id = aux.getInt("id");
+        						
+        						pdi.setDireccion(direccion);
+        						pdi.setId(id);
+        						pdi.setNombre(nombre);
+        						pdi.setTelefono(telefono);
+        						pdi.setX(Float.valueOf(lat));
+        						pdi.setY(Float.valueOf(lng));
+        					    resultados.add(pdi);
+        					    
+        					}
+    	    			}else{
+    	    				codigo = ERROR_NO_EXISTE_COMUNA;
+    	    			}
+    	    			
     					
     	    		}catch(JSONException e){
     	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
@@ -303,26 +317,31 @@ public class ServicioWeb {
     					try{
         	    			JSONObject json = new JSONObject(jsonReturnText);
         	    			JSONArray jArray = json.getJSONArray(tabla);
-        	    			Bombero bombero;
-        					for(int i=0; i<jArray.length(); i++){
-        						bombero = new Bombero();
-        						JSONObject aux = jArray.getJSONObject(i);
-        						String nombre = aux.getString("nombre");
-        						String lat  = aux.getString("lat");
-        						String lng = aux.getString("lng");
-        						String direccion = aux.getString("direccion");
-        						String telefono = aux.getString("telefono");
-        						int id = aux.getInt("id");
-        						
-        						bombero.setDireccion(direccion);
-        						bombero.setId(id);
-        						bombero.setNombre(nombre);
-        						bombero.setTelefono(telefono);
-        						bombero.setX(Float.valueOf(lat));
-        						bombero.setY(Float.valueOf(lng));
-        					    resultados.add(bombero);
-        					    
-        					}
+        	    			if(jArray.length() > 0){
+        	    				Bombero bombero;
+            					for(int i=0; i<jArray.length(); i++){
+            						bombero = new Bombero();
+            						JSONObject aux = jArray.getJSONObject(i);
+            						String nombre = aux.getString("nombre");
+            						String lat  = aux.getString("lat");
+            						String lng = aux.getString("lng");
+            						String direccion = aux.getString("direccion");
+            						String telefono = aux.getString("telefono");
+            						int id = aux.getInt("id");
+            						
+            						bombero.setDireccion(direccion);
+            						bombero.setId(id);
+            						bombero.setNombre(nombre);
+            						bombero.setTelefono(telefono);
+            						bombero.setX(Float.valueOf(lat));
+            						bombero.setY(Float.valueOf(lng));
+            					    resultados.add(bombero);
+            					    
+            					}
+        	    			}else{
+        	    				codigo = ERROR_NO_EXISTE_COMUNA;
+        	    			}
+        	    			
         					
         	    		}catch(JSONException e){
         	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
@@ -333,27 +352,32 @@ public class ServicioWeb {
         					try{
             	    			JSONObject json = new JSONObject(jsonReturnText);
             	    			JSONArray jArray = json.getJSONArray(tabla);
-            	    			Hospital hospital;
-            					for(int i=0; i<jArray.length(); i++){
-            						hospital = new Hospital();
-            						JSONObject aux = jArray.getJSONObject(i);
-            						String nombre = aux.getString("nombre");
-            						String lat  = aux.getString("lat");
-            						String lng = aux.getString("lng");
-            						String direccion = aux.getString("direccion");
-            						String telefono = aux.getString("telefono");
-            						int id = aux.getInt("id");
-            						
+            	    			if(jArray.length() > 0){
+            	    				Hospital hospital;
+                					for(int i=0; i<jArray.length(); i++){
+                						hospital = new Hospital();
+                						JSONObject aux = jArray.getJSONObject(i);
+                						String nombre = aux.getString("nombre");
+                						String lat  = aux.getString("lat");
+                						String lng = aux.getString("lng");
+                						String direccion = aux.getString("direccion");
+                						String telefono = aux.getString("telefono");
+                						int id = aux.getInt("id");
+                						
 
-            						hospital.setDireccion(direccion);
-            						hospital.setId(id);
-            						hospital.setNombre(nombre);
-            						hospital.setTelefono(telefono);
-            						hospital.setX(Float.valueOf(lat));
-            						hospital.setY(Float.valueOf(lng));
-            					    resultados.add(hospital);
-            					    
-            					}
+                						hospital.setDireccion(direccion);
+                						hospital.setId(id);
+                						hospital.setNombre(nombre);
+                						hospital.setTelefono(telefono);
+                						hospital.setX(Float.valueOf(lat));
+                						hospital.setY(Float.valueOf(lng));
+                					    resultados.add(hospital);
+                					    
+                					}
+            	    			}else{
+            	    				codigo = ERROR_NO_EXISTE_COMUNA;
+            	    			}
+            	    			
             					
             	    		}catch(JSONException e){
             	    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
