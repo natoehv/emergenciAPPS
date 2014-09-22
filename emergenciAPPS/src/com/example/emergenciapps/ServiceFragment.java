@@ -625,6 +625,7 @@ public class ServiceFragment extends Fragment {
         	annotation = new AnnotationView(maps);
         	map.getController().setZoom(zoom);
         	myLoc.enableMyLocation();
+        	
         	myLoc.runOnFirstFix(new Runnable() {
               @Override
               public void run() {

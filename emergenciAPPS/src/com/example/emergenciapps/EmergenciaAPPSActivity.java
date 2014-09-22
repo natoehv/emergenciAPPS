@@ -180,13 +180,9 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        	correoContacto = prefs.getString("correoContacto", "");
-        	if(!correoContacto.equals("")){
+        	
         		selectItem(position);
-        	}else{
-        		Toast.makeText(EmergenciaAPPSActivity.this, "Primero debes completar todos los campos", Toast.LENGTH_LONG).show();
-        		mDrawerLayout.closeDrawer(mDrawerList);
-        	}
+        	
         }
     }
     
