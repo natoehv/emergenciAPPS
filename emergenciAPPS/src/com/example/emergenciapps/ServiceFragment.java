@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.ItemizedOverlay;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.OverlayItem;
+import com.mapquest.android.maps.RouteManager;
 
 /**
  * Fragment that appears in the "content_frame", shows a planet
@@ -45,7 +48,7 @@ public class ServiceFragment extends Fragment {
     public DefaultItemizedOverlay overlayServicio;
     public AnnotationView annotation;
     public Context contexto;
-    
+    public RouteManager routeManager;
     
     public int progreso_a_guardar = 0;
     
@@ -68,8 +71,9 @@ public class ServiceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    		
+    	
         View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
+        routeManager = new RouteManager(rootView.getContext(),"Fmjtd%7Cluur2g0bn0%2Cb0%3Do5-9at2qu");
         SharedPreferences prefe = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
         radioBusqueda = prefe.getInt("ratio", 1);
         contexto = rootView.getContext();
@@ -487,6 +491,7 @@ public class ServiceFragment extends Fragment {
 						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
 						if(lastTouchedIndex > -1){
 							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							init(tapped);
 							annotation.showAnnotationView(tapped);
 						}
 						
@@ -665,7 +670,8 @@ public class ServiceFragment extends Fragment {
 							int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
 							if(lastTouchedIndex > -1){
 								OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
-								annotation.showAnnotationView(tapped);
+								
+						        annotation.showAnnotationView(tapped);
 							}
 							
 						}
@@ -702,4 +708,48 @@ public class ServiceFragment extends Fragment {
             });	
     }
     
+    protected void init(final OverlayItem item) {
+    	AnnotationView customizedAnnotation;
+        // initialize the annotation to be shown later 
+    	customizedAnnotation = new AnnotationView(map);
+    	// customize the annotation
+    	float density = map.getContext().getResources().getDisplayMetrics().density;
+    	customizedAnnotation.setBubbleRadius((int)(12*density+0.5f));
+    	// make the annotation not animate
+    	customizedAnnotation.setAnimated(false);
+    	
+    	// init our custom innerView from an xml file
+    	
+        
+        
+        RelativeLayout customInnerView;
+		LayoutInflater li = (LayoutInflater)map.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        customInnerView = (RelativeLayout) li.inflate(R.layout.annotation, null);
+        TextView customTitle = (TextView) customInnerView.findViewById(R.id.title);
+        TextView customSnippet = (TextView) customInnerView.findViewById(R.id.snippet);
+        Button customButton = (Button) customInnerView.findViewById(R.id.boton);
+        
+        customTitle.setText(item.getTitle());
+        customSnippet.setText(item.getSnippet());
+        customButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			    routeManager.setMapView(map);
+			    String myLat = myLoc.getMyLocation().getLatitude()+"";
+			    String myLng = myLoc.getMyLocation().getLongitude()+"";
+			    String toLat = item.getPoint().getLatitude()+"";
+			    String toLng = item.getPoint().getLongitude()+"";
+			    
+			    routeManager.clearRoute();
+			    routeManager.createRoute(myLat+","+myLng, toLat+","+toLng);
+				//Toast.makeText(map.getContext(), item.getPoint().getLatitude()+ " "+ item.getPoint().getLongitude(), Toast.LENGTH_LONG).show();
+			}
+		});
+        annotation.setInnerView(customInnerView);
+        // now use the customInnerView as the annotation's innerView
+        
+    }
 }
