@@ -33,8 +33,8 @@
  	    	<Button 
 		        android:id="@+id/boton"
 		        android:layout_centerVertical="true"
-		        android:layout_width="50dp" 
-		        android:layout_height="wrap_content" 
+		        android:layout_width="30dp" 
+		        android:layout_height="30dp" 
 		        android:layout_toRightOf="@+id/snippet"
 		        android:background="@drawable/boton_Ir"
 		        android:text="IR"/>
