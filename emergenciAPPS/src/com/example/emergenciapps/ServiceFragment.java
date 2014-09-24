@@ -49,7 +49,7 @@ public class ServiceFragment extends Fragment {
     public AnnotationView annotation;
     public Context contexto;
     public RouteManager routeManager;
-    
+    public boolean cercanos;
     public int progreso_a_guardar = 0;
     
     public boolean ok_bom =  false;
@@ -81,6 +81,7 @@ public class ServiceFragment extends Fragment {
         int i = getArguments().getInt(SERVICE_NUMBER);
         Bundle a = getArguments();
         respuestaBusqueda = (RespuestaServicioWeb) getArguments().getSerializable("respuesta");
+        cercanos = (respuestaBusqueda == null)? true : false;
         switch(i){
         	//case 0
         	case 0: rootView = inflater.inflate(R.layout.fragment_inicio, container, false);
@@ -402,6 +403,7 @@ public class ServiceFragment extends Fragment {
 						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
 						if(lastTouchedIndex > -1){
 							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							init(tapped);
 							annotation.showAnnotationView(tapped);
 						}
 						
@@ -584,6 +586,7 @@ public class ServiceFragment extends Fragment {
 						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
 						if(lastTouchedIndex > -1){
 							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							init(tapped);
 							annotation.showAnnotationView(tapped);
 						}
 						
@@ -670,7 +673,7 @@ public class ServiceFragment extends Fragment {
 							int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
 							if(lastTouchedIndex > -1){
 								OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
-								
+								init(tapped);
 						        annotation.showAnnotationView(tapped);
 							}
 							
@@ -728,7 +731,8 @@ public class ServiceFragment extends Fragment {
         TextView customTitle = (TextView) customInnerView.findViewById(R.id.title);
         TextView customSnippet = (TextView) customInnerView.findViewById(R.id.snippet);
         Button customButton = (Button) customInnerView.findViewById(R.id.boton);
-        
+        if(!cercanos)
+        	customButton.setVisibility(View.INVISIBLE);
         customTitle.setText(item.getTitle());
         customSnippet.setText(item.getSnippet());
         customButton.setOnClickListener(new View.OnClickListener() {
