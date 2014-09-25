@@ -1,5 +1,7 @@
 package com.example.emergenciapps;
 
+import com.mapquest.android.maps.GeoPoint;
+
 public class PDI {
 	private int id;
 	private String nombre;
@@ -22,7 +24,9 @@ public class PDI {
 		this.y = y;
 		this.distancia = distancia;
 	}
-	
+	public GeoPoint getGeoPoint(){
+		return new GeoPoint(x,y);
+	}
 	
 	public Float getDistancia() {
 		return distancia;

@@ -1,5 +1,7 @@
 package com.example.emergenciapps;
 
+import com.mapquest.android.maps.GeoPoint;
+
 public class Bombero {
 	private int id;
 	private String nombre;
@@ -23,7 +25,9 @@ public class Bombero {
 		this.distancia = distancia;
 	}
 	
-	
+	public GeoPoint getGeoPoint(){
+		return new GeoPoint(x,y);
+	}
 	public Float getDistancia() {
 		return distancia;
 	}
