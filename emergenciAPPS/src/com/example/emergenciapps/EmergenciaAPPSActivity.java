@@ -189,7 +189,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private void generaItems(){
     	items = new ArrayList<Item>();
     	items.add(new Item("Inicio", R.drawable.home,""));
-    	items.add(new Item("Ambulancia", R.drawable.hospital,"centro_medico"));
+    	items.add(new Item("Centros Médicos", R.drawable.hospital,"centro_medico"));
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
     	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
