@@ -1,8 +1,9 @@
 package com.example.object;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Configuracion {
+public class Configuracion implements Serializable  {
 	private Integer idConfiguracion;
 	private String numeroPDI;
 	private String numeroCarabinero;

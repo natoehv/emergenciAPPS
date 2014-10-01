@@ -21,6 +21,7 @@
         android:layout_below="@+id/imageView1"
         android:layout_marginTop="0dp"
         android:ems="10"
+        android:textColor="#FFF"
         android:inputType="phone">
 <requestFocus />
    </EditText>  
@@ -33,6 +34,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:textColor="#FFF"
         android:inputType="textPassword" >
 
         

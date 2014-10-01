@@ -481,18 +481,20 @@ public class ServicioWeb {
     			usuario.setNumeroTelefono(json.getString("numero"));
     			Configuracion conf = new Configuracion();
     			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+    			JSONObject confJSON = json.getJSONObject("configuracion");
     			try{
-    				conf.setFechaModificacion(formato.parse(json.getString("fecha_modificacion")));
+    				conf.setFechaModificacion(formato.parse(confJSON.getString("fecha_modificacion")));
     			}catch(ParseException e){
-    				Log.e("emergenciAPPS","formato de fecha invalido: "+json.getString("fecha_modificacion") , e);
+    				Log.e("emergenciAPPS","formato de fecha invalido: "+confJSON.getString("fecha_modificacion") , e);
     			}
-    			conf.setIdConfiguracion(json.getInt("id_configuracion"));
-    			conf.setMensajeAlerta(json.getString("mensaje_alerta"));
-    			conf.setNumeroBombero(json.getString("numero_bombero"));
-    			conf.setNumeroCarabinero(json.getString("numero_carabinero"));
-    			conf.setNumeroCentroMedico(json.getString("numero_centro_medico"));
-    			conf.setNumeroPDI(json.getString("numero_pdi"));
-    			conf.setRadioBusqueda(json.getInt("radio_busqueda"));
+    			
+    			conf.setIdConfiguracion(confJSON.getInt("id_configuracion"));
+    			conf.setMensajeAlerta(confJSON.getString("mensaje_alerta"));
+    			conf.setNumeroBombero(confJSON.getString("numero_bombero"));
+    			conf.setNumeroCarabinero(confJSON.getString("numero_carabinero"));
+    			conf.setNumeroCentroMedico(confJSON.getString("numero_centro_medico"));
+    			conf.setNumeroPDI(confJSON.getString("numero_pdi"));
+    			conf.setRadioBusqueda(confJSON.getInt("radio_busqueda"));
     			usuario.setConfiguracion(conf);
     			JSONArray jArrayContactos = json.getJSONArray("contactos");
     			Contacto contacto;

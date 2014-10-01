@@ -1,5 +1,7 @@
 package com.example.login;
 
+import java.io.Serializable;
+
 import com.example.emergenciapps.EmergenciaAPPSActivity;
 import com.example.emergenciapps.R;
 import com.example.emergenciapps.ServicioWeb;
@@ -41,7 +43,7 @@ public class loginActivity  extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				AsyncTask<String, Void, String> inicioSesion = new AsyncTask<String, Void, String>() {
+				AsyncTask<String, Void, String> inicioSesion = new AsyncTask<String, Void,String >() {
 
 					@Override
 					protected String doInBackground(String... params) {
@@ -51,10 +53,10 @@ public class loginActivity  extends Activity{
 							if(user == null){
 								//no existe usuario
 								Log.d("emergenciAPPS", "no se encuentra a usuario");
-								//Toast.makeText(loginActivity.this, "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
+								return "error";
 							}else{
 								Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
-						         i.putExtra("usuario", user);
+						         i.putExtra("usuario",(Serializable) user);
 						        startActivity(i);
 							}
 						}
@@ -65,7 +67,8 @@ public class loginActivity  extends Activity{
 					protected void onPostExecute(String result) {
 						// TODO Auto-generated method stub
 						super.onPostExecute(result);
-						
+						if(result.equals("error"))
+							Toast.makeText(usuario.getContext(), "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
 						
 					}
 					
