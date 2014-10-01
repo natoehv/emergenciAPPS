@@ -44,14 +44,6 @@ public class loginActivity  extends Activity{
 
 					@Override
 					protected String doInBackground(String... params) {
-						
-						return "";
-					}
-
-					@Override
-					protected void onPostExecute(String result) {
-						// TODO Auto-generated method stub
-						super.onPostExecute(result);
 						if(validarCampos()){
 							Usuario user;
 							user = ServicioWeb.verificaLogin(usuario.getText().toString(), password.getText().toString());
@@ -64,6 +56,14 @@ public class loginActivity  extends Activity{
 						        startActivity(i);
 							}
 						}
+						return "";
+					}
+
+					@Override
+					protected void onPostExecute(String result) {
+						// TODO Auto-generated method stub
+						super.onPostExecute(result);
+						
 						
 					}
 					
