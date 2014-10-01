@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.object.Configuracion;
+import com.example.object.Contacto;
 import com.example.object.EmailEmergencia;
 import com.example.object.Item;
+import com.example.object.Usuario;
+import com.example.persistencia.ContactoSQLHelper;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
@@ -18,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -64,8 +69,11 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private CharSequence mTitle;
     private String numero;
     private String correoContacto;
+    
+    private String miNumero;
     private Integer posicionActual;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
+    private SharedPreferences prefsSesion;
     private static String TAG = "emergenciAPPS";
     private Menu menu;
 
@@ -77,17 +85,61 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         setContentView(R.layout.activity_main);
         
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		prefs =		getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+		prefs =	getSharedPreferences("miCuenta", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        correoContacto = prefs.getString("correoContacto", "");
-        String numeroCarabinero = prefs.getString("numeroCarabinero", "133");
-        String numeroBombero = prefs.getString("numeroBombero", "132");
-        String numeroHospital = prefs.getString("numeroHospital", "131");
         
-		editor.putString("numeroCarabinero", numeroCarabinero);
-		editor.putString("numeroBombero", numeroBombero);
-		editor.putString("numeroHospital", numeroHospital);
-		editor.commit();
+        //correoContacto = prefs.getString("correoContacto", "");
+        //String numeroCarabinero = prefs.getString("numeroCarabinero", "133");
+        //String numeroBombero = prefs.getString("numeroBombero", "132");
+        //String numeroHospital = prefs.getString("numeroHospital", "131");
+        
+		//editor.putString("numeroCarabinero", numeroCarabinero);
+		//editor.putString("numeroBombero", numeroBombero);
+		//editor.putString("numeroHospital", numeroHospital);
+		//editor.commit();
+		
+		prefsSesion =	getSharedPreferences("sesion", this.MODE_PRIVATE);
+		if(prefsSesion.getBoolean("firstTime",false)){
+			Bundle extras = this.getIntent().getExtras();
+			if(extras != null){
+				Usuario usuario = (Usuario) extras.getSerializable("user");
+				editor.putString("miNumero", usuario.getNumeroTelefono());
+				editor.putString("miNombre", usuario.getNombre());
+				editor.putString("miApellido", usuario.getApellido());
+				editor.putString("miCorreo", usuario.getCorreo());
+				
+				Configuracion configuracion = usuario.getConfiguracion();
+				editor.putString("numero_pdi", configuracion.getNumeroPDI());
+				editor.putString("numero_carabinero", configuracion.getNumeroCarabinero());
+				editor.putString("numero_centro_medico", configuracion.getNumeroCentroMedico());
+				editor.putString("numero_bombero", configuracion.getNumeroBombero());
+				editor.putInt("radio_busqueda", configuracion.getRadioBusqueda());
+				editor.putString("mensaje_alerta", configuracion.getMensajeAlerta());
+				
+				
+				editor.putLong("fecha_modificacion", configuracion.getFechaModificacion().getTime());
+				
+				List<Contacto> misContactos = usuario.getContactos();
+				ContactoSQLHelper oData = new ContactoSQLHelper(this); 
+				SQLiteDatabase db = oData.getReadableDatabase(); 
+				
+				
+				
+				for(Contacto c: misContactos){
+					String sql = "insert into contacto values  ";
+					db.execSQL(sql);
+
+				}
+				
+				
+				
+				
+			}
+			
+			
+			SharedPreferences.Editor editorSesion = prefs.edit();
+			editorSesion.putBoolean("firsTime", false);
+		}
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);

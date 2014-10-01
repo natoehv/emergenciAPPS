@@ -23,15 +23,17 @@ public class loginActivity  extends Activity{
 	private EditText password;
 	private EditText usuario;
 	private SharedPreferences prefs;
+	private SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		prefs =		getSharedPreferences("sesion", this.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+        editor = prefs.edit();
         Boolean inicio = prefs.getBoolean("login", false);
         if(inicio){
-        	
+        	Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
+	        startActivity(i);
         }
 		setContentView(R.layout.activity_login);
 		iniciarSesion = (Button) this.findViewById(R.id.login);
@@ -55,6 +57,8 @@ public class loginActivity  extends Activity{
 								Log.d("emergenciAPPS", "no se encuentra a usuario");
 								return "error";
 							}else{
+								editor.putBoolean("login", true);
+								editor.putBoolean("firstTime", true);
 								Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
 						         i.putExtra("usuario",(Serializable) user);
 						        startActivity(i);
