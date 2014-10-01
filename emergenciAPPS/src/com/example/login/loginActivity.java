@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,7 +50,8 @@ public class loginActivity  extends Activity{
 							user = ServicioWeb.verificaLogin(usuario.getText().toString(), password.getText().toString());
 							if(user == null){
 								//no existe usuario
-								Toast.makeText(loginActivity.this, "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
+								Log.d("emergenciAPPS", "no se encuentra a usuario");
+								//Toast.makeText(loginActivity.this, "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
 							}else{
 								Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
 						         i.putExtra("usuario", user);
