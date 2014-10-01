@@ -1,5 +1,7 @@
 package com.example.emergenciapps;
 
+import com.example.object.EmailEmergencia;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;

@@ -2,6 +2,11 @@ package com.example.emergenciapps;
 
 import java.util.ArrayList;
 
+import com.example.object.Bombero;
+import com.example.object.Carabinero;
+import com.example.object.Hospital;
+import com.example.object.PDI;
+
 import android.R.color;
 import android.content.Context;
 import android.content.Intent;

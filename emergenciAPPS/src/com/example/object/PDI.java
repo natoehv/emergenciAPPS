@@ -1,8 +1,8 @@
-package com.example.emergenciapps;
+package com.example.object;
 
 import com.mapquest.android.maps.GeoPoint;
 
-public class Carabinero {
+public class PDI {
 	private int id;
 	private String nombre;
 	private String direccion;
@@ -11,9 +11,9 @@ public class Carabinero {
 	private Float x, y;
 	private Float distancia;
 	
-	public Carabinero(){
+	public PDI(){
 	}
-	public Carabinero(int id, String nombre, String direccion, String telefono,
+	public PDI(int id, String nombre, String direccion, String telefono,
 			String comuna, Float x, Float y, Float distancia) {
 		this.id = id;
 		this.nombre = nombre;

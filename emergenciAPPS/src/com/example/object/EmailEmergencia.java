@@ -1,4 +1,4 @@
-package com.example.emergenciapps;
+package com.example.object;
 
 import android.content.Context;
 

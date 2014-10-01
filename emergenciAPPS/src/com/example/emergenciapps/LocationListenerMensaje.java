@@ -2,6 +2,8 @@ package com.example.emergenciapps;
 
 import java.util.List;
 
+import com.example.object.EmailEmergencia;
+
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;

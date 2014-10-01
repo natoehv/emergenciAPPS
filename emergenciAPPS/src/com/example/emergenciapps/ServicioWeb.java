@@ -1,5 +1,7 @@
 package com.example.emergenciapps;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,13 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.object.Bombero;
+import com.example.object.Carabinero;
+import com.example.object.Configuracion;
+import com.example.object.Contacto;
+import com.example.object.Hospital;
+import com.example.object.PDI;
+import com.example.object.Usuario;
 import com.mapquest.android.maps.GeoPoint;
 
 public class ServicioWeb {
@@ -390,6 +399,7 @@ public class ServicioWeb {
         res =  new RespuestaServicioWeb(resultados, codigo);
     	return res;
 	}
+	
 	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
 		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/sendMail.php";
 		HttpParams httpParameters = new BasicHttpParams();
@@ -431,4 +441,97 @@ public class ServicioWeb {
 		return descripcion;
 		
 	}
+
+	public static Usuario verificaLogin(String user, String pass){
+		Usuario usuario = new Usuario();
+		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_inicio_sesion.php";
+    	HttpParams httpParameters = new BasicHttpParams();
+    	Integer codigo = OK_CONEXION;
+    	RespuestaServicioWeb res;
+    	String jsonReturnText="";
+    	String respuesta;
+    	List resultados = new ArrayList();
+    	int timeoutConnection = 10000;
+    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 10000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	
+    		try{
+    			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+    			oPostParam.add(new BasicNameValuePair("telefono",user));
+    			oPostParam.add(new BasicNameValuePair("password",pass));
+    			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+    			HttpResponse oResp = httpclient.execute(oPost);
+    			HttpEntity r_entity = oResp.getEntity();
+    			jsonReturnText = EntityUtils.toString(r_entity);
+    			
+    		}catch(Exception e){
+    			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+    			codigo = ERROR_CONEXION;
+    			res =  new RespuestaServicioWeb(resultados, codigo);
+    	    	return null;
+    		}
+    		try{
+    			JSONObject json = new JSONObject(jsonReturnText);
+    			usuario.setApellido(json.getString("apellido"));
+    			usuario.setCorreo(json.getString("correo"));
+    			usuario.setNombre(json.getString("nombre"));
+    			usuario.setNumeroTelefono(json.getString("numero"));
+    			Configuracion conf = new Configuracion();
+    			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+    			try{
+    				conf.setFechaModificacion(formato.parse(json.getString("fecha_modificacion")));
+    			}catch(ParseException e){
+    				Log.e("emergenciAPPS","formato de fecha invalido: "+json.getString("fecha_modificacion") , e);
+    			}
+    			conf.setIdConfiguracion(json.getInt("id_configuracion"));
+    			conf.setMensajeAlerta(json.getString("mensaje_alerta"));
+    			conf.setNumeroBombero(json.getString("numero_bombero"));
+    			conf.setNumeroCarabinero(json.getString("numero_carabinero"));
+    			conf.setNumeroCentroMedico(json.getString("numero_centro_medico"));
+    			conf.setNumeroPDI(json.getString("numero_pdi"));
+    			conf.setRadioBusqueda(json.getInt("radio_busqueda"));
+    			usuario.setConfiguracion(conf);
+    			JSONArray jArrayContactos = json.getJSONArray("contactos");
+    			Contacto contacto;
+    			List<Contacto> contactos = new ArrayList();
+				for(int i=0; i<jArrayContactos.length(); i++){
+					contacto = new Contacto();
+					JSONObject aux = jArrayContactos.getJSONObject(i);
+					String nombre = aux.getString("nombre");
+					String numero  = aux.getString("numero");
+					String correo = aux.getString("correo");
+					Integer alertaSMS = aux.getInt("alerta_sms");
+					Integer alertaGPS = aux.getInt("alerta_gps");
+					Integer alertaCorreo = aux.getInt("alerta_correo");
+					Integer idContacto = aux.getInt("id_contacto");
+					
+					contacto.setAlertaCorreo(alertaCorreo);
+					contacto.setAlertaGPS(alertaGPS);
+					contacto.setAlertaSMS(alertaSMS);
+					contacto.setCorreo(correo);
+					contacto.setNombre(nombre);
+					contacto.setNumeroTelefono(numero);
+					contacto.setIdContacto(idContacto);
+					
+				    contactos.add(contacto);
+				    
+				}
+				usuario.setContactos(contactos);
+				
+    		}catch(JSONException e){
+    			Log.e("emergenciAPPS", "Al obtener datos de json: "+jsonReturnText, e);
+    			codigo = ERROR_JSON_GPS;
+    			return null;
+    			
+    		}
+ 
+		
+		return usuario;
+	}
+
 }
+
+ 

@@ -1,4 +1,4 @@
-package com.example.emergenciapps;
+package com.example.object;
 
 public class Item {
 	private int idIcon;

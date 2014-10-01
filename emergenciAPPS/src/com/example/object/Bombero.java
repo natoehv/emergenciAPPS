@@ -1,4 +1,4 @@
-package com.example.emergenciapps;
+package com.example.object;
 
 import com.mapquest.android.maps.GeoPoint;
 

@@ -24,6 +24,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.object.Bombero;
+import com.example.object.Carabinero;
+import com.example.object.Hospital;
+import com.example.object.PDI;
 import com.mapquest.android.maps.AnnotationView;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;

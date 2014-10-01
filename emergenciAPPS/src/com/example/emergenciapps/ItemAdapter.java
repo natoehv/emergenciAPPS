@@ -2,6 +2,8 @@ package com.example.emergenciapps;
 
 import java.util.ArrayList;
 
+import com.example.object.Item;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
