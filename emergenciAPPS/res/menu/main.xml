@@ -19,5 +19,13 @@
           android:icon="@drawable/action_search"
           android:title="@string/action_websearch"
           android:showAsAction="ifRoom|withText" 
-          android:actionViewClass="android.widget.SearchView"/>
+          android:actionViewClass="android.widget.SearchView"
+          />
+	<item 
+	    android:id="@+id/guardarConf"
+	    android:title="@string/action_save_conf"
+	    android:icon="@drawable/ic_action_content_save"
+	  	android:showAsAction="ifRoom|withText"
+	  	android:actionViewClass="android.widget.Button"
+	    />
 </menu>

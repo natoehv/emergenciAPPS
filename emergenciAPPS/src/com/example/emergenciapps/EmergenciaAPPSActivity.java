@@ -208,10 +208,34 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         inflater.inflate(R.menu.main, menu);
         
         MenuItem searchItem = menu.findItem(R.id.buscar);
-       
-        if(posicionActual == 0 || posicionActual == 5 || posicionActual == 6){
+        MenuItem botonItem = menu.findItem(R.id.guardarConf);
+        switch(posicionActual){
+        // INICIO
+        case 0:
+        	searchItem.setVisible(false);
+        	botonItem.setVisible(false);
+        	break;
+        // CENTRO MEDICO
+        case 1:
+        	botonItem.setVisible(false);
+        	break;
+        // BOMBEROS
+        case 2:
+        	botonItem.setVisible(false);
+        	break;
+        case 3:
+        // CARABINEROS
+        	botonItem.setVisible(false);
+        	break;
+        // PDI
+        case 4:
+        	botonItem.setVisible(false);
+        	break;
+        // CONFIGURACION
+        case 5:
         	searchItem.setVisible(false);
         }
+       
         mSearchView = (SearchView) searchItem.getActionView();
         mSearchView.setQueryHint("Search...");
         mSearchView.setOnQueryTextListener(this);
@@ -255,7 +279,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
     	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
-    	//items.add(new Item("Configurar", R.drawable.configuracion,""));
+    	items.add(new Item("Configurar", R.drawable.configuracion,""));
     	//items.add(new Item("Ayuda", R.drawable.help,""));
     }
     private void selectItem(int position, RespuestaServicioWeb lista) {

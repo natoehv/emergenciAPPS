@@ -201,35 +201,26 @@ public class ServiceFragment extends Fragment {
         	//case 5
         	case 5: 
         				
-        			rootView = inflater.inflate(R.layout.config, container, false);
-        			final EditText editBombero = (EditText)rootView.findViewById(R.id.editText1);
-        			final EditText editCarabinero = (EditText)rootView.findViewById(R.id.editText2);
-        			final EditText editHospital = (EditText)rootView.findViewById(R.id.editText3);
-        			final EditText editMiNombre = (EditText)rootView.findViewById(R.id.editText40);
-        			final EditText editMiNumero = (EditText)rootView.findViewById(R.id.editText50);
-        			final EditText editFavorito = (EditText)rootView.findViewById(R.id.editText4);
-        			final EditText editMensaje = (EditText)rootView.findViewById(R.id.editText5);
+        			rootView = inflater.inflate(R.layout.configuracion, container, false);
+        			final EditText editBombero = (EditText)rootView.findViewById(R.id.editBombero);
+        			final EditText editCarabinero = (EditText)rootView.findViewById(R.id.editCarabinero);
+        			final EditText editHospital = (EditText)rootView.findViewById(R.id.editCentroMedico);
+        			final EditText editMensaje = (EditText)rootView.findViewById(R.id.editMensajeAlerta);
         			final Button btnGuardar = (Button)rootView.findViewById(R.id.btnGuardar);
         			
                     SharedPreferences pref = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
                     final SharedPreferences.Editor editor = pref.edit();
                     
-                    final String bom = pref.getString("numeroBombero", "");
+                    final String bom = pref.getString("numero_bombero", "");
                 	editBombero.setText(bom);
-                    final String car = pref.getString("numeroCarabinero", "");
+                    final String car = pref.getString("numero_carabinero", "");
                     editCarabinero.setText(car);
-                	final String hos = pref.getString("numeroHospital", "");
+                	final String hos = pref.getString("numero_centro_medico", "");
                 	editHospital.setText(hos);
-                	final String miNombre = pref.getString("miNombre", "");
-                	editMiNombre.setText(miNombre);
-                	final String miNumero = pref.getString("miNumero", "");
-                	editMiNumero.setText(miNumero);
-                	final String fav = pref.getString("correoContacto", "");
-                	editFavorito.setText(fav);
-                	final String msj = pref.getString("mensaje", "Help!");
+                	final String msj = pref.getString("mensaje_alerta", "Help!");
                 	editMensaje.setText(msj);
                 	
-                	final int radio = pref.getInt("ratio", 6);
+                	final int radio = pref.getInt("radio_busqueda", 6);
                 	
                 	
                 	
@@ -288,27 +279,6 @@ public class ServiceFragment extends Fragment {
 								editHospital.setError("Ingrese número favorito de Hospital");
 							}
 							
-							if(!editMiNombre.getText().toString().equals("")){
-								ok_miNom = true;
-							}else{
-								ok_miNom = false;
-								editMiNombre.setError("Ingrese su nombre");
-								
-							}
-							if(!editMiNumero.getText().toString().equals("")){
-								ok_miNum = true;
-							}else{
-								ok_miNum = false;
-								editMiNumero.setError("Ingrese su número de contacto");
-							}
-							
-							if(!editFavorito.getText().toString().equals("")){
-								ok_corr = true;
-							}else{
-								ok_corr = false;
-								editFavorito.setError("Ingrese correo electrónico para alertar");
-							}
-							
 							if(!editMensaje.getText().toString().equals("")){
 								ok_msj = true;
 							}else{
@@ -323,9 +293,6 @@ public class ServiceFragment extends Fragment {
 								editor.putString("numeroBombero",editBombero.getText().toString());
 								editor.putString("numeroCarabinero",editCarabinero.getText().toString());
 								editor.putString("numeroHospital",editHospital.getText().toString());
-								editor.putString("miNombre", editMiNombre.getText().toString());
-								editor.putString("miNumero", editMiNumero.getText().toString());
-								editor.putString("correoContacto",editFavorito.getText().toString());
 								editor.putString("mensaje",editMensaje.getText().toString());
 								if(progreso_a_guardar == 0){
 									editor.putInt("ratio",radio);
