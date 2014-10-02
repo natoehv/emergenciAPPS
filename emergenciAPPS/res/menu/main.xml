@@ -26,6 +26,5 @@
 	    android:title="@string/action_save_conf"
 	    android:icon="@drawable/ic_action_content_save"
 	  	android:showAsAction="ifRoom|withText"
-	  	android:actionViewClass="android.widget.Button"
 	    />
 </menu>

@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.object.Bombero;
 import com.example.object.Carabinero;
+import com.example.object.Configuracion;
 import com.example.object.Hospital;
 import com.example.object.PDI;
 import com.mapquest.android.maps.AnnotationView;
@@ -43,28 +44,33 @@ public class ServiceFragment extends Fragment {
     public static final String SERVICE_NUMBER = "servicio_number";
     public static final int RADIO_BUSQUEDA = 5;
     public static  int radioBusqueda;
-    public static final int ZOOM = 20;
-    public MapView map;
-    public ListView listaTelefonos;
-    public int progressChanged;
-    public MyLocationExtends myLoc;
-    public DefaultItemizedOverlay overlay;
-    public DefaultItemizedOverlay overlayServicio;
-    public AnnotationView annotation;
-    public Context contexto;
-    public RouteManager routeManager;
-    public boolean cercanos;
-    public int progreso_a_guardar = 0;
+    private static final int ZOOM = 20;
+    private MapView map;
+    private ListView listaTelefonos;
+    private int progressChanged;
+    private MyLocationExtends myLoc;
+    private DefaultItemizedOverlay overlay;
+    private DefaultItemizedOverlay overlayServicio;
+    private AnnotationView annotation;
+    private Context contexto;
+    private RouteManager routeManager;
+    private boolean cercanos;
+    private int progreso_a_guardar = 0;
     
-    public boolean ok_bom =  false;
-    public boolean ok_hos = false;
-    public boolean ok_car = false;
-    public boolean ok_corr = false;
-    public boolean ok_msj = false;
-    public boolean ok_miNom = false;
-    public boolean ok_miNum = false;
+    private boolean ok_bom =  false;
+    private boolean ok_hos = false;
+    private boolean ok_car = false;
+    private boolean ok_corr = false;
+    private boolean ok_msj = false;
+    private boolean ok_miNom = false;
+    private boolean ok_miNum = false;
     
-    public boolean guadadoExitoso = false;
+    private EditText editBombero;
+    private EditText editCarabinero;
+    private EditText editHospital;
+    private EditText editMensaje;
+    
+    private boolean guadadoExitoso = false;
     private RespuestaServicioWeb respuestaBusqueda;
     
     
@@ -202,14 +208,13 @@ public class ServiceFragment extends Fragment {
         	case 5: 
         				
         			rootView = inflater.inflate(R.layout.configuracion, container, false);
-        			final EditText editBombero = (EditText)rootView.findViewById(R.id.editBombero);
-        			final EditText editCarabinero = (EditText)rootView.findViewById(R.id.editCarabinero);
-        			final EditText editHospital = (EditText)rootView.findViewById(R.id.editCentroMedico);
-        			final EditText editMensaje = (EditText)rootView.findViewById(R.id.editMensajeAlerta);
-        			final Button btnGuardar = (Button)rootView.findViewById(R.id.btnGuardar);
+        			editBombero = (EditText)rootView.findViewById(R.id.editBombero);
+        			editCarabinero = (EditText)rootView.findViewById(R.id.editCarabinero);
+        			editHospital = (EditText)rootView.findViewById(R.id.editCentroMedico);
+        			editMensaje = (EditText)rootView.findViewById(R.id.editMensajeAlerta);
+        			//final Button btnGuardar = (Button)rootView.findViewById(R.id.guardarConf);
         			
-                    SharedPreferences pref = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
-                    final SharedPreferences.Editor editor = pref.edit();
+                    SharedPreferences pref = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
                     
                     final String bom = pref.getString("numero_bombero", "");
                 	editBombero.setText(bom);
@@ -222,13 +227,11 @@ public class ServiceFragment extends Fragment {
                 	
                 	final int radio = pref.getInt("radio_busqueda", 6);
                 	
+                	progreso_a_guardar = radio;
                 	
-                	
-                	SeekBar radioControl = null;
-                	radioControl = (SeekBar) rootView.findViewById(R.id.volume_bar);
+                	SeekBar radioControl = (SeekBar) rootView.findViewById(R.id.seekBar1);
                 	radioControl.setProgress(radio);
                 	radioControl.setMax(20);
-                	
                 	
                     radioControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             			int progressChanged = 0;
@@ -252,7 +255,7 @@ public class ServiceFragment extends Fragment {
 						}
             		});
             		
-                	
+                	/*
 
                 	btnGuardar.setOnClickListener(new View.OnClickListener() {
 						
@@ -321,6 +324,7 @@ public class ServiceFragment extends Fragment {
 						}
 						 
 					});
+					*/
                 	
                 	
         	break;
@@ -1044,5 +1048,15 @@ public class ServiceFragment extends Fragment {
         annotation.setInnerView(customInnerView);
         // now use the customInnerView as the annotation's innerView
         
+    }
+
+    public Configuracion getConfiguracion(){
+    	Configuracion conf = new Configuracion();
+    	conf.setMensajeAlerta(editMensaje.getText().toString());
+    	conf.setNumeroBombero(editBombero.getText().toString());
+    	conf.setNumeroCarabinero(editCarabinero.getText().toString());
+    	conf.setNumeroCentroMedico(editHospital.getText().toString());
+    	conf.setRadioBusqueda(progreso_a_guardar);
+    	return conf;
     }
 }

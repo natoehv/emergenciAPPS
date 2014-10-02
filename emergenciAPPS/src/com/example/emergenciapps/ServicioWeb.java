@@ -536,6 +536,45 @@ public class ServicioWeb {
 		return usuario;
 	}
 
+	public static boolean actualizaConfiguracion(Configuracion conf, String idUsuario){
+		boolean guardar = false;
+		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_configuracion.php";
+    	HttpParams httpParameters = new BasicHttpParams();
+    	Integer codigo = OK_CONEXION;
+    	RespuestaServicioWeb res;
+    	String respuesta = "error";
+    	List resultados = new ArrayList();
+    	int timeoutConnection = 10000;
+    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 10000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	
+    		try{
+    			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+    			oPostParam.add(new BasicNameValuePair("numero_telefono",idUsuario));
+    			oPostParam.add(new BasicNameValuePair("numero_carabinero",conf.getNumeroCarabinero()));
+    			oPostParam.add(new BasicNameValuePair("numero_bombero",conf.getNumeroBombero()));
+    			oPostParam.add(new BasicNameValuePair("numero_centro_medico",conf.getNumeroCentroMedico()));
+    			oPostParam.add(new BasicNameValuePair("mensaje_alerta",conf.getMensajeAlerta()));
+    			oPostParam.add(new BasicNameValuePair("radio_busqueda",conf.getRadioBusqueda().toString()));
+    			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+    			HttpResponse oResp = httpclient.execute(oPost);
+    			HttpEntity r_entity = oResp.getEntity();
+    			respuesta = EntityUtils.toString(r_entity);
+    			Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
+    			if(respuesta.equals("true"))
+    				return true;
+    		}catch(Exception e){
+    			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+    			codigo = ERROR_CONEXION;
+    			res =  new RespuestaServicioWeb(resultados, codigo);
+    	    	return false;
+    		}
+    			
+		return guardar;
+	}
 }
 
  

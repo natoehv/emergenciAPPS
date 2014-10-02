@@ -59,6 +59,7 @@ public class loginActivity  extends Activity{
 							}else{
 								editor.putBoolean("login", true);
 								editor.putBoolean("firstTime", true);
+								editor.commit();
 								Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
 						         i.putExtra("usuario",(Serializable) user);
 						        startActivity(i);

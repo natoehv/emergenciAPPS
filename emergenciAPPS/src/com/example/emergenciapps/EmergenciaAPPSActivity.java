@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.login.loginActivity;
 import com.example.object.Configuracion;
 import com.example.object.Contacto;
 import com.example.object.EmailEmergencia;
@@ -75,6 +76,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private Integer posicionActual;
     private SharedPreferences prefs;
     private SharedPreferences prefsSesion;
+    private Fragment fragment ;
     private static String TAG = "emergenciAPPS";
     private Menu menu;
 
@@ -99,11 +101,11 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 		//editor.putString("numeroHospital", numeroHospital);
 		//editor.commit();
 		
-		prefsSesion =	getSharedPreferences("sesion", this.MODE_PRIVATE);
-		if(prefsSesion.getBoolean("firstTime",false)){
+		prefsSesion =	getSharedPreferences("sesion", loginActivity.MODE_PRIVATE);
+		if(prefsSesion.getBoolean("firstTime",true)){
 			Bundle extras = this.getIntent().getExtras();
 			if(extras != null){
-				Usuario usuario = (Usuario) extras.getSerializable("user");
+				Usuario usuario = (Usuario) extras.getSerializable("usuario");
 				editor.putString("miNumero", usuario.getNumeroTelefono());
 				editor.putString("miNombre", usuario.getNombre());
 				editor.putString("miApellido", usuario.getApellido());
@@ -143,7 +145,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 				oData.close();
 				
 			}
-			SharedPreferences.Editor editorSesion = prefs.edit();
+			SharedPreferences.Editor editorSesion = prefsSesion.edit();
 			editorSesion.putBoolean("firsTime", false);
 			editorSesion.commit();
 			
@@ -185,15 +187,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-        	//Se oculta buscar para inicio
-        	posicionActual = 0;
-        	if(correoContacto.equals("")){
-        		//selectItem(5);
         		selectItem(0);
-        	}else{
-        		//selectItem(0);
-        		selectItem(0);
-        	}
             
         }
         
@@ -255,11 +249,45 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     public boolean onOptionsItemSelected(MenuItem item) {
          // The action bar home/up action should open or close the drawer.
          // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle action buttons
-        return false;
+    	switch (item.getItemId()) {
+	        case R.id.guardarConf:
+	            Log.i("ActionBar", "Guardardando!");
+	            final String miNumero =  prefs.getString("miNumero", "no encontrado");
+	            final Configuracion conf = ((ServiceFragment)fragment).getConfiguracion();
+	            AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+
+					@Override
+					protected String doInBackground(String... arg0) {
+						boolean resultado = ServicioWeb.actualizaConfiguracion(conf, miNumero);
+						String respuesta;
+						if(resultado){
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("numero_carabinero", conf.getNumeroCarabinero());
+							editor.putString("numero_centro_medico", conf.getNumeroCentroMedico());
+							editor.putString("numero_bombero", conf.getNumeroBombero());
+							editor.putInt("radio_busqueda", conf.getRadioBusqueda());
+							editor.putString("mensaje_alerta", conf.getMensajeAlerta());
+							editor.commit();
+							return "Configuración Actualizada correctamente";
+						}else{
+							return "No fue posible actualizar la configuracion";
+						}
+					}
+
+					@Override
+					protected void onPostExecute(String result) {
+						super.onPostExecute(result);
+						Toast.makeText(EmergenciaAPPSActivity.this, result, Toast.LENGTH_LONG).show();
+					}
+					
+					
+	            	
+	            };
+	            tarea.execute();
+	            return true;
+	        default:
+	            return mDrawerToggle.onOptionsItemSelected(item);
+	    }
     }
 
     /* The click listner for ListView in the navigation drawer */
@@ -285,7 +313,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private void selectItem(int position, RespuestaServicioWeb lista) {
     	posicionActual = position;
         // update the main content by replacing fragments
-        Fragment fragment = new ServiceFragment();
+        fragment = new ServiceFragment();
         Bundle args = new Bundle();
         args.putSerializable("respuesta", (Serializable) lista);
         args.putInt(ServiceFragment.SERVICE_NUMBER, position);
