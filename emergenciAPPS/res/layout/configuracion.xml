@@ -1,0 +1,153 @@
+
+    
+	<RelativeLayout
+	    xmlns:tools="http://schemas.android.com/tools"
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="horizontal" 
+	    android:background="#000"
+	    >
+
+		<ListView
+		    android:id="@+id/listView1"
+		    android:layout_width="match_parent"
+		    android:layout_height="50dp"
+		    
+		>
+		</ListView>
+		
+		 <TextView
+		     android:id="@+id/textView1"
+		     android:layout_width="match_parent"
+		     android:layout_height="25dp"
+		     android:textSize="20sp"
+		     android:layout_below="@+id/listView1"
+		     android:layout_centerHorizontal="true"
+		     android:text="@string/mensajeAlerta"
+		     android:textColor="#FFF"
+		 />
+		 
+		 <EditText
+	           android:id="@+id/editText2"
+	           android:layout_centerHorizontal="true"
+	           android:layout_width="300dp"
+	           android:layout_height="50dp"
+	           android:layout_below="@+id/textView1"
+	           android:background="@drawable/editredondos"
+	           android:inputType="text"
+         >
+         </EditText>
+         
+		 <TextView
+	        android:id="@+id/textView2"
+	        android:paddingTop="10dp"
+	        android:layout_width="wrap_content"
+	        android:textSize="20sp"
+	        android:layout_below="@+id/editText2"
+	        android:layout_height="wrap_content"
+	        android:text="@string/radioCobertura"
+	        android:textColor="#FFF"
+         />
+		 
+		 <SeekBar
+            android:id="@+id/volume_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:progress="0"
+            android:max="100"
+            android:layout_below="@+id/editText2"
+            android:progressDrawable="@drawable/progressbar"
+            android:secondaryProgress="0" 
+         />
+		 
+		 <LinearLayout
+            android:layout_width="fill_parent"
+            android:id="@+id/numerosProgreso"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_below="@+id/volume_bar"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:weightSum="15" >
+ 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_horizontal"
+                android:text="0"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+ 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_horizontal"
+                android:text="5"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+ 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_horizontal"
+                android:text="10"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+ 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_horizontal"
+                android:text="15"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+ 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:gravity="center_horizontal"
+                android:text="20"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+ 
+        </LinearLayout>
+		 
+		 <TextView
+	        android:id="@+id/textView3"
+	        android:paddingTop="10dp"
+	        android:layout_width="wrap_content"
+	        android:textSize="20sp"
+	        android:layout_below="@+id/numerosProgreso"
+	        android:layout_height="wrap_content"
+	        android:text="@string/numeroHospital"
+	        android:textColor="#FFF"
+         />
+		 
+		 <EditText
+           android:id="@+id/editTextNumeroCentroMedico"
+           android:layout_centerHorizontal="true"
+           android:layout_width="300dp"
+           android:layout_height="25dp"
+           android:layout_below="@+id/textView3"
+           android:background="@drawable/editredondos"
+           android:inputType="number"
+         >
+        </EditText>
+		 
+		 
+		 
+		 
+		 
+		 
+
+		 
+		
+	
+	</RelativeLayout>
