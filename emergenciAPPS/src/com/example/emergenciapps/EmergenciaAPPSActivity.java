@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -118,27 +119,34 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 				
 				
 				editor.putLong("fecha_modificacion", configuracion.getFechaModificacion().getTime());
+				editor.commit();
 				
 				List<Contacto> misContactos = usuario.getContactos();
 				ContactoSQLHelper oData = new ContactoSQLHelper(this); 
-				SQLiteDatabase db = oData.getReadableDatabase(); 
-				
-				
+				SQLiteDatabase db = oData.getWritableDatabase(); 
 				
 				for(Contacto c: misContactos){
-					String sql = "insert into contacto values  ";
-					db.execSQL(sql);
-
+					ContentValues registro = new ContentValues();
+					registro.put("id_contacto", c.getIdContacto());
+					registro.put("numero_telefono", c.getNumeroTelefono());
+					registro.put("nombre", c.getNombre());
+					registro.put("numero", c.getNumero());
+					registro.put("correo", c.getCorreo());
+					registro.put("estado", c.getEstado());
+					registro.put("alerta_sms", c.getAlertaSMS());
+					registro.put("alerta_gps", c.getAlertaGPS());
+					registro.put("alerta_correo", c.getAlertaCorreo());
+					db.insert("contacto", null, registro);
+					
 				}
-				
-				
-				
+				db.close();
+				oData.close();
 				
 			}
-			
-			
 			SharedPreferences.Editor editorSesion = prefs.edit();
 			editorSesion.putBoolean("firsTime", false);
+			editorSesion.commit();
+			
 		}
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

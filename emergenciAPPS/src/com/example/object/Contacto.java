@@ -6,6 +6,7 @@ public class Contacto implements Serializable  {
 	private Integer idContacto;
 	private String numeroTelefono;
 	private String nombre;
+	private String numero;
 	private String correo;
 	private Integer estado;
 	private Integer alertaSMS;
@@ -28,6 +29,13 @@ public class Contacto implements Serializable  {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public String getNumero() {
+		return numero;
+	}
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 	public String getCorreo() {
 		return correo;

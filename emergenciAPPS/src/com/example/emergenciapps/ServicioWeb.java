@@ -503,6 +503,7 @@ public class ServicioWeb {
 					contacto = new Contacto();
 					JSONObject aux = jArrayContactos.getJSONObject(i);
 					String nombre = aux.getString("nombre");
+					String numeroTelefono = aux.getString("numero_telefono");
 					String numero  = aux.getString("numero");
 					String correo = aux.getString("correo");
 					Integer alertaSMS = aux.getInt("alerta_sms");
@@ -515,7 +516,8 @@ public class ServicioWeb {
 					contacto.setAlertaSMS(alertaSMS);
 					contacto.setCorreo(correo);
 					contacto.setNombre(nombre);
-					contacto.setNumeroTelefono(numero);
+					contacto.setNumeroTelefono(numeroTelefono);
+					contacto.setNumero(numero);
 					contacto.setIdContacto(idContacto);
 					
 				    contactos.add(contacto);
