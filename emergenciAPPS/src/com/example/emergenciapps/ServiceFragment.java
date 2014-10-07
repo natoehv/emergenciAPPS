@@ -3,6 +3,7 @@ package com.example.emergenciapps;
 import java.util.List;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ import com.mapquest.android.maps.ItemizedOverlay;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.OverlayItem;
 import com.mapquest.android.maps.RouteManager;
+import com.mapquest.android.maps.RouteResponse;
 
 /**
  * Fragment that appears in the "content_frame", shows a planet
@@ -65,6 +67,8 @@ public class ServiceFragment extends Fragment {
     private boolean ok_miNom = false;
     private boolean ok_miNum = false;
     
+    private ProgressDialog ringProgressDialog;
+    
     private EditText editBombero;
     private EditText editCarabinero;
     private EditText editHospital;
@@ -84,8 +88,8 @@ public class ServiceFragment extends Fragment {
     	
         View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
         routeManager = new RouteManager(rootView.getContext(),"Fmjtd%7Cluur2g0bn0%2Cb0%3Do5-9at2qu");
-        SharedPreferences prefe = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
-        radioBusqueda = prefe.getInt("ratio", 1);
+        SharedPreferences prefe = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
+        radioBusqueda = prefe.getInt("radio_busqueda", 1);
         contexto = rootView.getContext();
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
@@ -1033,13 +1037,28 @@ public class ServiceFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				ringProgressDialog = ProgressDialog.show(contexto, "Por favor espere ...", "Cargando ruta óptima ...", true);
+				ringProgressDialog.setCancelable(false);
 			    routeManager.setMapView(map);
 			    String myLat = myLoc.getMyLocation().getLatitude()+"";
 			    String myLng = myLoc.getMyLocation().getLongitude()+"";
 			    String toLat = item.getPoint().getLatitude()+"";
 			    String toLng = item.getPoint().getLongitude()+"";
 			    
+				routeManager.setRouteCallback(new RouteManager.RouteCallback() {
+					
+					@Override
+					public void onSuccess(RouteResponse arg0) {
+						ringProgressDialog.dismiss();
+						Toast.makeText(contexto, "Ruta creada exitosamente", Toast.LENGTH_SHORT).show();
+					}
+					
+					@Override
+					public void onError(RouteResponse arg0) {
+						ringProgressDialog.dismiss();
+						Toast.makeText(contexto, "No fue posible crear la ruta", Toast.LENGTH_SHORT).show();
+					}
+				});
 			    routeManager.clearRoute();
 			    routeManager.createRoute(myLat+","+myLng, toLat+","+toLng);
 				//Toast.makeText(map.getContext(), item.getPoint().getLatitude()+ " "+ item.getPoint().getLongitude(), Toast.LENGTH_LONG).show();

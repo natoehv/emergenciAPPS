@@ -3,7 +3,7 @@ package com.example.object;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Configuracion implements Serializable  {
+public class Configuracion implements Serializable, Comparable<Configuracion> {
 	private Integer idConfiguracion;
 	private String numeroPDI;
 	private String numeroCarabinero;
@@ -59,6 +59,24 @@ public class Configuracion implements Serializable  {
 	}
 	public void setMensajeAlerta(String mensajeAlerta) {
 		this.mensajeAlerta = mensajeAlerta;
+	}
+	@Override
+	public int compareTo(Configuracion conf) {
+		int resultado = this.numeroBombero.compareTo(conf.numeroBombero);
+		if(resultado == 0){
+			resultado = this.numeroCarabinero.compareTo(conf.numeroCarabinero);
+			if(resultado == 0){
+				resultado = this.numeroCentroMedico.compareTo(conf.numeroCentroMedico);
+				if(resultado == 0){
+					resultado = this.radioBusqueda.compareTo(conf.radioBusqueda);
+					if(resultado == 0){
+						resultado = this.mensajeAlerta.compareTo(conf.mensajeAlerta);
+					}
+				}
+			}
+		}	
+		
+		return resultado;
 	}
 	
 	

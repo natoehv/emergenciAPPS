@@ -2,12 +2,13 @@ package com.example.login;
 
 import java.io.Serializable;
 
-import com.example.emergenciapps.EmergenciaAPPSActivity;
+import com.example.emergenciapps.EmergenciAPPSActivity;
 import com.example.emergenciapps.R;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.object.Usuario;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -18,22 +19,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class loginActivity  extends Activity{
+public class LoginActivity  extends Activity{
 	private Button iniciarSesion;
 	private EditText password;
 	private EditText usuario;
 	private SharedPreferences prefs;
 	private SharedPreferences.Editor editor;
+	
+	private ProgressDialog ringProgressDialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		getActionBar().hide();
 		prefs =		getSharedPreferences("sesion", this.MODE_PRIVATE);
         editor = prefs.edit();
         Boolean inicio = prefs.getBoolean("login", false);
         if(inicio){
-        	Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
+        	Intent i = new Intent(LoginActivity.this, EmergenciAPPSActivity.class);
 	        startActivity(i);
+	        finish();
         }
 		setContentView(R.layout.activity_login);
 		iniciarSesion = (Button) this.findViewById(R.id.login);
@@ -46,7 +51,13 @@ public class loginActivity  extends Activity{
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				AsyncTask<String, Void, String> inicioSesion = new AsyncTask<String, Void,String >() {
-
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();
+						ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Por favor espere ...", "Verificando usuario ...", true);
+						ringProgressDialog.setCancelable(false);
+					}
+					
 					@Override
 					protected String doInBackground(String... params) {
 						if(validarCampos()){
@@ -60,9 +71,10 @@ public class loginActivity  extends Activity{
 								editor.putBoolean("login", true);
 								editor.putBoolean("firstTime", true);
 								editor.commit();
-								Intent i = new Intent(loginActivity.this, EmergenciaAPPSActivity.class);
+								Intent i = new Intent(LoginActivity.this, EmergenciAPPSActivity.class);
 						         i.putExtra("usuario",(Serializable) user);
 						        startActivity(i);
+						        finish();
 							}
 						}
 						return "";
@@ -70,8 +82,8 @@ public class loginActivity  extends Activity{
 
 					@Override
 					protected void onPostExecute(String result) {
-						// TODO Auto-generated method stub
 						super.onPostExecute(result);
+						ringProgressDialog.dismiss();
 						if(result.equals("error"))
 							Toast.makeText(usuario.getContext(), "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
 						

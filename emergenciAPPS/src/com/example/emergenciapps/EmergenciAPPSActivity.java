@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.login.loginActivity;
+import com.example.login.LoginActivity;
 import com.example.object.Configuracion;
 import com.example.object.Contacto;
 import com.example.object.EmailEmergencia;
@@ -18,6 +18,7 @@ import com.mapquest.android.maps.MyLocationOverlay;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -59,7 +60,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListener {
+public class EmergenciAPPSActivity extends Activity implements OnQueryTextListener {
     private DrawerLayout mDrawerLayout;
     private SearchView mSearchView;
     private ListView mDrawerList;
@@ -71,6 +72,8 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     private CharSequence mTitle;
     private String numero;
     private String correoContacto;
+    
+    private ProgressDialog ringProgressDialog;
     
     private String miNumero;
     private Integer posicionActual;
@@ -101,7 +104,7 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 		//editor.putString("numeroHospital", numeroHospital);
 		//editor.commit();
 		
-		prefsSesion =	getSharedPreferences("sesion", loginActivity.MODE_PRIVATE);
+		prefsSesion =	getSharedPreferences("sesion", LoginActivity.MODE_PRIVATE);
 		if(prefsSesion.getBoolean("firstTime",true)){
 			Bundle extras = this.getIntent().getExtras();
 			if(extras != null){
@@ -254,7 +257,25 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 	            Log.i("ActionBar", "Guardardando!");
 	            final String miNumero =  prefs.getString("miNumero", "no encontrado");
 	            final Configuracion conf = ((ServiceFragment)fragment).getConfiguracion();
+	            /*
+	             * Obtengo configuracion guardada en las preferencias para verificar si la nueva configuracion
+	             * contiene cambios, si no es así no se realiza una actualización con el servicio web
+	             */
+	            Configuracion confLocal = new Configuracion();
+	            confLocal.setMensajeAlerta(prefs.getString("mensaje_alerta", "mensaje_confLocal"));
+	            confLocal.setNumeroBombero(prefs.getString("numero_bombero", "bombero_confLocal"));
+	            confLocal.setNumeroCarabinero(prefs.getString("numero_carabinero", "carabinero_confLocal"));
+	            confLocal.setNumeroCentroMedico(prefs.getString("numero_centro_medico", "centro_medico_confLocal"));
+	            confLocal.setRadioBusqueda(prefs.getInt("radio_busqueda", -1));
+	            
 	            AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+	            	
+					@Override
+					protected void onPreExecute() {
+						super.onPreExecute();
+						ringProgressDialog = ProgressDialog.show(EmergenciAPPSActivity.this, "Por favor espere ...", "Guardando información ...", true);
+						ringProgressDialog.setCancelable(false);
+					}
 
 					@Override
 					protected String doInBackground(String... arg0) {
@@ -277,13 +298,26 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 					@Override
 					protected void onPostExecute(String result) {
 						super.onPostExecute(result);
-						Toast.makeText(EmergenciaAPPSActivity.this, result, Toast.LENGTH_LONG).show();
+						ringProgressDialog.dismiss();
+						Toast.makeText(EmergenciAPPSActivity.this, result, Toast.LENGTH_LONG).show();
 					}
 					
 					
 	            	
 	            };
-	            tarea.execute();
+	            /*
+	             * Verifica si ambas configuraciones son iguales 
+	             */
+	            if(conf.compareTo(confLocal) != 0){
+	            	/*
+	            	 * Si las configuraciones no son iguales ejecuta tarea para guardar
+	            	 * en servidor
+	            	 */
+	            	tarea.execute();
+	            }else{
+	            	Toast.makeText(EmergenciAPPSActivity.this, "No existen cambios a guardar", Toast.LENGTH_SHORT).show();
+	            }
+	            
 	            return true;
 	        default:
 	            return mDrawerToggle.onOptionsItemSelected(item);
@@ -367,7 +401,12 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     public boolean onQueryTextSubmit(String text) {
 	   // metodo el cual se ejecuta al momento de realizar la busqueda
 	   AsyncTask<String, Void, String> busca = new AsyncTask<String, Void, String>() {
-		
+		   @Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				ringProgressDialog = ProgressDialog.show(EmergenciAPPSActivity.this, "Por favor espere ...", "Buscando comuna ...", true);
+				ringProgressDialog.setCancelable(false);
+			}
 		@Override
 		protected String doInBackground(String... params) {
 			respuestaBusqueda = ServicioWeb.buscaPorComuna(params[0], items.get(posicionActual).getNombreTabla());
@@ -376,15 +415,17 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
 		
 		@Override
 		protected void onPostExecute(String result) {
-			selectItem(posicionActual, respuestaBusqueda);
 			super.onPostExecute(result);
+			selectItem(posicionActual, respuestaBusqueda);
+			ringProgressDialog.dismiss();
+			
 		}
 	};
 	busca.execute(text);
 	   
        
 
-        return false;
+        return true;
     }
     
     public static void llamada(Activity activity, String numero){ 
@@ -490,6 +531,8 @@ public class EmergenciaAPPSActivity extends Activity implements OnQueryTextListe
     	numeroHospital.setText(hospital);
     }
 
+
+    
 
     
 }
