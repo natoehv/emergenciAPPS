@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
          <activity android:name="com.example.emergenciapps.EmergenciAPPSActivity"></activity>
+         <activity android:name="com.example.contactos.ListaContactosActivity"></activity>
+         
     </application>
     
     <uses-permission android:name="android.permission.INTERNET" />
