@@ -313,7 +313,12 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 	            	 * Si las configuraciones no son iguales ejecuta tarea para guardar
 	            	 * en servidor
 	            	 */
-	            	tarea.execute();
+	            	if(Utils.isOnline(this)){
+	            		tarea.execute();
+	            	}else{
+	            		Toast.makeText(this, "No podemos realizar tu solicitud, ya que no posees conexión a internet", Toast.LENGTH_SHORT).show();
+	            	}
+	            	
 	            }else{
 	            	Toast.makeText(EmergenciAPPSActivity.this, "No existen cambios a guardar", Toast.LENGTH_SHORT).show();
 	            }
@@ -400,6 +405,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
    @Override
     public boolean onQueryTextSubmit(String text) {
 	   // metodo el cual se ejecuta al momento de realizar la busqueda
+	   
 	   AsyncTask<String, Void, String> busca = new AsyncTask<String, Void, String>() {
 		   @Override
 			protected void onPreExecute() {
@@ -407,21 +413,26 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 				ringProgressDialog = ProgressDialog.show(EmergenciAPPSActivity.this, "Por favor espere ...", "Buscando comuna ...", true);
 				ringProgressDialog.setCancelable(false);
 			}
-		@Override
-		protected String doInBackground(String... params) {
-			respuestaBusqueda = ServicioWeb.buscaPorComuna(params[0], items.get(posicionActual).getNombreTabla());
-			return "";
+			@Override
+			protected String doInBackground(String... params) {
+				respuestaBusqueda = ServicioWeb.buscaPorComuna(params[0], items.get(posicionActual).getNombreTabla());
+				return "";
+			}
+			
+			@Override
+			protected void onPostExecute(String result) {
+				super.onPostExecute(result);
+				selectItem(posicionActual, respuestaBusqueda);
+				ringProgressDialog.dismiss();
+				
+			}
+		};
+		if(Utils.isOnline(this)){
+			busca.execute(text);
+		}else{
+			Toast.makeText(this,"No podemos realizar la solicitud ya que no posees conexión a internet", Toast.LENGTH_SHORT).show();
 		}
 		
-		@Override
-		protected void onPostExecute(String result) {
-			super.onPostExecute(result);
-			selectItem(posicionActual, respuestaBusqueda);
-			ringProgressDialog.dismiss();
-			
-		}
-	};
-	busca.execute(text);
 	   
        
 
