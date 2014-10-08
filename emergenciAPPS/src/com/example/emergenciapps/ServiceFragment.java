@@ -25,6 +25,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.contactos.ListaContactosActivity;
+import com.example.login.LoginActivity;
 import com.example.object.Bombero;
 import com.example.object.Carabinero;
 import com.example.object.Configuracion;
@@ -108,15 +110,15 @@ public class ServiceFragment extends Fragment {
             if(mail.getStatus() == AsyncTask.Status.RUNNING){
             	btnAyuda.setBackgroundResource(R.drawable.ayuda_pulsado);
             }
-            SharedPreferences prefs = rootView.getContext().getSharedPreferences("MisContactos", rootView.getContext().MODE_PRIVATE);
+            SharedPreferences prefs = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
             
-        	String carabinero = prefs.getString("numeroCarabinero", "5255");
+        	String carabinero = prefs.getString("numero_carabinero", "133");
         	numeroCarabinero.setText(carabinero);
         	
-        	String bombero = prefs.getString("numeroBombero", "86575038");
+        	String bombero = prefs.getString("numero_bombero", "132");
         	numeroBombero.setText(bombero);
         	
-        	String hospital = prefs.getString("numeroHospital", "82998988");
+        	String hospital = prefs.getString("numero_hospital", "131");
         	numeroHospital.setText(hospital);
         	break;
         	//case 1
@@ -216,7 +218,17 @@ public class ServiceFragment extends Fragment {
         			editCarabinero = (EditText)rootView.findViewById(R.id.editCarabinero);
         			editHospital = (EditText)rootView.findViewById(R.id.editCentroMedico);
         			editMensaje = (EditText)rootView.findViewById(R.id.editMensajeAlerta);
-        			//final Button btnGuardar = (Button)rootView.findViewById(R.id.guardarConf);
+        			Button btnContacto = (Button)rootView.findViewById(R.id.boton_contactos);
+        			
+        			btnContacto.setOnClickListener(new View.OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							Intent i = new Intent(contexto, ListaContactosActivity.class);
+					        startActivity(i);
+							
+						}
+					});
         			
                     SharedPreferences pref = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
                     
