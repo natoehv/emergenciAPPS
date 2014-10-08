@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.adapters.ItemAdapter;
 import com.example.login.LoginActivity;
 import com.example.object.Configuracion;
 import com.example.object.Contacto;

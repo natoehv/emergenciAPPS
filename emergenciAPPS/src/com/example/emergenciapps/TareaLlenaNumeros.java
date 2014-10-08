@@ -3,6 +3,8 @@ package com.example.emergenciapps;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.adapters.ListaAdapter;
+
 import android.os.AsyncTask;
 import android.widget.ListView;
 

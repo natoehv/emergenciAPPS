@@ -1,7 +1,10 @@
-package com.example.emergenciapps;
+package com.example.adapters;
 
 import java.util.ArrayList;
 
+import com.example.emergenciapps.R;
+import com.example.emergenciapps.R.id;
+import com.example.emergenciapps.R.layout;
 import com.example.object.Bombero;
 import com.example.object.Carabinero;
 import com.example.object.Hospital;

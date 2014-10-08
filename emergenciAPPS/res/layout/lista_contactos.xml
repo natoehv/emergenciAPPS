@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    
+    <TextView
+        android:id="@+id/nombre"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_margin="5dp"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="17dp" 
+        />
+        
+    <TextView
+        android:id="@+id/numero"
+        android:textColor="#FFF"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:textSize="17sp"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/nombre" />
+    
+    
+    <Button
+        android:id="@+id/lista_boton_llamar"
+        android:background="@drawable/ic_action_content_edit"
+        android:layout_width="30dp"
+        android:layout_height="31dp"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <ImageView
+        android:id="@+id/imagenGps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:layout_alignBottom="@+id/numero"
+        android:layout_alignTop="@+id/numero"
+        android:layout_marginRight="22dp"
+        android:layout_toLeftOf="@+id/ImageView01"
+        android:layout_toRightOf="@+id/nombre"
+        android:src="@drawable/ic_action_device_access_location_found" />
+
+    <ImageView
+        android:id="@+id/ImageView02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ImageView01"
+        android:layout_alignTop="@+id/ImageView01"
+        android:layout_toLeftOf="@+id/lista_boton_llamar"
+        android:src="@drawable/ic_action_content_email" />
+
+    <ImageView
+        android:id="@+id/ImageView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/ImageView02"
+        android:src="@drawable/ic_action_social_chat" />
+
+</RelativeLayout>
