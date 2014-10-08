@@ -473,6 +473,11 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     }
     
     public void enviarAlerta(View v){
+    	/*
+    	 * TODO El envio de alerta ha cambiado,
+    	 * ahora la notificacion va al servidor y el servidor la procesa para ver
+    	 * que hacer
+    	 */
     	Log.d(TAG, "Inicia eventeo enviarAlerta");
     	 SharedPreferences prefs = getSharedPreferences("MisContactos", this.MODE_PRIVATE);
     	 String correo = prefs.getString("correoContacto", "");
@@ -513,21 +518,20 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     
     
     public void actualizaPantallaInicio(){
-    	//setContentView(R.layout.fragment_inicio);
         final TextView numeroCarabinero = (TextView) findViewById(R.id.textView2);
         final TextView numeroBombero = (TextView) findViewById(R.id.textView3);
         final TextView numeroHospital = (TextView) findViewById(R.id.textView4);
         
         SharedPreferences prefs =
-				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+				getSharedPreferences("miCuenta", this.MODE_PRIVATE);
         
-    	String carabinero = prefs.getString("numeroCarabinero", "82806080");
+    	String carabinero = prefs.getString("numero_carabinero", "133");
     	numeroCarabinero.setText(carabinero);
     	
-    	String bombero = prefs.getString("numeroBombero", "86575038");
+    	String bombero = prefs.getString("numero_bombero", "132");
     	numeroBombero.setText(bombero);
     	
-    	String hospital = prefs.getString("numeroHospital", "82998988");
+    	String hospital = prefs.getString("numero_hospital", "131");
     	numeroHospital.setText(hospital);
     }
 
