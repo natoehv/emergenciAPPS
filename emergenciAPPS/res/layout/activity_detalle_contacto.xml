@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/black" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/nombre"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
+
+    <EditText
+        android:id="@+id/nombreContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:inputType="text"
+        android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/nombreContacto"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/telefono"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
+
+    <EditText
+        android:id="@+id/numeroContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/numeroContacto"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/correo"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
+
+    <EditText
+        android:id="@+id/correoContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_below="@+id/textView3"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/correoContacto"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/alertas"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
+
+    <Switch
+        android:id="@+id/switchSMS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/switchEmail"
+        android:layout_alignRight="@+id/switchEmail"
+        android:layout_below="@+id/switchEmail"
+        android:layout_marginTop="25dp"
+        android:text="@string/sms" />
+
+    <Switch
+        android:id="@+id/switchEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="33dp"
+        android:layout_toRightOf="@+id/textView2"
+        android:text="@string/email" />
+
+    <Switch
+        android:id="@+id/switchGPS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/switchSMS"
+        android:layout_alignRight="@+id/switchEmail"
+        android:layout_below="@+id/switchSMS"
+        android:layout_marginTop="20dp"
+        android:text="@string/gps" />
+
+</RelativeLayout>

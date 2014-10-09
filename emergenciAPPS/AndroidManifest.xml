@@ -24,6 +24,7 @@
         </activity>
          <activity android:name="com.example.emergenciapps.EmergenciAPPSActivity"></activity>
          <activity android:name="com.example.contactos.ListaContactosActivity"></activity>
+         <activity android:name="com.example.contactos.DetalleContacto"></activity>
          
     </application>
     

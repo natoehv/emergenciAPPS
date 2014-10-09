@@ -7,10 +7,10 @@
     <TextView
         android:id="@+id/nombre"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="27dp"
         android:layout_margin="5dp"
         android:textColor="#FFF"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="17dp" 
@@ -22,7 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:textSize="17sp"
-        android:layout_margin="5dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_below="@+id/nombre" />
     
     
@@ -37,12 +40,12 @@
 
     <ImageView
         android:id="@+id/imagenGps"
-        android:layout_width="wrap_content"
+        android:layout_width="10dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/numero"
         android:layout_alignLeft="@+id/numero"
         android:layout_alignTop="@+id/numero"
-        android:layout_marginRight="22dp"
+        android:layout_marginRight="0dp"
         android:layout_marginLeft="65dp"
         android:layout_toLeftOf="@+id/imagenEmail"
         android:src="@drawable/ic_action_device_access_location_found" />
