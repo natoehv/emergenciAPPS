@@ -41,7 +41,7 @@ public class ListaAdapterContacto extends ArrayAdapter{
 		nombre.setText(objects.get(position).getNombre());
 		numero.setText(objects.get(position).getNumero());
 		
-		return parent;
+		return v;
 		
 	}
 
