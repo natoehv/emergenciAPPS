@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.example.object.Contacto;
 import com.example.persistencia.ContactoSQLHelper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,5 +48,32 @@ public class Utils {
 		oData.close();
 		
 		return lista;
+	}
+	
+	public static void insertContacto(Contacto contacto, Context context){
+		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
+		SQLiteDatabase db = oData.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("numero_telefono", contacto.getNumeroTelefono());
+		values.put("numero", contacto.getNumero());
+		values.put("nombre", contacto.getNombre());
+		values.put("correo", contacto.getCorreo());
+		values.put("alerta_sms", contacto.getAlertaSMS());
+		values.put("alerta_gps", contacto.getAlertaGPS());
+		values.put("alerta_correo", contacto.getAlertaCorreo());
+		values.put("estado",0);
+		
+		try {
+			db.insertOrThrow("contacto", null, values);
+		} catch (Exception e) {
+			//manejar la excepción
+		}
+		
+		db.close();
+		oData.close();
+	}
+	
+	public static void updateContacto(Contacto contacto, int id_contacto, Context context){
+		
 	}
 }
