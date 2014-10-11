@@ -29,8 +29,6 @@ public class ListaContactosActivity extends Activity{
 		listaContactos = (ListView) findViewById(R.id.listaNroContactos);
 		Log.d("emergenciAPPS",listaContactos.toString());
 		
-		
-		
 		ArrayList<Contacto> listaContact = Utils.getContactos(this);
 		
 		ListaAdapterContacto adapter = new ListaAdapterContacto(this, R.id.lista_boton_llamar, listaContact);
@@ -55,7 +53,7 @@ public class ListaContactosActivity extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
         case R.id.agregarContacto:
-        	Intent intent = new Intent(ListaContactosActivity.this, DetalleContacto.class);
+        	Intent intent = new Intent(ListaContactosActivity.this, DetalleContactoActivity.class);
 			this.startActivity(intent);
 			
         	//Toast.makeText(ListaContactosActivity.this, "Agregar",Toast.LENGTH_LONG).show();

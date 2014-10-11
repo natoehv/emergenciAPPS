@@ -24,8 +24,15 @@
         </activity>
          <activity android:name="com.example.emergenciapps.EmergenciAPPSActivity"></activity>
          <activity android:name="com.example.contactos.ListaContactosActivity"></activity>
-         <activity android:name="com.example.contactos.DetalleContacto"></activity>
-         
+       
+         <activity
+    		android:name="com.example.contactos.DetalleContactoActivity"
+    		
+    		android:parentActivityName="com.example.contactos.ListaContactosActivity" > <!-- Aqui tendras que poner el nombre de la actividad que quieras que sea el padre -->
+    		<meta-data
+        		android:name="android.support.PARENT_ACTIVITY"
+        		android:value="com.example.contactos.ListaContactosActivity" /> <!-- Aqui tendras que poner el nombre de la actividad que quieras que sea el padre -->
+		</activity>
     </application>
     
     <uses-permission android:name="android.permission.INTERNET" />

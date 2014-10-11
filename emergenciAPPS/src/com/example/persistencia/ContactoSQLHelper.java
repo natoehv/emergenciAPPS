@@ -18,7 +18,7 @@ public class ContactoSQLHelper extends SQLiteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		db.execSQL("create table contacto (id_contacto interger primary key, numero_telefono text, nombre text, numero text, correo text, estado interger, alerta_sms interger, alerta_gps interger, alerta_correo interger)");
+		db.execSQL("create table contacto (_id interger primary key, numero_telefono text, nombre text, numero text, correo text, estado interger, alerta_sms interger, alerta_gps interger, alerta_correo interger)");
 		
 	}
 

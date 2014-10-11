@@ -2,6 +2,7 @@ package com.example.emergenciapps;
 
 import java.util.ArrayList;
 
+import com.example.contactos.DetalleContactoActivity;
 import com.example.object.Contacto;
 import com.example.persistencia.ContactoSQLHelper;
 
@@ -9,8 +10,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
+import android.widget.Toast;
 
 public class Utils {
 	public static boolean isOnline(Context context) {
@@ -54,7 +58,16 @@ public class Utils {
 	public static void insertContacto(Contacto contacto, Context context){
 		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
 		SQLiteDatabase db = oData.getWritableDatabase();
+		
+		String maxID = "select * from contacto";
+		final SQLiteStatement stmt = db.compileStatement("SELECT MAX(_id) FROM contacto");
+		int cnt = (int) stmt.simpleQueryForLong();
+		Log.d("cantidad de registros",""+cnt);
+	    int indice = cnt + 1;
+	    stmt.close();
+		
 		ContentValues values = new ContentValues();
+		values.put("_id", indice);
 		values.put("numero_telefono", contacto.getNumeroTelefono());
 		values.put("numero", contacto.getNumero());
 		values.put("nombre", contacto.getNombre());
@@ -68,6 +81,7 @@ public class Utils {
 			db.insertOrThrow("contacto", null, values);
 		} catch (Exception e) {
 			//manejar la excepción
+			Toast.makeText(context, "No fue posible agregar contacto en Base de Datos interna", Toast.LENGTH_LONG).show();
 		}
 		
 		db.close();
@@ -88,12 +102,28 @@ public class Utils {
 		values.put("estado",0);
 		
 		try {
-			db.update("contacto", values, "id_contacto " + "=" + contacto.getIdContacto(), null);
+			Log.d("_id",""+contacto.getIdContacto());
+			db.update("contacto", values, "_id " + "=" + contacto.getIdContacto(), null);
 		} catch (Exception e) {
-			//manejar la excepción
+			Toast.makeText(context, "No fue posible actualizar contacto en Base de Datos interna", Toast.LENGTH_LONG).show();
 		}
 		
 		db.close();
 		oData.close();
+	}
+
+	public static void deleteContacto(int id_contacto, Context context) {
+		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
+		SQLiteDatabase db = oData.getWritableDatabase();
+		try{
+			db.delete("contacto", "_id" + "=" + id_contacto, null);
+		}catch(Exception e){
+			Toast.makeText(context, "No fue posible eliminar contacto de Base de Datos interna", Toast.LENGTH_LONG).show();
+		}
+		db.close();
+		oData.close();
+		
+		
+		
 	}
 }

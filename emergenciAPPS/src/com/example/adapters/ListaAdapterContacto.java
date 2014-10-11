@@ -3,7 +3,7 @@ package com.example.adapters;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.example.contactos.DetalleContacto;
+import com.example.contactos.DetalleContactoActivity;
 import com.example.emergenciapps.R;
 import com.example.object.Configuracion;
 import com.example.object.Contacto;
@@ -64,7 +64,7 @@ public class ListaAdapterContacto extends ArrayAdapter{
 		edit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(v.getContext(), DetalleContacto.class);
+				Intent intent = new Intent(v.getContext(), DetalleContactoActivity.class);
 				intent.putExtra("contacto",(Serializable) objects.get(position));
 				v.getContext().startActivity(intent);
 			}

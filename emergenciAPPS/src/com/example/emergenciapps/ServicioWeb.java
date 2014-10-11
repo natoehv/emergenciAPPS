@@ -509,7 +509,7 @@ public class ServicioWeb {
 					Integer alertaSMS = aux.getInt("alerta_sms");
 					Integer alertaGPS = aux.getInt("alerta_gps");
 					Integer alertaCorreo = aux.getInt("alerta_correo");
-					Integer idContacto = aux.getInt("id_contacto");
+					Integer idContacto = aux.getInt("_id");
 					
 					contacto.setAlertaCorreo(alertaCorreo);
 					contacto.setAlertaGPS(alertaGPS);
@@ -663,6 +663,42 @@ public static boolean actualizaContacto(Contacto contacto){
     			
 		return guardar;
 	}
+
+public static boolean eliminaContacto(int id_contacto) {
+	boolean guardar = false;
+	String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_administrar_contacto.php";
+	HttpParams httpParameters = new BasicHttpParams();
+	Integer codigo = OK_CONEXION;
+	RespuestaServicioWeb res;
+	String respuesta = "error";
+	List resultados = new ArrayList();
+	int timeoutConnection = 10000;
+	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+	int timeoutSocket = 10000;
+	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+	HttpPost oPost = new HttpPost(URL);
+	
+		try{
+			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("id_contacto",""+id_contacto));
+			
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+			respuesta = EntityUtils.toString(r_entity);
+			Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
+			if(respuesta.equals("true"))
+				return true;
+		}catch(Exception e){
+			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+			codigo = ERROR_CONEXION;
+			res =  new RespuestaServicioWeb(resultados, codigo);
+	    	return false;
+		}
+			
+	return guardar;
+}
 }
 
  

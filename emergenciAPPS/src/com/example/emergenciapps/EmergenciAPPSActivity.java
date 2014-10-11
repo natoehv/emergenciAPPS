@@ -133,7 +133,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 				
 				for(Contacto c: misContactos){
 					ContentValues registro = new ContentValues();
-					registro.put("id_contacto", c.getIdContacto());
+					registro.put("_id", c.getIdContacto());
 					registro.put("numero_telefono", c.getNumeroTelefono());
 					registro.put("nombre", c.getNombre());
 					registro.put("numero", c.getNumero());
