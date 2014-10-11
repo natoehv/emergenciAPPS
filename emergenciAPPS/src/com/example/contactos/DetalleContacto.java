@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +28,7 @@ public class DetalleContacto extends Activity{
 	private TextView correo;
 	private Contacto contacto;
 	private String numero_telefono;
-	private SharedPreferences prefs;
+	private int estado;
 	private Switch gps;
 	private Switch sms;
 	private Switch email;
@@ -48,9 +49,9 @@ public class DetalleContacto extends Activity{
 		sms = (Switch) this.findViewById(R.id.switchSMS);
 		email = (Switch) this.findViewById(R.id.switchEmail);
 		
-		prefs =	getSharedPreferences("miCuenta", this.MODE_PRIVATE);
-		numero_telefono = prefs.getString("miNumero", "").toString();
-		
+		SharedPreferences prefs =	getSharedPreferences("miCuenta", this.MODE_PRIVATE);
+		numero_telefono = ""+prefs.getString("miNumero", "");
+		Log.d("miNumero", ""+prefs.getString("miNumero", ""));
 		Bundle extras = this.getIntent().getExtras();
 		
 		
@@ -59,6 +60,7 @@ public class DetalleContacto extends Activity{
 			actualizar = true;
 			contacto = (Contacto) extras.getSerializable("contacto");
 			id_contacto = contacto.getIdContacto();
+			estado = contacto.getEstado();
 			nombre.setText(contacto.getNombre());
 			numero.setText(contacto.getNumero());
 			correo.setText(contacto.getCorreo());
@@ -108,10 +110,12 @@ public class DetalleContacto extends Activity{
 		switch (item.getItemId()) {
         case R.id.guardarConf:
         		final Contacto contacto = new Contacto();
-        		contacto.setNumeroTelefono(toString());
+        		contacto.setNumeroTelefono(numero_telefono);
+        		contacto.setIdContacto(id_contacto);
         		contacto.setNombre(nombre.getText().toString());
         		contacto.setNumero(numero.getText().toString());
         		contacto.setCorreo(correo.getText().toString());
+        		
         		if(gps.isChecked())
         			contacto.setAlertaGPS(1);
         		else
@@ -138,21 +142,28 @@ public class DetalleContacto extends Activity{
 
 					@Override
 					protected String doInBackground(String... arg0) {
-						boolean resultado = ServicioWeb.ingresaContacto(contacto);
 						String respuesta;
-						if(resultado){
-							if(id_contacto != -1){
+						if(id_contacto == -1){
+							Log.d("accion", "Ingresar");
+							boolean resultadoIngreso = ServicioWeb.ingresaContacto(contacto);
+							if(resultadoIngreso){
 								Utils.insertContacto(contacto, DetalleContacto.this);
+								return "Contacto creado correctamente";
 							}else{
-								Utils.updateContacto(contacto, id_contacto, DetalleContacto.this);
+								return "No fue posible crear el Contacto";
 							}
-							
-							
-							
-							return "Configuración Actualizada correctamente";
 						}else{
-							return "No fue posible guardar los cambios";
+							Log.d("accion", "Actualizar");
+							Log.d("id_contacto", ""+id_contacto);
+							boolean resultadoActualizacion = ServicioWeb.actualizaContacto(contacto);
+							if(resultadoActualizacion){
+								Utils.updateContacto(contacto, DetalleContacto.this);
+								return "Contacto actualizado correctamente";
+							}else{
+								return "No fue posible actualizar el Contacto";
+							}
 						}
+						
 					}
 
 					@Override

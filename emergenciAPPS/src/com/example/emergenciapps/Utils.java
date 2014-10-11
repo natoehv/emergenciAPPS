@@ -37,6 +37,7 @@ public class Utils {
 			contacto.setNombre(oLoop.getString(2));
 			contacto.setNumero(oLoop.getString(3));
 			contacto.setCorreo(oLoop.getString(4));
+			contacto.setEstado(oLoop.getInt(5));
 			contacto.setAlertaSMS(oLoop.getInt(6));
 			contacto.setAlertaGPS(oLoop.getInt(7));
 			contacto.setAlertaCorreo(oLoop.getInt(8));
@@ -73,7 +74,26 @@ public class Utils {
 		oData.close();
 	}
 	
-	public static void updateContacto(Contacto contacto, int id_contacto, Context context){
+	public static void updateContacto(Contacto contacto, Context context){
+		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
+		SQLiteDatabase db = oData.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("numero_telefono", contacto.getNumeroTelefono());
+		values.put("numero", contacto.getNumero());
+		values.put("nombre", contacto.getNombre());
+		values.put("correo", contacto.getCorreo());
+		values.put("alerta_sms", contacto.getAlertaSMS());
+		values.put("alerta_gps", contacto.getAlertaGPS());
+		values.put("alerta_correo", contacto.getAlertaCorreo());
+		values.put("estado",0);
 		
+		try {
+			db.update("contacto", values, "id_contacto " + "=" + contacto.getIdContacto(), null);
+		} catch (Exception e) {
+			//manejar la excepción
+		}
+		
+		db.close();
+		oData.close();
 	}
 }
