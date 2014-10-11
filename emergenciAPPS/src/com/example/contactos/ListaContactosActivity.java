@@ -28,6 +28,7 @@ public class ListaContactosActivity extends Activity{
 		setContentView(R.layout.activity_contactos);
 		listaContactos = (ListView) findViewById(R.id.listaNroContactos);
 		Log.d("emergenciAPPS",listaContactos.toString());
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		ArrayList<Contacto> listaContact = Utils.getContactos(this);
 		
@@ -53,13 +54,18 @@ public class ListaContactosActivity extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
         case R.id.agregarContacto:
+        	
         	Intent intent = new Intent(ListaContactosActivity.this, DetalleContactoActivity.class);
 			this.startActivity(intent);
 			
         	//Toast.makeText(ListaContactosActivity.this, "Agregar",Toast.LENGTH_LONG).show();
 
         	break;
+        case android.R.id.home:
+        	finish();
+        	break;
 		}
+		
 		return true;
 	}
 

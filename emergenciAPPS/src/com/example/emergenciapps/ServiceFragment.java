@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -118,7 +119,7 @@ public class ServiceFragment extends Fragment {
         	String bombero = prefs.getString("numero_bombero", "132");
         	numeroBombero.setText(bombero);
         	
-        	String hospital = prefs.getString("numero_hospital", "131");
+        	String hospital = prefs.getString("numero_centro_medico", "131");
         	numeroHospital.setText(hospital);
         	break;
         	//case 1
@@ -218,12 +219,13 @@ public class ServiceFragment extends Fragment {
         			editCarabinero = (EditText)rootView.findViewById(R.id.editCarabinero);
         			editHospital = (EditText)rootView.findViewById(R.id.editCentroMedico);
         			editMensaje = (EditText)rootView.findViewById(R.id.editMensajeAlerta);
-        			Button btnContacto = (Button)rootView.findViewById(R.id.boton_contactos);
+        			final Button btnContacto = (Button)rootView.findViewById(R.id.boton_contactos);
         			
         			btnContacto.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
 						public void onClick(View v) {
+							
 							Intent i = new Intent(contexto, ListaContactosActivity.class);
 					        startActivity(i);
 							

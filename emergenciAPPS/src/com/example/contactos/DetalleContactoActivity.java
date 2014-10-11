@@ -221,6 +221,7 @@ public class DetalleContactoActivity extends Activity{
         		}
         	break;
         case R.id.eliminarContacto:
+        	
         	AlertDialog.Builder builder = new AlertDialog.Builder(DetalleContactoActivity.this);
         	builder.create();
         	builder.setTitle("Eliminar");
