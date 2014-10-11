@@ -32,7 +32,7 @@ public class Utils {
 		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
 		SQLiteDatabase db = oData.getWritableDatabase(); 
 		
-		Cursor oLoop = db.rawQuery("select * from contacto ", null);
+		Cursor oLoop = db.rawQuery("select * from contacto order by nombre asc", null);
 		
 		while(oLoop.moveToNext()){
 			Contacto contacto = new Contacto();

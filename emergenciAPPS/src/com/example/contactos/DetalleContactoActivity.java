@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -136,8 +137,8 @@ public class DetalleContactoActivity extends Activity{
         			ok_numero = false;
         		}
         		
-        		if(!correo.getText().equals("")){
-        			contacto.setCorreo(correo.getText().toString().toString());
+        		if(!correo.getText().toString().equals("")){
+        			contacto.setCorreo(correo.getText().toString());
         			ok_correo = true;
         		}else{
         			ok_correo = false;
@@ -202,6 +203,10 @@ public class DetalleContactoActivity extends Activity{
 							super.onPostExecute(result);
 							ringProgressDialog.dismiss();
 							Toast.makeText(DetalleContactoActivity.this, result, Toast.LENGTH_LONG).show();
+							
+							Intent i = new Intent(DetalleContactoActivity.this, ListaContactosActivity.class); 
+							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(i); 
 							finish();
 						}
 						
@@ -252,7 +257,11 @@ public class DetalleContactoActivity extends Activity{
 									super.onPostExecute(result);
 									ringProgressDialog.dismiss();
 									Toast.makeText(DetalleContactoActivity.this, result, Toast.LENGTH_LONG).show();
-									finish();
+									
+									Intent i = new Intent(DetalleContactoActivity.this, ListaContactosActivity.class); 
+									i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+									startActivity(i); 
+									finish();;
 								}
         	            		
         	            	};

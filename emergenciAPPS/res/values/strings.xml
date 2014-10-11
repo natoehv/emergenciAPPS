@@ -43,5 +43,6 @@
     <string name="email">E-mail</string>
     <string name="sms">SMS</string>
     <string name="gps">GPS</string>
-     
+    <string name="detalleContacto">Detalle Contacto</string>
+    <string name="misContactos">Mis Contactos</string>
 </resources>

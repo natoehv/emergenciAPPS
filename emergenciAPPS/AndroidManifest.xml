@@ -15,6 +15,7 @@
         android:theme="@style/AppThemeDark" >
         <activity
             android:name="com.example.login.LoginActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,17 +23,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity android:name="com.example.emergenciapps.EmergenciAPPSActivity"></activity>
-         <activity android:name="com.example.contactos.ListaContactosActivity"></activity>
+        
+         <activity 
+             android:name="com.example.emergenciapps.EmergenciAPPSActivity">
+         </activity>
+         
+         <activity android:name="com.example.contactos.ListaContactosActivity"
+             android:label="@string/misContactos"
+             android:screenOrientation="portrait">
+         </activity>
        
          <activity
     		android:name="com.example.contactos.DetalleContactoActivity"
-    		
+    		android:label="@string/detalleContacto"
+    		android:screenOrientation="portrait"
     		android:parentActivityName="com.example.contactos.ListaContactosActivity" > <!-- Aqui tendras que poner el nombre de la actividad que quieras que sea el padre -->
     		<meta-data
         		android:name="android.support.PARENT_ACTIVITY"
         		android:value="com.example.contactos.ListaContactosActivity" /> <!-- Aqui tendras que poner el nombre de la actividad que quieras que sea el padre -->
 		</activity>
+		
     </application>
     
     <uses-permission android:name="android.permission.INTERNET" />
