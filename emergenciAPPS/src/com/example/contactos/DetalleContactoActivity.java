@@ -262,7 +262,7 @@ public class DetalleContactoActivity extends Activity{
 									Intent i = new Intent(DetalleContactoActivity.this, ListaContactosActivity.class); 
 									i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 									startActivity(i); 
-									finish();;
+									finish();
 								}
         	            		
         	            	};

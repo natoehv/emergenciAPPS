@@ -2,9 +2,12 @@ package com.example.emergenciapps;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -26,6 +29,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.contactos.DetalleContactoActivity;
 import com.example.contactos.ListaContactosActivity;
 import com.example.login.LoginActivity;
 import com.example.object.Bombero;
@@ -347,7 +351,63 @@ public class ServiceFragment extends Fragment {
                 	
         	break;
         	//case 6
-        	case 6: rootView = inflater.inflate(R.layout.fragmento_tutorial, container, false);
+        	case 6: AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
+        	builder.create();
+        	builder.setTitle("Salir");
+        	builder.setMessage("¿ Cerrar sesión ?");
+        	builder.setPositiveButton("SI",
+        	        new DialogInterface.OnClickListener() {
+        	            public void onClick(DialogInterface dialog, int which) {
+        	            		AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+        	            		
+        	            		@Override
+        						protected void onPreExecute() {
+        							super.onPreExecute();
+        							ringProgressDialog = ProgressDialog.show(contexto, "Por favor espere ...", "Cerrando sesión ...", true);
+        							ringProgressDialog.setCancelable(false);
+        							
+        						}
+        	            		
+								@Override
+								protected String doInBackground(String... arg0) {
+									
+										return "Sesión cerrada";
+									
+									
+									
+								}
+								
+								@Override
+								protected void onPostExecute(String result) {
+									super.onPostExecute(result);
+									ringProgressDialog.dismiss();
+									Toast.makeText(contexto, result, Toast.LENGTH_SHORT).show();
+									SharedPreferences prefs = contexto.getSharedPreferences("sesion", contexto.MODE_PRIVATE);
+									SharedPreferences.Editor editor = prefs.edit();
+									editor.putBoolean("login", false);
+									editor.commit();		
+									
+									Intent i = new Intent(getActivity(), LoginActivity.class); 
+									startActivity(i); 
+									getActivity().finish();
+									
+								}
+        	            		
+        	            	};
+        	            	tarea.execute();
+        	            	
+        	            }
+        	        });
+        	
+        	builder.setNegativeButton("NO",
+        	        new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                	Intent i = new Intent(getActivity(), EmergenciAPPSActivity.class); 
+					startActivity(i); 
+					getActivity().finish();
+                }
+            });
+        	builder.show();
         	break;
         }
 //        int i = getArguments().getInt(ARG_PLANET_NUMBER);

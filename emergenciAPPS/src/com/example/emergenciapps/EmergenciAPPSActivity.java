@@ -351,7 +351,8 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
     	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
-    	items.add(new Item("Configurar", R.drawable.configuracion,""));
+    	items.add(new Item("Configurar", R.drawable.ic_action,""));
+    	items.add(new Item("Cerrar Sesión", R.drawable.exit,""));
     	//items.add(new Item("Ayuda", R.drawable.help,""));
     }
     private void selectItem(int position, RespuestaServicioWeb lista) {
