@@ -8,7 +8,7 @@
         <Button
             android:id="@+id/boton_contactos"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:text="Contactos"
@@ -39,7 +39,49 @@
         android:layout_below="@+id/textView1"
         android:max="100"
         android:progress="30" />
+    
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+        android:id="@+id/numerosProgreso"
+        android:layout_height="20dp"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/seekBar1"
+        android:orientation="horizontal"
+        >
 
+		<TextView
+		    android:layout_width="40dp"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:gravity="center_horizontal"
+		    android:text="1"
+		    android:textSize="10sp"
+		    android:textColor="@android:color/white"
+		    android:textStyle="bold" />
+
+		<TextView
+		    android:layout_width="50dp"
+		    android:layout_height="wrap_content"
+		    android:layout_centerHorizontal="true"
+		    android:gravity="center_horizontal"
+		    android:text="10"
+		    android:textSize="10sp"
+		    android:textColor="@android:color/white"
+		    android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="20"
+            android:textSize="10sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+	    
+	</RelativeLayout>
     <TextView
         android:id="@+id/TextView02"
         android:layout_width="wrap_content"
@@ -135,6 +177,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
         android:layout_centerVertical="true"
+        android:layout_below="@+id/numerosProgreso"
         android:text="@string/numeroHospital"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFF" />
