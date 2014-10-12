@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.adapters.ItemAdapter;
+import com.example.contactos.DetalleContactoActivity;
+import com.example.contactos.ListaContactosActivity;
 import com.example.login.LoginActivity;
 import com.example.object.Configuracion;
 import com.example.object.Contacto;
@@ -17,11 +19,13 @@ import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -546,6 +550,29 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	String hospital = prefs.getString("numero_hospital", "131");
     	numeroHospital.setText(hospital);
     }
+
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(EmergenciAPPSActivity.this);
+    	builder.create();
+    	builder.setTitle("Salir");
+    	builder.setMessage("¿ Cerrar EmergenciAPPS ?");
+    	builder.setPositiveButton("SI",
+    	        new DialogInterface.OnClickListener() {
+    	            public void onClick(DialogInterface dialog, int which) {
+    	            	EmergenciAPPSActivity.this.finish();
+    	            	
+    	            }
+    	        });
+    	
+    	builder.setNegativeButton("NO",
+    	        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+    	builder.show();
+	}
 
 
     
