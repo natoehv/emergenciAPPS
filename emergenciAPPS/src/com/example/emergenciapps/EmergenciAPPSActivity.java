@@ -236,6 +236,11 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
         // CONFIGURACION
         case 5:
         	searchItem.setVisible(false);
+        	break;
+        case 6:
+        	botonItem.setVisible(false);
+        	searchItem.setVisible(false);
+        	break;
         }
        
         mSearchView = (SearchView) searchItem.getActionView();
