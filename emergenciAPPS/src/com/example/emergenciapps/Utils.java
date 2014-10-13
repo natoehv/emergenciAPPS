@@ -61,9 +61,16 @@ public class Utils {
 		
 		String maxID = "select * from contacto";
 		final SQLiteStatement stmt = db.compileStatement("SELECT MAX(_id) FROM contacto");
+		
 		int cnt = (int) stmt.simpleQueryForLong();
 		Log.d("cantidad de registros",""+cnt);
-	    int indice = cnt + 1;
+		int indice;
+		if(cnt != 0){
+			indice = cnt + 1;
+		}else{
+			indice = 1;
+		}
+	    
 	    stmt.close();
 		
 		ContentValues values = new ContentValues();

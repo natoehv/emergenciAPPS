@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -37,6 +38,7 @@ import com.example.object.Carabinero;
 import com.example.object.Configuracion;
 import com.example.object.Hospital;
 import com.example.object.PDI;
+import com.example.persistencia.ContactoSQLHelper;
 import com.mapquest.android.maps.AnnotationView;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
@@ -384,8 +386,19 @@ public class ServiceFragment extends Fragment {
 									Toast.makeText(contexto, result, Toast.LENGTH_SHORT).show();
 									SharedPreferences prefs = contexto.getSharedPreferences("sesion", contexto.MODE_PRIVATE);
 									SharedPreferences.Editor editor = prefs.edit();
-									editor.putBoolean("login", false);
-									editor.commit();		
+									editor.clear();
+									editor.commit();	
+									
+									SharedPreferences prefs2 = contexto.getSharedPreferences("miCuenta", contexto.MODE_PRIVATE);
+									SharedPreferences.Editor editor2 = prefs2.edit();
+									editor2.clear();
+									editor2.commit();
+									
+									ContactoSQLHelper oData = new ContactoSQLHelper(contexto); 
+									SQLiteDatabase db = oData.getWritableDatabase();
+									db.execSQL("delete from contacto");
+									db.close();
+									oData.close();
 									
 									Intent i = new Intent(getActivity(), LoginActivity.class); 
 									startActivity(i); 
