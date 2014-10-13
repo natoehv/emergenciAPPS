@@ -1,6 +1,5 @@
 package com.example.emergenciapps;
 
-import java.io.UTFDataFormatException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -504,8 +503,6 @@ public class ServicioWeb {
 					contacto = new Contacto();
 					JSONObject aux = jArrayContactos.getJSONObject(i);
 					String nombre = aux.getString("nombre");
-					
-					Log.d("nombre: ",""+aux.getString("nombre"));
 					String numeroTelefono = aux.getString("numero_telefono");
 					String numero  = aux.getString("numero");
 					String correo = aux.getString("correo");
