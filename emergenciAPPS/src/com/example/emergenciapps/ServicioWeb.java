@@ -42,7 +42,7 @@ public class ServicioWeb {
 	public static final int ERROR_NO_EXISTE_COMUNA = 4;
 	
 	public static RespuestaServicioWeb postCercanos(GeoPoint punto, int distancia, String tabla){
-    	String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicioweb.php";
+    	String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicioweb.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -221,7 +221,7 @@ public class ServicioWeb {
 	public static RespuestaServicioWeb buscaPorComuna(String comunaBuscar, String tabla){
 		RespuestaServicioWeb res;
 		Integer codigo = OK_CONEXION;
-		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_busqueda.php";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_busqueda.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	String jsonReturnText="";
     	String respuesta;
@@ -401,7 +401,7 @@ public class ServicioWeb {
 	}
 	
 	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
-		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/sendMail.php";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/sendMail.php";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
@@ -444,7 +444,7 @@ public class ServicioWeb {
 
 	public static Usuario verificaLogin(String user, String pass){
 		Usuario usuario = new Usuario();
-		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_inicio_sesion.php";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_inicio_sesion.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -538,7 +538,7 @@ public class ServicioWeb {
 
 	public static boolean actualizaConfiguracion(Configuracion conf, String idUsuario){
 		boolean guardar = false;
-		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_configuracion.php";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_configuracion.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -579,7 +579,7 @@ public class ServicioWeb {
 	public static boolean ingresaContacto(Contacto contacto){
 		
 		boolean guardar = false;
-		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_administrar_contacto.php";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -619,10 +619,89 @@ public class ServicioWeb {
 		return guardar;
 	}
 	
-public static boolean actualizaContacto(Contacto contacto){
-		
+	public static boolean actualizaContacto(Contacto contacto){
+			
+			boolean guardar = false;
+			String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
+	    	HttpParams httpParameters = new BasicHttpParams();
+	    	Integer codigo = OK_CONEXION;
+	    	RespuestaServicioWeb res;
+	    	String respuesta = "error";
+	    	List resultados = new ArrayList();
+	    	int timeoutConnection = 10000;
+	    	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+	    	int timeoutSocket = 10000;
+	    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+	    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+	    	HttpPost oPost = new HttpPost(URL);
+	    	
+	    		try{
+	    			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+	    			oPostParam.add(new BasicNameValuePair("id_contacto",""+contacto.getIdContacto()));
+	    			oPostParam.add(new BasicNameValuePair("nombre",contacto.getNombre()));
+	    			oPostParam.add(new BasicNameValuePair("numero_telefono",contacto.getNumeroTelefono()));
+	    			oPostParam.add(new BasicNameValuePair("nombre",contacto.getNombre()));
+	    			oPostParam.add(new BasicNameValuePair("estado",""+contacto.getEstado()));
+	    			oPostParam.add(new BasicNameValuePair("numero",contacto.getNumero()));
+	    			oPostParam.add(new BasicNameValuePair("correo",contacto.getCorreo()));
+	    			oPostParam.add(new BasicNameValuePair("alerta_sms",""+contacto.getAlertaSMS()));
+	    			oPostParam.add(new BasicNameValuePair("alerta_gps",""+contacto.getAlertaGPS()));
+	    			oPostParam.add(new BasicNameValuePair("alerta_correo",""+contacto.getAlertaCorreo()));
+	    			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+	    			HttpResponse oResp = httpclient.execute(oPost);
+	    			HttpEntity r_entity = oResp.getEntity();
+	    			respuesta = EntityUtils.toString(r_entity);
+	    			Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
+	    			if(respuesta.equals("true"))
+	    				return true;
+	    		}catch(Exception e){
+	    			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+	    			codigo = ERROR_CONEXION;
+	    	    	return false;
+	    		}
+	    			
+			return guardar;
+		}
+	
+	public static boolean eliminaContacto(int id_contacto) {
 		boolean guardar = false;
 		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_administrar_contacto.php";
+		HttpParams httpParameters = new BasicHttpParams();
+		Integer codigo = OK_CONEXION;
+		RespuestaServicioWeb res;
+		String respuesta = "error";
+		List resultados = new ArrayList();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		int timeoutSocket = 10000;
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+		HttpClient httpclient = new DefaultHttpClient(httpParameters);
+		HttpPost oPost = new HttpPost(URL);
+		
+			try{
+				List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+				oPostParam.add(new BasicNameValuePair("id_contacto",""+id_contacto));
+				
+				oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+				HttpResponse oResp = httpclient.execute(oPost);
+				HttpEntity r_entity = oResp.getEntity();
+				respuesta = EntityUtils.toString(r_entity);
+				Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
+				if(respuesta.equals("true"))
+					return true;
+			}catch(Exception e){
+				Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
+				codigo = ERROR_CONEXION;
+				res =  new RespuestaServicioWeb(resultados, codigo);
+		    	return false;
+			}
+				
+		return guardar;
+	}
+
+	public static boolean registraGCMEnServidor(String user, String id){
+		boolean guardar = false;
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/registro_cliente_gcm.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -637,16 +716,8 @@ public static boolean actualizaContacto(Contacto contacto){
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
-    			oPostParam.add(new BasicNameValuePair("id_contacto",""+contacto.getIdContacto()));
-    			oPostParam.add(new BasicNameValuePair("nombre",contacto.getNombre()));
-    			oPostParam.add(new BasicNameValuePair("numero_telefono",contacto.getNumeroTelefono()));
-    			oPostParam.add(new BasicNameValuePair("nombre",contacto.getNombre()));
-    			oPostParam.add(new BasicNameValuePair("estado",""+contacto.getEstado()));
-    			oPostParam.add(new BasicNameValuePair("numero",contacto.getNumero()));
-    			oPostParam.add(new BasicNameValuePair("correo",contacto.getCorreo()));
-    			oPostParam.add(new BasicNameValuePair("alerta_sms",""+contacto.getAlertaSMS()));
-    			oPostParam.add(new BasicNameValuePair("alerta_gps",""+contacto.getAlertaGPS()));
-    			oPostParam.add(new BasicNameValuePair("alerta_correo",""+contacto.getAlertaCorreo()));
+    			oPostParam.add(new BasicNameValuePair("id_contacto",user));
+    			oPostParam.add(new BasicNameValuePair("regid",id));
     			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
     			HttpResponse oResp = httpclient.execute(oPost);
     			HttpEntity r_entity = oResp.getEntity();
@@ -657,48 +728,11 @@ public static boolean actualizaContacto(Contacto contacto){
     		}catch(Exception e){
     			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
     			codigo = ERROR_CONEXION;
-    			res =  new RespuestaServicioWeb(resultados, codigo);
     	    	return false;
     		}
     			
 		return guardar;
 	}
-
-public static boolean eliminaContacto(int id_contacto) {
-	boolean guardar = false;
-	String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_administrar_contacto.php";
-	HttpParams httpParameters = new BasicHttpParams();
-	Integer codigo = OK_CONEXION;
-	RespuestaServicioWeb res;
-	String respuesta = "error";
-	List resultados = new ArrayList();
-	int timeoutConnection = 10000;
-	HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
-	int timeoutSocket = 10000;
-	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
-	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-	HttpPost oPost = new HttpPost(URL);
-	
-		try{
-			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
-			oPostParam.add(new BasicNameValuePair("id_contacto",""+id_contacto));
-			
-			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
-			HttpResponse oResp = httpclient.execute(oPost);
-			HttpEntity r_entity = oResp.getEntity();
-			respuesta = EntityUtils.toString(r_entity);
-			Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
-			if(respuesta.equals("true"))
-				return true;
-		}catch(Exception e){
-			Log.e("emergenciAPPS", "Error al llamar datos desde servicio web: "+URL, e);
-			codigo = ERROR_CONEXION;
-			res =  new RespuestaServicioWeb(resultados, codigo);
-	    	return false;
-		}
-			
-	return guardar;
-}
 }
 
  

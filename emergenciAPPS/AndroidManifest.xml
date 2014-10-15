@@ -42,7 +42,8 @@
         		android:name="android.support.PARENT_ACTIVITY"
         		android:value="com.example.contactos.ListaContactosActivity" /> <!-- Aqui tendras que poner el nombre de la actividad que quieras que sea el padre -->
 		</activity>
-		
+		<meta-data android:name="com.google.android.gms.version"
+           android:value="@integer/google_play_services_version" />
     </application>
     
     <uses-permission android:name="android.permission.INTERNET" />
@@ -50,7 +51,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+	 
+	<permission android:name="como.example.emergenciapps.permission.C2D_MESSAGE"
+	     android:protectionLevel="signature" />
+	<uses-permission android:name="como.example.emergenciapps.permission.C2D_MESSAGE" />
     <supports-screens android:anyDensity="true"/>
 
 </manifest>
