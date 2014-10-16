@@ -38,7 +38,7 @@ public class LoginActivity  extends Activity{
     private static final String PROPERTY_USER = "user";
     private static final String TAG = "emergenciAPPS_GCM";
     
-    String SENDER_ID = "oceanic-craft-734";
+    String SENDER_ID = "473045304241";
     public static final long EXPIRATION_TIME_MS = 1000 * 3600 * 24 * 7;
     
 	private Button iniciarSesion;
