@@ -21,12 +21,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity  extends Activity{
@@ -42,6 +46,7 @@ public class LoginActivity  extends Activity{
     public static final long EXPIRATION_TIME_MS = 1000 * 3600 * 24 * 7;
     
 	private Button iniciarSesion;
+	private TextView registro;
 	private EditText password;
 	private EditText usuario;
 	private SharedPreferences prefs;
@@ -68,6 +73,17 @@ public class LoginActivity  extends Activity{
         }
 		setContentView(R.layout.activity_login);
 		iniciarSesion = (Button) this.findViewById(R.id.login);
+		registro = (TextView)this.findViewById(R.id.enlace);
+//		registro.setText(Html.fromHtml("<a href=\"http://www.google.com\">Registrate</a>"));
+//		registro.setMovementMethod(LinkMovementMethod.getInstance());
+		registro.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse("http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=site/register"));
+				startActivity(intent);
+			}
+		});
 		usuario = (EditText) this.findViewById(R.id.usuario);
 		password = (EditText) this.findViewById(R.id.password);
 		

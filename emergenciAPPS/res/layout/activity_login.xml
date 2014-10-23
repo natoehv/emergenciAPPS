@@ -46,7 +46,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"
         android:layout_marginTop="20dp"
-         android:layout_centerHorizontal="true"
+        android:layout_centerHorizontal="true"
         android:text="Iniciar Sesión" />
+    <TextView
+        android:id="@+id/enlace"
+		android:layout_width="wrap_content"
+		android:autoLink="web"
+		android:layout_below="@+id/login"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:clickable="true"
+		android:text="@string/enlace"
+        ></TextView>
+    
 
 </RelativeLayout>

@@ -45,4 +45,5 @@
     <string name="gps">GPS</string>
     <string name="detalleContacto">Detalle Contacto</string>
     <string name="misContactos">Mis Contactos</string>
+    <string name="enlace"><a href="">Registrate Aquí</a></string>
 </resources>
