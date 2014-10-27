@@ -401,7 +401,7 @@ public class ServicioWeb {
 	}
 	
 	public static String sendNotification(String lat, String lng, String miNumero){
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?api/enviaAlerta";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/enviaAlerta";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);

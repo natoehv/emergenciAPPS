@@ -29,6 +29,7 @@ public class GCMIntentService extends IntentService
 	@Override
     protected void onHandleIntent(Intent intent) 
 	{
+		Log.d("NOTIFICACION_SEGUIMIENTO","NOTIFICACION EN INICIO");
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         
         String messageType = gcm.getMessageType(intent);

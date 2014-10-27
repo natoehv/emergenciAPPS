@@ -54,6 +54,7 @@ public class LocationListenerMensaje implements LocationListener {
 			@Override
 			protected String doInBackground(String... arg0) {
 				ServicioWeb.sendNotification(lat, lng, miNumero);
+				
 				return "";
 				
 				
@@ -62,7 +63,7 @@ public class LocationListenerMensaje implements LocationListener {
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				
+				ringProgressDialog.dismiss();
 				
 			}
     		
