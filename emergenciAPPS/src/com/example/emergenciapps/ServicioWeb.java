@@ -400,8 +400,8 @@ public class ServicioWeb {
     	return res;
 	}
 	
-	public static String sendMail(String lat, String lng, String correo, String msj, String miNombre, String miNumero){
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/sendMail.php";
+	public static String sendNotification(String lat, String lng, String miNumero){
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?api/enviaAlerta";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
@@ -416,10 +416,7 @@ public class ServicioWeb {
     		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
 			oPostParam.add(new BasicNameValuePair("lat",lat));
 			oPostParam.add(new BasicNameValuePair("lng",lng));
-			oPostParam.add(new BasicNameValuePair("correo",correo));
-			oPostParam.add(new BasicNameValuePair("mensaje",msj));
-			oPostParam.add(new BasicNameValuePair("miNombre",miNombre));
-			oPostParam.add(new BasicNameValuePair("miNumero",miNumero));
+			oPostParam.add(new BasicNameValuePair("id_usuario",miNumero));
 			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
 			HttpResponse oResp = httpclient.execute(oPost);
 			HttpEntity r_entity = oResp.getEntity();
@@ -430,13 +427,7 @@ public class ServicioWeb {
     		return "El mensaje no ha podido ser enviado";
     	}
     	
-    	try{
-    		JSONObject reader = new JSONObject(respuesta);
-    		JSONObject sys  = reader.getJSONObject("respuesta");
-    		descripcion = sys.getString("descripcion");
-    	}catch(JSONException e){
-    		Log.e("emergenciAPPS", "Error al parsear "+respuesta, e);
-    	}
+    	Log.e("respuesta",respuesta);
     	
 		return descripcion;
 		

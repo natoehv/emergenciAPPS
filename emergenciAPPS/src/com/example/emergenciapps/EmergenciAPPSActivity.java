@@ -494,35 +494,45 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	
     }
     
-    public void enviarAlerta(View v){
+    public void enviarAlerta(final View v){
     	/*
     	 * TODO El envio de alerta ha cambiado,
     	 * ahora la notificacion va al servidor y el servidor la procesa para ver
     	 * que hacer
     	 */
     	Log.d(TAG, "Inicia eventeo enviarAlerta");
-    	 SharedPreferences prefs = getSharedPreferences("MisContactos", this.MODE_PRIVATE);
-    	 String correo = prefs.getString("correoContacto", "");
-    	 String msje = prefs.getString("mensaje", "Help!");
-    	 String miNombre = prefs.getString("miNombre", "Unknow");
-    	 String miNumero = prefs.getString("miNumero", "Sin numero");
-    	 String lat;
-    	 String lng;
+    	SharedPreferences prefs = getSharedPreferences("miCuenta", this.MODE_PRIVATE);
+	   	 final String miNumero = prefs.getString("miNumero", "Sin numero");
+    	AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+    	builder.create();
+    	builder.setTitle("Eliminar");
+    	builder.setMessage("¿ Realmente desea enviar una Alerta ?");
+    	builder.setPositiveButton("SI",
+    	        new DialogInterface.OnClickListener() {
+    	            public void onClick(DialogInterface dialog, int which) {
+    	            	
+    	            	locManager = (LocationManager)getSystemService(v.getContext().LOCATION_SERVICE);
+    	            	LocationListener locListener = new LocationListenerMensaje( locManager,v, miNumero);
+    	        	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
+    	        	    
+    	            	
+    	            }
+    	        });
+    	
+    	builder.setNegativeButton("NO",
+    	        new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+    	builder.show();
     	 
-    	 locManager = (LocationManager)getSystemService(this.LOCATION_SERVICE);
-    	 EmailEmergencia email = new EmailEmergencia();
-    	 email.setContext(getApplicationContext());
-    	 email.setCorreo(correo);
-    	 email.setMensaje(msje);
-    	 email.setMiNombre(miNombre);
-    	 email.setMiNumero(miNumero);
-    	 Button button = (Button) v.findViewById(R.id.btnEmergencia);
     	 
-    	 button.setBackgroundResource(R.drawable.ayuda_pulsado);
-    	 LocationListener locListener = new LocationListenerMensaje( locManager, email,v);
-    	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
-    	    Toast.makeText(v.getContext(),
-	                  "Enviando Alerta!", Toast.LENGTH_SHORT).show();
+    	 
+    	 
+    	 
+    	 
+    	 
  
      }
     

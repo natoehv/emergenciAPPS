@@ -113,10 +113,8 @@ public class ServiceFragment extends Fragment {
             final TextView numeroBombero = (TextView) rootView.findViewById(R.id.textView3);
             final TextView numeroHospital = (TextView) rootView.findViewById(R.id.textView4);
             Button btnAyuda = (Button) rootView.findViewById(R.id.btnEmergencia);
-            TaskSendMail mail = TaskSendMail.getInstance();
-            if(mail.getStatus() == AsyncTask.Status.RUNNING){
-            	btnAyuda.setBackgroundResource(R.drawable.ayuda_pulsado);
-            }
+            
+            
             SharedPreferences prefs = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
             
         	String carabinero = prefs.getString("numero_carabinero", "133");

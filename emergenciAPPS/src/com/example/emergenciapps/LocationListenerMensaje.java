@@ -2,9 +2,13 @@ package com.example.emergenciapps;
 
 import java.util.List;
 
+import com.example.contactos.DetalleContactoActivity;
+import com.example.contactos.ListaContactosActivity;
 import com.example.object.EmailEmergencia;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,14 +19,14 @@ import android.view.View;
 import android.widget.Toast;
 
 public class LocationListenerMensaje implements LocationListener {
+	private ProgressDialog ringProgressDialog;
 	private static String TAG = "emergenciAPPS";
-	EmailEmergencia mail;
+	
 	View v;
 	LocationManager locManager;
-	TaskSendMail enviarMail;
-	public LocationListenerMensaje(LocationManager locManager,EmailEmergencia mail,View v){
-		this.enviarMail = TaskSendMail.getInstance();
-		this.mail = mail;
+	String miNumero;
+	public LocationListenerMensaje(LocationManager locManager,View v, String miNumero){
+		this.miNumero = miNumero;
 		this.v = v;
 		this.locManager = locManager;
 		
@@ -31,19 +35,39 @@ public class LocationListenerMensaje implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		Log.d(TAG, "se captura localizacion");
-        String lat = String.valueOf(location.getLatitude());
-        String lng = String.valueOf(location.getLongitude());
+        final String lat = String.valueOf(location.getLatitude());
+        final String lng = String.valueOf(location.getLongitude());
         /*
          * Se crea hilo para enviar mensaje
          *  
          */
-        Log.d("emergenciAPPS",enviarMail.getStatus().toString());
-        if(enviarMail.getStatus() == AsyncTask.Status.RUNNING){
-        	//new TareaMuestraMensaje(mail.getContext()).execute("Su mensaje ya está siendo enviado");
-        }else{
-        	enviarMail.execute(lat,lng,mail,v);
-        }
-        	
+        AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+    		
+    		@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				ringProgressDialog = ProgressDialog.show(v.getContext(), "Por favor espere ...", "Enviando Alerta", true);
+				ringProgressDialog.setCancelable(false);
+				
+			}
+    		
+			@Override
+			protected String doInBackground(String... arg0) {
+				ServicioWeb.sendNotification(lat, lng, miNumero);
+				return "";
+				
+				
+			}
+			
+			@Override
+			protected void onPostExecute(String result) {
+				super.onPostExecute(result);
+				
+				
+			}
+    		
+    	};
+    	tarea.execute();
         locManager.removeUpdates(this);
 		
 		
