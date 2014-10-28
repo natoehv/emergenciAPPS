@@ -8,6 +8,7 @@ import com.example.emergenciapps.R;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.emergenciapps.Utils;
 import com.example.object.Contacto;
+import com.example.object.Usuario;
 import com.example.persistencia.ContactoSQLHelper;
 
 import android.app.Activity;
@@ -143,6 +144,8 @@ public class DetalleContactoActivity extends Activity{
         		}else{
         			ok_correo = false;
         		}
+        		
+        		
         			
         		
         		if(gps.isChecked())
@@ -159,7 +162,8 @@ public class DetalleContactoActivity extends Activity{
         			contacto.setAlertaSMS(1);
         		else
         			contacto.setAlertaSMS(0);
-        		
+        		if(Utils.validateEmail(correo.getText().toString())){
+        			
         		if(ok_nombre == true && ok_numero == true && ok_correo == true){
         			
 	        		AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
@@ -177,9 +181,17 @@ public class DetalleContactoActivity extends Activity{
 							String respuesta;
 							if(id_contacto == -1){
 								Log.d("accion", "Ingresar");
-								boolean resultadoIngreso = ServicioWeb.ingresaContacto(contacto);
+								SharedPreferences prefs =	getSharedPreferences("miCuenta", DetalleContactoActivity.MODE_PRIVATE);
+								Usuario usuario = new Usuario();
+								usuario.setNombre(prefs.getString("miNombre", ""));
+								usuario.setApellido(prefs.getString("miApellido", ""));
+								usuario.setCorreo(prefs.getString("miCorreo", ""));
+								
+								
+								boolean resultadoIngreso = ServicioWeb.ingresaContacto(contacto, usuario);
 								if(resultadoIngreso){
 									Utils.insertContacto(contacto, DetalleContactoActivity.this);
+									
 									return "Contacto creado correctamente";
 								}else{
 									return "No fue posible crear el Contacto";
@@ -219,6 +231,10 @@ public class DetalleContactoActivity extends Activity{
         		}else{
         			Toast.makeText(DetalleContactoActivity.this, "Complete todos los campos antes de guardar", Toast.LENGTH_LONG).show();
         		}
+        		
+		}else{
+			Toast.makeText(DetalleContactoActivity.this, "Ingrese un correo válido", Toast.LENGTH_LONG).show();
+		}
         	break;
         case R.id.eliminarContacto:
         	

@@ -567,7 +567,7 @@ public class ServicioWeb {
 		return guardar;
 	}
 	
-	public static boolean ingresaContacto(Contacto contacto){
+	public static boolean ingresaContacto(Contacto contacto, Usuario usuario){
 		
 		boolean guardar = false;
 		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
@@ -593,6 +593,9 @@ public class ServicioWeb {
     			oPostParam.add(new BasicNameValuePair("alerta_sms",""+contacto.getAlertaSMS()));
     			oPostParam.add(new BasicNameValuePair("alerta_gps",""+contacto.getAlertaGPS()));
     			oPostParam.add(new BasicNameValuePair("alerta_correo",""+contacto.getAlertaCorreo()));
+    			oPostParam.add(new BasicNameValuePair("usuario_nombre",""+usuario.getNombre()));
+    			oPostParam.add(new BasicNameValuePair("usuario_apellido",""+usuario.getApellido()));
+    			oPostParam.add(new BasicNameValuePair("usuario_correo",""+usuario.getCorreo()));
     			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
     			HttpResponse oResp = httpclient.execute(oPost);
     			HttpEntity r_entity = oResp.getEntity();
