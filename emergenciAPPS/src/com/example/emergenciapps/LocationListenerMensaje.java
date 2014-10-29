@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.contactos.DetalleContactoActivity;
 import com.example.contactos.ListaContactosActivity;
 import com.example.object.EmailEmergencia;
+import com.example.seguimiento.MyService;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -63,6 +64,12 @@ public class LocationListenerMensaje implements LocationListener {
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
+				Intent i = new Intent(v.getContext(), MyService.class);
+            	i.putExtra("miNumero", miNumero);
+            	v.getContext().startService(i);
+            	
+            	
+            	
 				ringProgressDialog.dismiss();
 				
 			}

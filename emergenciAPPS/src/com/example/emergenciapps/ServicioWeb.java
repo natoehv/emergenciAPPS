@@ -470,6 +470,8 @@ public class ServicioWeb {
     			usuario.setCorreo(json.getString("correo"));
     			usuario.setNombre(json.getString("nombre"));
     			usuario.setNumeroTelefono(json.getString("numero"));
+    			usuario.setEstadoAlerta(json.getInt("estadoAlerta"));
+    			
     			Configuracion conf = new Configuracion();
     			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
     			JSONObject confJSON = json.getJSONObject("configuracion");
@@ -726,6 +728,46 @@ public class ServicioWeb {
     		}
     			
 		return guardar;
+	}
+
+	/**
+	 * Metodo encargado de actualizar mi ubicacion por el servicio en la Base de Datos
+	 * @param lat
+	 * @param lng
+	 * @param miNumero
+	 * @return
+	 */
+	public static String actualizaPosicion(String lat, String lng, String miNumero){
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaPosicion";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	String descripcion = "";
+    	
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("lat",lat));
+			oPostParam.add(new BasicNameValuePair("lng",lng));
+			oPostParam.add(new BasicNameValuePair("id_usuario",miNumero));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+			
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return "El mensaje no ha podido ser enviado";
+    	}
+    	
+    	Log.e("respuesta",respuesta);
+    	
+		return descripcion;
+		
 	}
 }
 

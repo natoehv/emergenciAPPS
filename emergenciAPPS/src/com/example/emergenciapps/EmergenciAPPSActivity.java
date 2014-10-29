@@ -14,6 +14,7 @@ import com.example.object.EmailEmergencia;
 import com.example.object.Item;
 import com.example.object.Usuario;
 import com.example.persistencia.ContactoSQLHelper;
+import com.example.seguimiento.MyService;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
@@ -118,6 +119,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 				editor.putString("miNombre", usuario.getNombre());
 				editor.putString("miApellido", usuario.getApellido());
 				editor.putString("miCorreo", usuario.getCorreo());
+				editor.putInt("estadoAlerta", usuario.getEstadoAlerta());
 				
 				Configuracion configuracion = usuario.getConfiguracion();
 				editor.putString("numero_pdi", configuracion.getNumeroPDI());
@@ -502,7 +504,9 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	 */
     	Log.d(TAG, "Inicia eventeo enviarAlerta");
     	SharedPreferences prefs = getSharedPreferences("miCuenta", this.MODE_PRIVATE);
-	   	 final String miNumero = prefs.getString("miNumero", "Sin numero");
+	   	final String miNumero = prefs.getString("miNumero", "Sin numero");
+	   	Integer estadoAlerta = prefs.getInt("estadoAlerta", 0);
+	   	if(estadoAlerta == 0){
     	AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
     	builder.create();
     	builder.setTitle("Eliminar");
@@ -510,6 +514,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	builder.setPositiveButton("SI",
     	        new DialogInterface.OnClickListener() {
     	            public void onClick(DialogInterface dialog, int which) {
+    	            	
     	            	
     	            	locManager = (LocationManager)getSystemService(v.getContext().LOCATION_SERVICE);
     	            	LocationListener locListener = new LocationListenerMensaje( locManager,v, miNumero);
@@ -526,7 +531,10 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
             }
         });
     	builder.show();
-    	 
+	   	}else{
+	   		stopService(new Intent(EmergenciAPPSActivity.this, MyService.class));
+	   		prefs.edit().putInt("estadoAlerta", 0);
+	   	}
     	 
     	 
     	 
