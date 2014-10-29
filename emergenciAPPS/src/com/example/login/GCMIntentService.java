@@ -40,7 +40,8 @@ public class GCMIntentService extends IntentService
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) 
             {
             	//mostrarNotification(extras.getString("msg"));
-            	switch(extras.getInt("opcion")){
+            	Log.d("NOTIFICACION_SEGUIMIENTO","Valor opcion: "+extras.getString("opcion"));
+            	switch(Integer.parseInt(extras.getString("opcion"))){
             	case NOTIF_CONFIGURACION: 
             		/*
             		 * TODO cargar json en las preferencias 
