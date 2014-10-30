@@ -65,9 +65,13 @@ public class LocationListenerMensaje implements LocationListener {
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
 				Intent i = new Intent(v.getContext(), MyService.class);
-            	i.putExtra("miNumero", miNumero);
-            	v.getContext().startService(i);
             	
+            	
+            	if(v.getContext().startService(i) == null){
+            		Log.d("ESTADO SERVICIO","NO EJECUTADO");
+            	}else{
+            		Log.d("ESTADO SERVICIO","EJECUTADO");
+            	}
             	
             	
 				ringProgressDialog.dismiss();

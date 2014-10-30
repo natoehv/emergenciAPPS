@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="15"
         android:targetSdkVersion="17" />
 	<uses-permission android:name="android.permission.CALL_PHONE" /> 
     <application
@@ -32,6 +32,11 @@
              android:label="@string/misContactos"
              android:screenOrientation="portrait">
          </activity>
+         
+          <activity android:name="com.example.seguimiento.SeguimientoActivity"
+             
+             android:screenOrientation="portrait">
+         </activity>
        
          <activity
     		android:name="com.example.contactos.DetalleContactoActivity"
@@ -55,6 +60,7 @@
      </receiver>
  
      <service android:name="com.example.login.GCMIntentService" />
+     <service android:name="com.example.seguimiento.MyService" />
     </application>
     
     <uses-permission android:name="android.permission.INTERNET" />

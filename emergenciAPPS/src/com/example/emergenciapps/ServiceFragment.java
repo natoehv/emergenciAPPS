@@ -39,6 +39,7 @@ import com.example.object.Configuracion;
 import com.example.object.Hospital;
 import com.example.object.PDI;
 import com.example.persistencia.ContactoSQLHelper;
+import com.example.seguimiento.SeguimientoActivity;
 import com.mapquest.android.maps.AnnotationView;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
@@ -215,8 +216,11 @@ public class ServiceFragment extends Fragment {
         	
 
         	break;
-        	//case 5
         	case 5: 
+        			
+        		break;
+        	//case 6
+        	case 6: 
         				
         			rootView = inflater.inflate(R.layout.configuracion, container, false);
         			editBombero = (EditText)rootView.findViewById(R.id.editBombero);
@@ -350,8 +354,8 @@ public class ServiceFragment extends Fragment {
                 	
                 	
         	break;
-        	//case 6
-        	case 6: AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
+        	//case 7
+        	case 7: AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
         	builder.create();
         	builder.setTitle("Salir");
         	builder.setMessage("¿ Cerrar sesión ?");

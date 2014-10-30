@@ -411,7 +411,7 @@ public class ServicioWeb {
     	HttpPost oPost = new HttpPost(URL);
     	String respuesta;
     	String descripcion = "";
-    	
+    	Log.d("estado_norificacion","enviando"+miNumero);
     	try{
     		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
 			oPostParam.add(new BasicNameValuePair("lat",lat));
@@ -768,6 +768,55 @@ public class ServicioWeb {
     	
 		return descripcion;
 		
+	}
+	
+	public static List<Usuario> getUserInAlert(String miNumero){
+		
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/alertas";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	List<Usuario> usuarios = new ArrayList<Usuario>();
+    	
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("id_usuario",miNumero));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    Log.d("Respuesta servicio web",respuesta);
+		    JSONArray json = new JSONArray(respuesta);
+		    
+		    
+			for(int i=0; i<json.length(); i++){
+				Usuario usuario = new Usuario();
+				JSONObject aux = json.getJSONObject(i);
+				String nombre = aux.getString("nombre");
+				String numero = aux.getString("numero_telefono");
+				String lat = aux.getString("lat");
+				String lng = aux.getString("lng");
+				usuario.setNombre(nombre);
+				usuario.setNumeroTelefono(numero);
+				usuario.setLat(Float.parseFloat(lat));
+				usuario.setLng(Float.parseFloat(lng));
+				usuarios.add(usuario);
+			}
+		    
+			
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return null;
+    		
+    	}
+    	
+    	
+		return usuarios;
 	}
 }
 

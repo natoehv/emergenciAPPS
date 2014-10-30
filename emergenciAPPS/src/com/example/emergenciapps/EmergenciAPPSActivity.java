@@ -15,6 +15,7 @@ import com.example.object.Item;
 import com.example.object.Usuario;
 import com.example.persistencia.ContactoSQLHelper;
 import com.example.seguimiento.MyService;
+import com.example.seguimiento.SeguimientoActivity;
 import com.mapquest.android.maps.GeoPoint;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.MyLocationOverlay;
@@ -358,6 +359,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
     	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
+    	items.add(new Item("Seguimiento", R.drawable.exit,""));
     	items.add(new Item("Configurar", R.drawable.ic_action,""));
     	items.add(new Item("Cerrar Sesión", R.drawable.exit,""));
     	//items.add(new Item("Ayuda", R.drawable.help,""));
@@ -381,7 +383,13 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     }
     
     private void selectItem(int position){
-    	selectItem(position, null);
+    	if(position == 5){
+    		Intent intent = new Intent(EmergenciAPPSActivity.this, SeguimientoActivity.class); 
+			startActivity(intent); 
+    	}else{
+    		selectItem(position, null);
+    	}
+    	
     }
     @Override
     public void setTitle(CharSequence title) {
@@ -505,35 +513,41 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	Log.d(TAG, "Inicia eventeo enviarAlerta");
     	SharedPreferences prefs = getSharedPreferences("miCuenta", this.MODE_PRIVATE);
 	   	final String miNumero = prefs.getString("miNumero", "Sin numero");
+	   	SharedPreferences.Editor editor = prefs.edit();
 	   	Integer estadoAlerta = prefs.getInt("estadoAlerta", 0);
 	   	if(estadoAlerta == 0){
-    	AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-    	builder.create();
-    	builder.setTitle("Eliminar");
-    	builder.setMessage("¿ Realmente desea enviar una Alerta ?");
-    	builder.setPositiveButton("SI",
+	   		editor.putInt("estadoAlerta", 1);
+	   		editor.commit();
+	   		Log.d("EmergenciAPPS","INICIO ENVIO ALERTA");
+	    	AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+	    	builder.create();
+	    	builder.setTitle("Eliminar");
+	    	builder.setMessage("¿ Realmente desea enviar una Alerta ?");
+	    	builder.setPositiveButton("SI",
     	        new DialogInterface.OnClickListener() {
     	            public void onClick(DialogInterface dialog, int which) {
     	            	
     	            	
     	            	locManager = (LocationManager)getSystemService(v.getContext().LOCATION_SERVICE);
     	            	LocationListener locListener = new LocationListenerMensaje( locManager,v, miNumero);
-    	        	    locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, locListener);
+    	        	    locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locListener);
     	        	    
     	            	
     	            }
     	        });
     	
-    	builder.setNegativeButton("NO",
-    	        new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+	    	builder.setNegativeButton("NO",
+	    	        new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) {
+	                dialog.cancel();
+	            }
+	    	});
     	builder.show();
 	   	}else{
+	   		Log.d("EmergenciAPPS","TERMINA ENVIO ALERTA");
 	   		stopService(new Intent(EmergenciAPPSActivity.this, MyService.class));
-	   		prefs.edit().putInt("estadoAlerta", 0);
+	   		editor.putInt("estadoAlerta", 0);
+	   		editor.commit();
 	   	}
     	 
     	 
