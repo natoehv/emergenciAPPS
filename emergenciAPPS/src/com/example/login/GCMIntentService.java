@@ -1,6 +1,7 @@
 package com.example.login;
 
 import com.example.emergenciapps.EmergenciAPPSActivity;
+import com.example.seguimiento.SeguimientoActivity;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import android.app.IntentService;
@@ -57,6 +58,7 @@ public class GCMIntentService extends IntentService
             		break;
             	case NOTIF_SEGUIMIENTO:
             		Log.d("NOTIFICACION_SEGUIMIENTO","NOTIFICACION EN PROCESO");
+            		this.mostrarNotification(extras.getString("msg"), "El usuario "+extras.getString("nombre")+ " necesita ayuda!");
             		break;
             	}
             }
@@ -65,15 +67,16 @@ public class GCMIntentService extends IntentService
         GCMBroadcastReceiver.completeWakefulIntent(intent);
     }
 	
-	private void mostrarNotification(String msg){
+	private void mostrarNotification(String msg, String title){
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);	
 		NotificationCompat.Builder mBuilder = 
 			new NotificationCompat.Builder(this)  
 				.setSmallIcon(android.R.drawable.stat_sys_warning)  
-				.setContentTitle("Notificación GCM")  
-				.setContentText(msg);
+				.setContentTitle(title)
+				.setContentText(msg)
+				.setTicker(title);
 		
-		Intent notIntent =  new Intent(this, EmergenciAPPSActivity.class);
+		Intent notIntent =  new Intent(this, SeguimientoActivity.class);
 		PendingIntent contIntent = PendingIntent.getActivity(this, 0, notIntent, 0);   
 		
 		mBuilder.setContentIntent(contIntent);
