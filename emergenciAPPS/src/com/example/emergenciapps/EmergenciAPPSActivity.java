@@ -46,6 +46,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -359,7 +360,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));
     	items.add(new Item("PDI", R.drawable.pdi,"pdi"));
-    	items.add(new Item("Seguimiento", R.drawable.exit,""));
+    	items.add(new Item("Seguimiento", R.drawable.ic_action_device_access_location_found,""));
     	items.add(new Item("Configurar", R.drawable.ic_action,""));
     	items.add(new Item("Cerrar Sesión", R.drawable.exit,""));
     	//items.add(new Item("Ayuda", R.drawable.help,""));
@@ -526,10 +527,20 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 	    	builder.setPositiveButton("SI",
     	        new DialogInterface.OnClickListener() {
     	            public void onClick(DialogInterface dialog, int which) {
+    	            	ArrayList<Contacto> lista = Utils.getContactosSMS(EmergenciAPPSActivity.this);
+    	            	SharedPreferences preferencias = getSharedPreferences("miCuenta", EmergenciAPPSActivity.MODE_PRIVATE);
+    	            	String mensajeAlerta = preferencias.getString("mensaje_alerta", "");
+    	            	Log.d("mensaje_alerta",mensajeAlerta);
+    	            	for(Contacto c : lista){
+    	            		sendSMSMessage(mensajeAlerta, c.getNumero().toString());
+    	            		Log.d("numero_contacto",c.getNumero());
+    	            	}
     	            	
     	            	
     	            	locManager = (LocationManager)getSystemService(v.getContext().LOCATION_SERVICE);
+    	            	
     	            	LocationListener locListener = new LocationListenerMensaje( locManager,v, miNumero);
+    	            	
     	        	    locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locListener);
     	        	    
     	            	
@@ -557,6 +568,17 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	 
  
      }
+    
+    protected void sendSMSMessage(String texto, String numero) {
+	      Log.i("Send SMS", "");
+	      try {
+	         SmsManager smsManager = SmsManager.getDefault();
+	         smsManager.sendTextMessage(numero, null, texto, null, null);
+	        
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+	}
     
     private List<String> mostrarPosicion(Location loc){
     	if(loc != null){

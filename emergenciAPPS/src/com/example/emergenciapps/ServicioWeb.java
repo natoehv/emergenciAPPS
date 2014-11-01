@@ -661,7 +661,7 @@ public class ServicioWeb {
 	
 	public static boolean eliminaContacto(int id_contacto) {
 		boolean guardar = false;
-		String URL = "http://colvin.chillan.ubiobio.cl:8070/rhormaza/servicio_web_administrar_contacto.php";
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
 		HttpParams httpParameters = new BasicHttpParams();
 		Integer codigo = OK_CONEXION;
 		RespuestaServicioWeb res;
@@ -683,6 +683,7 @@ public class ServicioWeb {
 				HttpEntity r_entity = oResp.getEntity();
 				respuesta = EntityUtils.toString(r_entity);
 				Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
+				
 				if(respuesta.equals("true"))
 					return true;
 			}catch(Exception e){
@@ -817,6 +818,72 @@ public class ServicioWeb {
     	
     	
 		return usuarios;
+	}
+	
+	public static void sendMail(String lat, String lng,String miNumero){
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/enviaCorreo";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	String descripcion = "";
+    	Log.d("estado_correo","enviando"+miNumero);
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("lat",lat));
+			oPostParam.add(new BasicNameValuePair("lng",lng));
+			oPostParam.add(new BasicNameValuePair("id_usuario",miNumero));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    Log.e("respuesta",respuesta);
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		
+    		
+    	}
+    	
+    	
+    	
+		
+    	
+	}
+
+	public static Boolean eliminarRegId(String miNumero) {
+		// TODO Auto-generated method stub
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/eliminarRegId";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	String descripcion = "";
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("id_usuario",miNumero));
+			
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    String valor = respuesta.trim();
+		    Log.e("respuesta",valor);
+		    if(valor.equals("true"))
+				return true;
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return false;
+    		
+    	}
+		return false;
 	}
 }
 

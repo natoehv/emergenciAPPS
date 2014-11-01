@@ -71,6 +71,35 @@ public class Utils {
 		return lista;
 	}
 	
+public static ArrayList<Contacto> getContactosSMS(Context context) {
+		
+		ArrayList<Contacto> lista = new ArrayList<Contacto>();
+		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
+		SQLiteDatabase db = oData.getWritableDatabase(); 
+		
+		Cursor oLoop = db.rawQuery("select * from contacto where alerta_sms = 1", null);
+		
+		while(oLoop.moveToNext()){
+			Contacto contacto = new Contacto();
+			contacto.setIdContacto(oLoop.getInt(0));
+			contacto.setNumeroTelefono(oLoop.getString(1));
+			contacto.setNombre(oLoop.getString(2));
+			contacto.setNumero(oLoop.getString(3));
+			contacto.setCorreo(oLoop.getString(4));
+			contacto.setEstado(oLoop.getInt(5));
+			contacto.setAlertaSMS(oLoop.getInt(6));
+			contacto.setAlertaGPS(oLoop.getInt(7));
+			contacto.setAlertaCorreo(oLoop.getInt(8));
+			lista.add(contacto);
+		}
+		
+		oLoop.close();
+		db.close();
+		oData.close();
+		
+		return lista;
+	}
+	
 	public static void insertContacto(Contacto contacto, Context context){
 		ContactoSQLHelper oData = new ContactoSQLHelper(context); 
 		SQLiteDatabase db = oData.getWritableDatabase();

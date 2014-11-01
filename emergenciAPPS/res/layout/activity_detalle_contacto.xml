@@ -12,7 +12,7 @@
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="507dp"
     android:background="@android:color/black" >
 
     <TextView
@@ -103,6 +103,7 @@
 
     <Switch
         android:id="@+id/switchSMS"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/switchEmail"
@@ -113,6 +114,7 @@
 
     <Switch
         android:id="@+id/switchEmail"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView4"
@@ -122,6 +124,7 @@
 
     <Switch
         android:id="@+id/switchGPS"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/switchSMS"

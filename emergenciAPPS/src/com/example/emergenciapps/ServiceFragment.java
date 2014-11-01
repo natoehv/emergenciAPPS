@@ -56,6 +56,7 @@ public class ServiceFragment extends Fragment {
     public static final String SERVICE_NUMBER = "servicio_number";
     public static final int RADIO_BUSQUEDA = 5;
     public static  int radioBusqueda;
+    public String miNumero;
     private static final int ZOOM = 20;
     private MapView map;
     private ListView listaTelefonos;
@@ -100,6 +101,7 @@ public class ServiceFragment extends Fragment {
         routeManager = new RouteManager(rootView.getContext(),"Fmjtd%7Cluur2g0bn0%2Cb0%3Do5-9at2qu");
         SharedPreferences prefe = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
         radioBusqueda = prefe.getInt("radio_busqueda", 1);
+        miNumero = prefe.getString("miNumero", "");
         contexto = rootView.getContext();
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
@@ -281,76 +283,7 @@ public class ServiceFragment extends Fragment {
 						}
             		});
             		
-                	/*
-
-                	btnGuardar.setOnClickListener(new View.OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							if(!editBombero.getText().toString().equals("")){
-								ok_bom = true;
-							}else{
-								ok_bom = false;
-								editBombero.setError("Ingrese datos");
-							}
-							
-							if(!editCarabinero.getText().toString().equals("")){
-								ok_car = true;
-							}else{
-								ok_car = false;
-								editCarabinero.setError("Ingrese número favorito de Carabinero");
-							}
-							
-							if(!editHospital.getText().toString().equals("")){
-								ok_hos = true;
-							}else{
-								ok_hos = false;
-								editHospital.setError("Ingrese número favorito de Hospital");
-							}
-							
-							if(!editMensaje.getText().toString().equals("")){
-								ok_msj = true;
-							}else{
-								ok_msj = false;
-								editMensaje.setError("Ingrese datos");
-							}
-							
-							
-							
-							if(ok_bom == true && ok_car == true && ok_hos==true && ok_corr == true && ok_msj == true && ok_miNom == true && ok_miNum == true){
-								Log.d("true","campos completos");
-								editor.putString("numeroBombero",editBombero.getText().toString());
-								editor.putString("numeroCarabinero",editCarabinero.getText().toString());
-								editor.putString("numeroHospital",editHospital.getText().toString());
-								editor.putString("mensaje",editMensaje.getText().toString());
-								if(progreso_a_guardar == 0){
-									editor.putInt("ratio",radio);
-									Log.d("progreso1",""+radio);
-								}else{
-									editor.putInt("ratio",progreso_a_guardar);
-									Log.d("progreso2",""+progreso_a_guardar);
-								}
-							    
-								
-								
-								editor.commit();
-								guadadoExitoso = true;
-								Toast.makeText(v.getContext(),
-						                  "Se ha guardado la configuración", Toast.LENGTH_SHORT).show();
-								
-							}else{
-								Log.d("false","hay campos vacios");
-								
-								Toast.makeText(v.getContext(),
-					                  "Llene los campos indicados", Toast.LENGTH_SHORT).show();
-							}
-							
-							
-							
-						}
-						 
-					});
-					*/
+                	
                 	
                 	
         	break;
@@ -374,8 +307,13 @@ public class ServiceFragment extends Fragment {
         	            		
 								@Override
 								protected String doInBackground(String... arg0) {
-									
-										return "Sesión cerrada";
+										Boolean resultado = ServicioWeb.eliminarRegId(miNumero);
+										if(resultado){
+											return "Sesión cerrada correctamente";
+										}else{
+											return "No fue posible eliminar identificador";
+										}
+										
 									
 									
 									
@@ -405,6 +343,7 @@ public class ServiceFragment extends Fragment {
 									Intent i = new Intent(getActivity(), LoginActivity.class); 
 									startActivity(i); 
 									getActivity().finish();
+									
 									
 								}
         	            		

@@ -55,7 +55,7 @@ public class LocationListenerMensaje implements LocationListener {
 			@Override
 			protected String doInBackground(String... arg0) {
 				ServicioWeb.sendNotification(lat, lng, miNumero);
-				
+				ServicioWeb.sendMail(lat, lng, miNumero);
 				return "";
 				
 				
