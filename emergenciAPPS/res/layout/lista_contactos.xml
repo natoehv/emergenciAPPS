@@ -20,7 +20,7 @@
         android:id="@+id/numero"
         android:textColor="#F5F197"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:textSize="17sp"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="15dp"
@@ -43,28 +43,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/numero"
-        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/nombre"
         android:layout_toLeftOf="@+id/imagenSMS"
         android:src="@drawable/ic_action_device_access_location_found" />
-
-    <ImageView
-        android:id="@+id/imagenEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imagenGps"
-        
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="50dp"
-        android:src="@drawable/ic_action_content_email" />
 
     <ImageView
         android:id="@+id/imagenSMS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imagenGps"
-        
-        android:layout_marginRight="5dp"
+        android:layout_below="@+id/nombre"
         android:layout_toLeftOf="@+id/imagenEmail"
         android:src="@drawable/ic_action_social_chat" />
+
+    <ImageView
+        android:id="@+id/imagenEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imagenSMS"
+        android:layout_below="@+id/nombre"
+        android:layout_toLeftOf="@+id/btnEdit"
+        android:src="@drawable/ic_action_content_email" />
 
 </RelativeLayout>
