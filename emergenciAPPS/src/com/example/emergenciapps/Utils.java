@@ -1,6 +1,7 @@
 package com.example.emergenciapps;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -175,6 +176,42 @@ public static ArrayList<Contacto> getContactosSMS(Context context) {
 		db.close();
 		oData.close();
 		
+		
+		
+	}
+	
+	public static boolean insertContactos(List<Contacto> contactos, Context context){
+		
+		if(contactos != null){
+			ContactoSQLHelper oData = new ContactoSQLHelper(context); 
+			SQLiteDatabase db = oData.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			for(Contacto c: contactos){
+				values.put("_id", c.getIdContacto());
+				values.put("numero_telefono", c.getNumeroTelefono());
+				values.put("numero",c.getNumero());
+				values.put("nombre", c.getNombre());
+				values.put("correo", c.getCorreo());
+				values.put("alerta_sms", c.getAlertaSMS());
+				values.put("alerta_gps", c.getAlertaGPS());
+				values.put("alerta_correo", c.getAlertaCorreo());
+				values.put("estado",c.getCorreo());
+				try {
+					db.insertOrThrow("contacto", null, values);
+				} catch (Exception e) {
+					Log.d("contactos_actializados","no se pudo actualizar lista");
+					return false;
+					
+				}
+			}
+			db.close();
+			oData.close();
+			
+			return true;
+			
+		}else{
+			return false;
+		}
 		
 		
 	}

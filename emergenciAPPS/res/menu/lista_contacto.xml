@@ -1,6 +1,11 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-	
+	<item 
+	    android:id="@+id/actulizarListaContactos"
+	    android:title="@string/action_save_conf"
+	    android:icon="@drawable/ic_action_action_autorenew"
+	  	android:showAsAction="ifRoom|withText"
+	    />
 	<item 
 	    android:id="@+id/agregarContacto"
 	    android:title="@string/action_save_conf"

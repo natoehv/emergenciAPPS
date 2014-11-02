@@ -885,6 +885,67 @@ public class ServicioWeb {
     	}
 		return false;
 	}
+
+	public static List<Contacto> getContactos(String miNumero) {
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/getContactos";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	
+    	List<Contacto> contactos = new ArrayList<Contacto>();
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+    		oPostParam.add(new BasicNameValuePair("id_usuario",miNumero));
+    		oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    JSONArray json = new JSONArray(respuesta);
+		    
+		    for(int i=0; i<json.length(); i++){
+				Contacto contacto = new Contacto();
+				String nombre = "";
+				JSONObject aux = json.getJSONObject(i);
+				int id = aux.getInt("id_contacto");
+				String nombre_decode = aux.getString("nombre");
+				try{
+					nombre = new String(nombre_decode.getBytes("ISO-8859-1"), "UTF-8");
+				}catch (java.io.UnsupportedEncodingException e) {
+		           Log.d("DECODE_UTFO", "No se pudo decodificar nombre");
+		        }
+				String numero_telefono = aux.getString("numero_telefono");
+				String numero = aux.getString("numero");
+				String correo = aux.getString("correo");
+				int estado = aux.getInt("estado");
+				int alerta_sms = aux.getInt("alerta_sms");
+				int alerta_correo = aux.getInt("alerta_correo");
+				int alerta_gps = aux.getInt("alerta_gps");
+				contacto.setIdContacto(id);
+				contacto.setNombre(nombre);
+				contacto.setNumeroTelefono(numero_telefono);
+				contacto.setNumero(numero);
+				contacto.setCorreo(correo);
+				contacto.setEstado(estado);
+				contacto.setAlertaSMS(alerta_sms);
+				contacto.setAlertaCorreo(alerta_correo);
+				contacto.setAlertaGPS(alerta_gps);
+				contactos.add(contacto);
+				
+			}
+		    
+		    
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return null;
+    		
+    	}
+    	return contactos;
+	}
 }
 
  
