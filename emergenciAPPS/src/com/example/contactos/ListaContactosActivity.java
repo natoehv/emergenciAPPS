@@ -96,15 +96,19 @@ public class ListaContactosActivity extends Activity{
 							db.execSQL("delete from contacto");
 							db.close();
 							oData.close();
-						}
-						
-						Boolean resultado = Utils.insertContactos(contactos, ListaContactosActivity.this);
-						
-						if(resultado){
-							return "Lista cargada exitosamente";
+							
+							Boolean resultado = Utils.insertContactos(contactos, ListaContactosActivity.this);
+							
+							if(resultado){
+								return "Lista cargada exitosamente";
+							}else{
+								return "No se pudo actualizar la lista";
+							}
 						}else{
-							return "No se pudo actualizar la lista";
+							return "No posee contactos";
 						}
+						
+						
 						
 						
 					}

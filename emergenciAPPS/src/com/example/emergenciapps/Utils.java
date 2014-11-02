@@ -195,7 +195,7 @@ public static ArrayList<Contacto> getContactosSMS(Context context) {
 				values.put("alerta_sms", c.getAlertaSMS());
 				values.put("alerta_gps", c.getAlertaGPS());
 				values.put("alerta_correo", c.getAlertaCorreo());
-				values.put("estado",c.getCorreo());
+				values.put("estado",c.getEstado());
 				try {
 					db.insertOrThrow("contacto", null, values);
 				} catch (Exception e) {
