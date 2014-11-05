@@ -559,6 +559,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	builder.show();
 	   	}else{
 	   		Log.d("EmergenciAPPS","TERMINA ENVIO ALERTA");
+	   		Toast.makeText(EmergenciAPPSActivity.this, "La alerta se ha detenido",Toast.LENGTH_SHORT).show();
 	   		stopService(new Intent(EmergenciAPPSActivity.this, MyService.class));
 	   		editor.putInt("estadoAlerta", 0);
 	   		editor.commit();

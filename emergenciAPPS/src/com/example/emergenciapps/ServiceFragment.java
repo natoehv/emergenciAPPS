@@ -334,6 +334,11 @@ public class ServiceFragment extends Fragment {
 									editor2.clear();
 									editor2.commit();
 									
+									SharedPreferences prefs3 = contexto.getSharedPreferences("LoginActivity", contexto.MODE_PRIVATE);
+									SharedPreferences.Editor editor3 = prefs3.edit();
+									editor3.clear();
+									editor3.commit();
+									
 									ContactoSQLHelper oData = new ContactoSQLHelper(contexto); 
 									SQLiteDatabase db = oData.getWritableDatabase();
 									db.execSQL("delete from contacto");
