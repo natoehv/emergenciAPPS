@@ -36,17 +36,7 @@ public class MyService extends Service{
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		locManager.removeUpdates(locListener);
-		 AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
-
-				@Override
-				protected String doInBackground(String... arg0) {
-					// TODO Auto-generated method stub
-					String respuesta = ServicioWeb.actualizaPosicion("0", "0", miNumero);
-					Log.d("actualizacion_ubicacion",respuesta);
-					return null;
-				}}
-	        ;
-	        tarea.execute();
+		
 	}
 
 	@Override

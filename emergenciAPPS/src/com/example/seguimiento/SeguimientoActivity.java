@@ -7,10 +7,15 @@ import com.example.contactos.DetalleContactoActivity;
 import com.example.emergenciapps.R;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.object.Usuario;
+import com.mapquest.android.maps.DefaultItemizedOverlay;
+import com.mapquest.android.maps.GeoPoint;
+import com.mapquest.android.maps.MapView;
+import com.mapquest.android.maps.OverlayItem;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,23 +34,32 @@ public class SeguimientoActivity extends Activity{
 	private ArrayAdapter<String> myAdapter;
 	List<Usuario> lista;
 	private ProgressDialog ringProgressDialog;
+	Boolean bandera = true;
+	private MapView map;
+	List<DefaultItemizedOverlay> markers = new ArrayList<DefaultItemizedOverlay>();
+	private DefaultItemizedOverlay overlayUserInAlert;
+	OverlayItem item;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_seguimiento);
-		
 		spinner = (Spinner)findViewById(R.id.spinner);
 		myList = new ArrayList<String>();
 		inititialize_list();
-		
 		myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
 		spinner.setAdapter(myAdapter);
-		
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+				if(markers.size() > 0){
+					for(int i=0; i<markers.size(); i++){
+						markers.get(i).destroy();
+					}
+				}
+				
+				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),(MapView)SeguimientoActivity.this.findViewById(R.id.mapSegumiento));
 				
 			}
 
@@ -62,6 +76,24 @@ public class SeguimientoActivity extends Activity{
 		
 	}
 	
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
 	private void inititialize_list(){
 		 
 		 SharedPreferences prefs = getSharedPreferences("miCuenta", this.MODE_PRIVATE);
@@ -78,20 +110,17 @@ public class SeguimientoActivity extends Activity{
 			@Override
 			protected String doInBackground(String... arg0) {
 				// TODO Auto-generated method stub
-				
 				lista = ServicioWeb.getUserInAlert(miNumero);
+				
 				if(lista != null){
 					myList = new ArrayList<String>();
 					 for(int i=0; i<lista.size(); i++){
 						 myList.add(lista.get(i).getNombre());
 					 }
-					
 				}else{
 					Log.d("lista", "vacia");
 				}
 				 
-
-				;
 				return null;
 			}
 
@@ -100,8 +129,8 @@ public class SeguimientoActivity extends Activity{
 				// TODO Auto-generated method stub
 				super.onPostExecute(result);
 				ringProgressDialog.dismiss();
-				 myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
-					spinner.setAdapter(myAdapter);
+				myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
+				spinner.setAdapter(myAdapter);
 			}};
 		 tarea.execute();
 		 
@@ -110,6 +139,26 @@ public class SeguimientoActivity extends Activity{
 		 
 	}
 	
+	private void setearPunto(Float lat, Float lng, String numero, MapView map){
+		Log.d("map","inicia map");
+		
+		this.map = map;
+		Drawable iconUserInAlert = this.getResources().getDrawable(R.drawable.miposicion);
+		overlayUserInAlert = new DefaultItemizedOverlay(iconUserInAlert);
+		markers.add(overlayUserInAlert);
+		
+		GeoPoint latlng = new GeoPoint(lat,lng);
+		item = new OverlayItem(latlng, numero, numero);
+		
+		map.getController().animateTo(latlng);
+		overlayUserInAlert.addItem(item);
+		map.getOverlays().add(overlayUserInAlert);
+		map.getController().setZoom(16);
+		map.getController().setCenter(latlng);
+		
+		
+		
+	}
 	
 
 }

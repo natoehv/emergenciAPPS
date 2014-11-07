@@ -24,9 +24,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,6 +82,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     private CharSequence mTitle;
     private String numero;
     private String correoContacto;
+    private static final int NOTIF_ALERTA_ID = 1;
     
     private ProgressDialog ringProgressDialog;
     
@@ -514,10 +517,10 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	 * ahora la notificacion va al servidor y el servidor la procesa para ver
     	 * que hacer
     	 */
-    	Log.d(TAG, "Inicia eventeo enviarAlerta");
+    	Log.d(TAG, "Inicia evento enviarAlerta");
     	SharedPreferences prefs = getSharedPreferences("miCuenta", this.MODE_PRIVATE);
 	   	final String miNumero = prefs.getString("miNumero", "Sin numero");
-	   	SharedPreferences.Editor editor = prefs.edit();
+	   	final SharedPreferences.Editor editor = prefs.edit();
 	   	Integer estadoAlerta = prefs.getInt("estadoAlerta", 0);
 	   	if(estadoAlerta == 0){
 	   		editor.putInt("estadoAlerta", 1);
@@ -558,11 +561,41 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 	    	});
     	builder.show();
 	   	}else{
-	   		Log.d("EmergenciAPPS","TERMINA ENVIO ALERTA");
-	   		Toast.makeText(EmergenciAPPSActivity.this, "La alerta se ha detenido",Toast.LENGTH_SHORT).show();
-	   		stopService(new Intent(EmergenciAPPSActivity.this, MyService.class));
-	   		editor.putInt("estadoAlerta", 0);
-	   		editor.commit();
+	   		final NotificationManager mNotificationManager = (NotificationManager) v.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+	   	 AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+
+				@Override
+				protected String doInBackground(String... arg0) {
+					// TODO Auto-generated method stub
+					String toast;
+					String respuesta = ServicioWeb.actualizaPosicion("0", "0", miNumero);
+					respuesta = respuesta.trim();
+					if(respuesta.equals("true")){
+						Log.d("EmergenciAPPS","TERMINA ENVIO ALERTA");
+				   		
+				   		toast = "La alerta se ha detenido";
+				   		mNotificationManager.cancel(NOTIF_ALERTA_ID);
+				   		stopService(new Intent(EmergenciAPPSActivity.this, MyService.class));
+				   		editor.putInt("estadoAlerta", 0);
+				   		editor.commit();
+					}else{
+						toast =  "No es posible cancelar la alerta activa. Intenta más tarde";
+						
+					}
+					Log.d("actualizacion_ubicacion",respuesta);
+					return toast;
+				}
+
+				@Override
+				protected void onPostExecute(String result) {
+					// TODO Auto-generated method stub
+					super.onPostExecute(result);
+					Toast.makeText(EmergenciAPPSActivity.this, result,Toast.LENGTH_SHORT).show();
+				}
+				
+	   	 }
+	        ;
+	        tarea.execute();
 	   	}
     	 
     	 

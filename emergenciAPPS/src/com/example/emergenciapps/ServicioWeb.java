@@ -748,7 +748,6 @@ public class ServicioWeb {
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
     	HttpPost oPost = new HttpPost(URL);
     	String respuesta;
-    	String descripcion = "";
     	
     	try{
     		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -762,12 +761,12 @@ public class ServicioWeb {
 			
     	}catch(Exception e){
     		Log.e("emergenciAPPS", "Error: "+URL, e);
-    		return "El mensaje no ha podido ser enviado";
+    		return "false";
     	}
     	
     	Log.e("respuesta",respuesta);
     	
-		return descripcion;
+		return respuesta;
 		
 	}
 	

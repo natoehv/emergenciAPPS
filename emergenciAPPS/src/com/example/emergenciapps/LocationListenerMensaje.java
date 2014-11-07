@@ -6,7 +6,10 @@ import com.example.contactos.DetalleContactoActivity;
 import com.example.contactos.ListaContactosActivity;
 import com.example.object.EmailEmergencia;
 import com.example.seguimiento.MyService;
+import com.example.seguimiento.SeguimientoActivity;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 public class LocationListenerMensaje implements LocationListener {
 	private ProgressDialog ringProgressDialog;
 	private static String TAG = "emergenciAPPS";
+	private static final int NOTIF_ALERTA_ID = 1;
 	
 	View v;
 	LocationManager locManager;
@@ -54,24 +59,29 @@ public class LocationListenerMensaje implements LocationListener {
     		
 			@Override
 			protected String doInBackground(String... arg0) {
-				ServicioWeb.sendNotification(lat, lng, miNumero);
-				
-				return "";
-				
-				
+				return ServicioWeb.sendNotification(lat, lng, miNumero).trim();
 			}
 			
 			@Override
 			protected void onPostExecute(String result) {
 				super.onPostExecute(result);
-				Intent i = new Intent(v.getContext(), MyService.class);
-            	
-            	
-            	if(v.getContext().startService(i) == null){
-            		Log.d("ESTADO SERVICIO","NO EJECUTADO");
-            	}else{
-            		Log.d("ESTADO SERVICIO","EJECUTADO");
-            	}
+				Log.d("respuesta_servidor",""+result);
+				if(result.equals("true")){
+					mostrarNotification("Alerta activa, selecciona para desactivar","Alerta activada");
+					Intent i = new Intent(v.getContext(), MyService.class);
+	            	
+					if(v.getContext().startService(i) == null){
+	            		Log.d("ESTADO SERVICIO","NO EJECUTADO");
+	            	}else{
+	            		Log.d("ESTADO SERVICIO","EJECUTADO");
+	            	}
+					
+					
+					
+	            	
+	            	
+				}
+				
             	
             	
 				ringProgressDialog.dismiss();
@@ -102,6 +112,25 @@ public class LocationListenerMensaje implements LocationListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private void mostrarNotification(String msg, String title){
+
+		NotificationManager mNotificationManager = (NotificationManager) v.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationCompat.Builder mBuilder = 
+			new NotificationCompat.Builder(v.getContext())  
+				.setSmallIcon(R.drawable.ic_launcher)  
+				.setContentTitle(title)
+				.setContentText(msg)
+				.setTicker(title)
+				.setOngoing(true);
+		
+		Intent notIntent =  new Intent(v.getContext(),EmergenciAPPSActivity.class);
+		PendingIntent contIntent = PendingIntent.getActivity(v.getContext(), 0, notIntent, 0);   
+		
+		mBuilder.setContentIntent(contIntent);
+		
+		mNotificationManager.notify(NOTIF_ALERTA_ID, mBuilder.build());
+    }
 	
 	
 

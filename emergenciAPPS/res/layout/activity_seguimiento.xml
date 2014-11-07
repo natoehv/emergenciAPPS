@@ -3,20 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+	<TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="En peligro: "
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFF" />
     <Spinner
-	    android:id="@+id/spinner"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content" />
+        android:id="@+id/spinner"
+        android:layout_toRightOf="@+id/textView1"
+        android:layout_width="300dp"
+        android:layout_height="50dp" />
 
-<!-- 	<com.mapquest.android.maps.MapView -->
-<!-- 	    android:id="@+id/mapSegumiento" -->
-<!-- 	    android:layout_below="@+id/spinner" -->
-<!-- 	    android:layout_width="fill_parent" -->
-<!-- 	    android:layout_height="fill_parent" -->
-<!-- 	    android:clickable="true" -->
-<!-- 	    android:enabled="true" -->
-<!-- 	    android:apiKey="Fmjtd%7Cluur2g0bn0%2Cb0%3Do5-9at2qu" -->
-<!-- 	    /> -->
+	<com.mapquest.android.maps.MapView
+	    android:id="@+id/mapSegumiento"
+	    android:layout_below="@+id/spinner"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:clickable="true"
+	    android:enabled="true"
+	    android:apiKey="Fmjtd%7Cluur2g0bn0%2Cb0%3Do5-9at2qu"
+	    />
     
 
 </RelativeLayout>
