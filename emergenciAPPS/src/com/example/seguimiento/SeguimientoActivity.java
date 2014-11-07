@@ -19,6 +19,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -44,6 +45,7 @@ public class SeguimientoActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.activity_seguimiento);
 		spinner = (Spinner)findViewById(R.id.spinner);
 		myList = new ArrayList<String>();
@@ -93,7 +95,18 @@ public class SeguimientoActivity extends Activity{
 		// TODO Auto-generated method stub
 		super.onStop();
 	}
-
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+	        	finish();
+	        	break;
+			}
+		return true;
+		
+		
+	}
 	private void inititialize_list(){
 		 
 		 SharedPreferences prefs = getSharedPreferences("miCuenta", this.MODE_PRIVATE);
@@ -152,9 +165,11 @@ public class SeguimientoActivity extends Activity{
 		
 		map.getController().animateTo(latlng);
 		overlayUserInAlert.addItem(item);
+		
 		map.getOverlays().add(overlayUserInAlert);
-		map.getController().setZoom(16);
+		map.getController().setZoom(13);
 		map.getController().setCenter(latlng);
+		map.setBuiltInZoomControls(true);
 		
 		
 		
