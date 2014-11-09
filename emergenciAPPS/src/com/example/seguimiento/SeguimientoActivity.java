@@ -55,12 +55,6 @@ public class SeguimientoActivity extends Activity{
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-				if(markers.size() > 0){
-					for(int i=0; i<markers.size(); i++){
-						markers.get(i).destroy();
-					}
-				}
-				
 				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),(MapView)SeguimientoActivity.this.findViewById(R.id.mapSegumiento));
 				
 			}
@@ -154,7 +148,11 @@ public class SeguimientoActivity extends Activity{
 	
 	private void setearPunto(Float lat, Float lng, String numero, MapView map){
 		Log.d("map","inicia map");
-		
+		if(markers.size() > 0){
+			for(int i=0; i<markers.size(); i++){
+				markers.get(i).destroy();
+			}
+		}
 		this.map = map;
 		Drawable iconUserInAlert = this.getResources().getDrawable(R.drawable.miposicion);
 		overlayUserInAlert = new DefaultItemizedOverlay(iconUserInAlert);

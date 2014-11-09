@@ -81,6 +81,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String numero;
+    private String miNombre;
     private String correoContacto;
     private static final int NOTIF_ALERTA_ID = 1;
     
@@ -163,7 +164,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 			SharedPreferences.Editor editorSesion = prefsSesion.edit();
 			editorSesion.putBoolean("firsTime", false);
 			editorSesion.commit();
-			
+			miNombre = prefs.getString("miNombre", "vacio");
 		}
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -361,7 +362,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     
     private void generaItems(){
     	items = new ArrayList<Item>();
-    	items.add(new Item("Inicio", R.drawable.home,""));
+    	items.add(new Item("Bienvenido "+miNombre, R.drawable.home,""));
     	items.add(new Item("Centros Médicos", R.drawable.hospital,"centro_medico"));
     	items.add(new Item("Bomberos", R.drawable.bombero,"bombero"));
     	items.add(new Item("Carabineros", R.drawable.carabinero,"carabinero"));

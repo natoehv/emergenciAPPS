@@ -842,7 +842,7 @@ public class ServicioWeb {
 			HttpEntity r_entity = oResp.getEntity();
 		    respuesta = EntityUtils.toString(r_entity);
 		    String valor = respuesta.trim();
-		    Log.e("respuesta",valor);
+		    Log.e("respuesta_regId",valor);
 		    if(valor.equals("true"))
 				return true;
     	}catch(Exception e){

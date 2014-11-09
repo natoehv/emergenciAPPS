@@ -57,6 +57,7 @@ public class ServiceFragment extends Fragment {
     public static final int RADIO_BUSQUEDA = 5;
     public static  int radioBusqueda;
     public String miNumero;
+    public String miNombre;
     private static final int ZOOM = 20;
     private MapView map;
     private ListView listaTelefonos;
@@ -103,6 +104,7 @@ public class ServiceFragment extends Fragment {
         radioBusqueda = prefe.getInt("radio_busqueda", 1);
         miNumero = prefe.getString("miNumero", "");
         contexto = rootView.getContext();
+        miNombre = prefe.getString("miNombre", "");
         Log.d("radioBusqueda",""+radioBusqueda);
         int i = getArguments().getInt(SERVICE_NUMBER);
         Bundle a = getArguments();
