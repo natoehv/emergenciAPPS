@@ -394,10 +394,14 @@ public class ServiceFragment extends Fragment {
     	map = maps;
     	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
+    	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
+    	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
     	myLoc.runOnFirstFix(new Runnable() {
+    		
           @Override
           public void run() {
+        	
             GeoPoint currentLocation = myLoc.getMyLocation();
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
@@ -416,6 +420,7 @@ public class ServiceFragment extends Fragment {
             for(Hospital h: lista){
             	item = new OverlayItem(new GeoPoint(h.getX(),h.getY()), h.getNombre(), h.getDireccion());
             	overlayServicio.addItem(item);
+            	
             }
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
@@ -473,6 +478,7 @@ public class ServiceFragment extends Fragment {
     	map = maps;
     	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
+    	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
           @Override
@@ -557,6 +563,7 @@ public class ServiceFragment extends Fragment {
     	map = maps;
     	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
+    	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
           @Override
@@ -634,6 +641,7 @@ public class ServiceFragment extends Fragment {
     	map = maps;
     	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
+    	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
           @Override
@@ -721,6 +729,7 @@ public class ServiceFragment extends Fragment {
     
     	map = maps;
     	annotation = new AnnotationView(maps);
+    	map.setBuiltInZoomControls(true);
     	map.getController().setZoom(zoom);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
@@ -805,6 +814,7 @@ public class ServiceFragment extends Fragment {
     	map = maps;
     	annotation = new AnnotationView(maps);
     	map.getController().setZoom(zoom);
+    	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
     	myLoc.runOnFirstFix(new Runnable() {
           @Override
@@ -894,6 +904,7 @@ public class ServiceFragment extends Fragment {
         	map = maps;
         	annotation = new AnnotationView(maps);
         	map.getController().setZoom(zoom);
+        	map.setBuiltInZoomControls(true);
         	myLoc.enableMyLocation();
         	
         	myLoc.runOnFirstFix(new Runnable() {
@@ -969,6 +980,7 @@ public class ServiceFragment extends Fragment {
     	overlayServicio = new DefaultItemizedOverlay(iconPDI);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
+    	map.setBuiltInZoomControls(true);
     	annotation = new AnnotationView(maps);
     	myLoc.enableMyLocation();
     	
@@ -978,6 +990,7 @@ public class ServiceFragment extends Fragment {
             GeoPoint currentLocation = myLoc.getMyLocation();
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(currentLocation);
+            
             map.getController().setZoom(zoom);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             //List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");

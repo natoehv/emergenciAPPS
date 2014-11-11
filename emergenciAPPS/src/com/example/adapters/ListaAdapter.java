@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -43,17 +44,18 @@ public class ListaAdapter  extends ArrayAdapter{
 		View v = convertView;
 		final LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		v = inflater.inflate(R.layout.lista_telefonos, null);
-		 
+		final Vibrator vibracion = (Vibrator) v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
 		 if(objects.get(position) instanceof Carabinero){
 			 final Carabinero carabinero = (Carabinero) objects.get(position);
 					/*
 					 * fila de usuario
 					 */
+			 		
 					final TextView numero = (TextView) v.findViewById(R.id.numero);
 					TextView direccion = (TextView) v.findViewById(R.id.direccion);
 					Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
 					TextView nombre = (TextView) v.findViewById(R.id.nombre);
-					final SharedPreferences pref = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
+					final SharedPreferences pref = v.getContext().getSharedPreferences("miCuenta", v.getContext().MODE_PRIVATE);
 					llamar.setOnClickListener(new View.OnClickListener() {
 						
 						@Override
@@ -75,27 +77,28 @@ public class ListaAdapter  extends ArrayAdapter{
 							TextView tv  = (TextView) aView.findViewById(R.id.numero);
 							switch(arg1.getAction()){
 							
-							case MotionEvent.ACTION_DOWN: 
-										inicio = System.currentTimeMillis();
-										
-										numero.setTextColor(Color.GREEN);
-										Log.d("emergenciapps", "tocaste a las: "+inicio);
-								break;
-							case MotionEvent.ACTION_UP:
-								total = System.currentTimeMillis() - inicio;
-								Log.d("emergenciapps", "soltaste con duracion: "+total);
-								if(total > 2000){
-									Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
-									// guardar numero
-									tv.setTextColor(Color.WHITE);
+								case MotionEvent.ACTION_DOWN: 
+									inicio = System.currentTimeMillis();
+									
 									numero.setTextColor(Color.GREEN);
-									SharedPreferences.Editor editor = pref.edit();
-									editor.putString("numeroCarabinero", numero.getText().toString());
-									editor.commit();
-									Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
-								}else{
-									numero.setTextColor(Color.WHITE);
-								}
+									Log.d("emergenciapps", "tocaste a las: "+inicio);
+								break;
+								case MotionEvent.ACTION_UP:
+									total = System.currentTimeMillis() - inicio;
+									Log.d("emergenciapps", "soltaste con duracion: "+total);
+									if(total > 2000){
+										vibracion.vibrate(500);
+										Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
+										// guardar numero
+										tv.setTextColor(Color.WHITE);
+										numero.setTextColor(Color.GREEN);
+										SharedPreferences.Editor editor = pref.edit();
+										editor.putString("numero_bombero", numero.getText().toString());
+										editor.commit();
+										Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+									}else{
+										numero.setTextColor(Color.WHITE);
+									}
 								break;
 							}
 							Log.d("emergenciapps", "evento touch");
@@ -104,7 +107,7 @@ public class ListaAdapter  extends ArrayAdapter{
 						
 					});
 					//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
-					String numeroPref = pref.getString("numeroCarabinero", "");
+					String numeroPref = pref.getString("numero_carabinero", "");
 					if(numeroPref.equalsIgnoreCase(carabinero.getTelefono())){
 						numero.setTextColor(Color.GREEN);
 					}
@@ -148,7 +151,7 @@ public class ListaAdapter  extends ArrayAdapter{
 						TextView direccion = (TextView) v.findViewById(R.id.direccion);
 						Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
 						TextView nombre = (TextView) v.findViewById(R.id.nombre);
-						final SharedPreferences prefb = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
+						final SharedPreferences prefb = v.getContext().getSharedPreferences("miCuenta", v.getContext().MODE_PRIVATE);
 
 						llamar.setOnClickListener(new View.OnClickListener() {
 							
@@ -182,10 +185,11 @@ public class ListaAdapter  extends ArrayAdapter{
 									if(total > 2000){
 										Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
 										// guardar numero
+										vibracion.vibrate(500);
 										tv.setTextColor(Color.WHITE);
 										numero.setTextColor(Color.GREEN);
 										SharedPreferences.Editor editor = prefb.edit();
-										editor.putString("numeroBombero", numero.getText().toString());
+										editor.putString("numero_bombero", numero.getText().toString());
 										editor.commit();
 										Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
 									}else{
@@ -200,7 +204,7 @@ public class ListaAdapter  extends ArrayAdapter{
 						});
 						//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 						
-						String numeroPref = prefb.getString("numeroBombero", "");
+						String numeroPref = prefb.getString("numero_bombero", "");
 						if(numeroPref.equalsIgnoreCase(bombero.getTelefono())){
 							numero.setTextColor(Color.GREEN);
 						};
@@ -217,7 +221,7 @@ public class ListaAdapter  extends ArrayAdapter{
 							TextView direccion = (TextView) v.findViewById(R.id.direccion);
 							Button llamar = (Button) v.findViewById(R.id.lista_boton_llamar);
 							TextView nombre = (TextView) v.findViewById(R.id.nombre);
-							final SharedPreferences prefh = v.getContext().getSharedPreferences("MisContactos", v.getContext().MODE_PRIVATE);
+							final SharedPreferences prefh = v.getContext().getSharedPreferences("miCuenta", v.getContext().MODE_PRIVATE);
 							llamar.setOnClickListener(new View.OnClickListener() {
 								
 								@Override
@@ -249,12 +253,13 @@ public class ListaAdapter  extends ArrayAdapter{
 										total = System.currentTimeMillis() - inicio;
 										Log.d("emergenciapps", "soltaste con duracion: "+total);
 										if(total > 2000){
+											vibracion.vibrate(500);
 											Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
 											// guardar numero
 											tv.setTextColor(Color.WHITE);
 											numero.setTextColor(Color.GREEN);
 											SharedPreferences.Editor editor = prefh.edit();
-											editor.putString("numeroHospital", numero.getText().toString());
+											editor.putString("numero_centro_medico", numero.getText().toString());
 											editor.commit();
 											Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
 										}else{
@@ -269,7 +274,7 @@ public class ListaAdapter  extends ArrayAdapter{
 							});
 							//icon.setImageBitmap(EmergenciUTIL.resizeImage(context.getResources().getDrawable(R.drawable.anonimo), 30, 30));
 							
-							String numeroPref = prefh.getString("numeroHospital", "");
+							String numeroPref = prefh.getString("numero_centro_medico", "");
 							if(numeroPref.equalsIgnoreCase(hospital.getTelefono())){
 								numero.setTextColor(Color.GREEN);
 							}

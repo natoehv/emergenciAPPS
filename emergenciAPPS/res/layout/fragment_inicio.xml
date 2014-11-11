@@ -63,7 +63,7 @@
                 
             <TextView 
 				 android:id="@+id/textView2" 
-				 android:textSize="18sp"
+				 android:textSize="17sp"
 				 android:paddingTop="8dp"
 				 android:textColor="#000"
 				 android:textStyle="bold"
@@ -103,7 +103,7 @@
                 
             <TextView 
 				 android:id="@+id/textView3" 
-				 android:textSize="18sp"
+				 android:textSize="17sp"
 				 android:paddingTop="8dp"
 				 android:textColor="#000"
 				 android:textStyle="bold"
@@ -144,7 +144,7 @@
                 
             <TextView 
 				 android:id="@+id/textView4" 
-				 android:textSize="18sp"
+				 android:textSize="17sp"
 				 android:paddingTop="8dp"
 				 android:textColor="#000"
 				 android:textStyle="bold"
