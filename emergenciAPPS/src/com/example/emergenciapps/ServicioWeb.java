@@ -913,6 +913,99 @@ public class ServicioWeb {
     	}
     	return contactos;
 	}
+
+	public static Boolean actualizaNumeroCarabinero(String numeroUsuario, String numeroCarabinero) {
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaNumeroCarabinero";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	String descripcion = "";
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("id_usuario",numeroUsuario));
+			oPostParam.add(new BasicNameValuePair("numero_carabinero",numeroCarabinero));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    String valor = respuesta.trim();
+		    
+		    if(valor.equals("true"))
+				return true;
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return false;
+    		
+    	}
+		return false;
+	}
+	
+	public static Boolean actualizaNumeroBombero(String numeroUsuario, String numeroBombero) {
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaNumeroBombero";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	String descripcion = "";
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("id_usuario",numeroUsuario));
+			oPostParam.add(new BasicNameValuePair("numero_bombero",numeroBombero));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    String valor = respuesta.trim();
+		    
+		    if(valor.equals("true"))
+				return true;
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return false;
+    		
+    	}
+		return false;
+	}
+	
+	public static Boolean actualizaNumeroCentroMedico(String numeroUsuario, String numeroCentroMedico) {
+		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaNumeroCentroMedico";
+		HttpParams httpParameters = new BasicHttpParams();
+		int timeoutConnection = 10000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    	int timeoutSocket = 30000;
+    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
+    	HttpPost oPost = new HttpPost(URL);
+    	String respuesta;
+    	String descripcion = "";
+    	try{
+    		List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
+			oPostParam.add(new BasicNameValuePair("id_usuario",numeroUsuario));
+			oPostParam.add(new BasicNameValuePair("numero_centro_medico",numeroCentroMedico));
+			oPost.setEntity(new UrlEncodedFormEntity(oPostParam));
+			HttpResponse oResp = httpclient.execute(oPost);
+			HttpEntity r_entity = oResp.getEntity();
+		    respuesta = EntityUtils.toString(r_entity);
+		    String valor = respuesta.trim();
+		    
+		    if(valor.equals("true"))
+				return true;
+    	}catch(Exception e){
+    		Log.e("emergenciAPPS", "Error: "+URL, e);
+    		return false;
+    		
+    	}
+		return false;
+	}
 }
 
  

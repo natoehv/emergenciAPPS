@@ -5,17 +5,21 @@ import java.util.ArrayList;
 import com.example.emergenciapps.R;
 import com.example.emergenciapps.R.id;
 import com.example.emergenciapps.R.layout;
+import com.example.emergenciapps.ServicioWeb;
 import com.example.object.Bombero;
 import com.example.object.Carabinero;
 import com.example.object.Hospital;
 import com.example.object.PDI;
+import com.example.seguimiento.SeguimientoActivity;
 
 import android.R.color;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +37,8 @@ import android.widget.Toast;
 public class ListaAdapter  extends ArrayAdapter{
 	private ArrayList objects;
 	private Context context;
+	private ProgressDialog ringProgressDialog;
+	
 	public ListaAdapter(Context context, int textViewResourceId,
 			ArrayList values) {
 		super(context, textViewResourceId, values);
@@ -72,9 +78,9 @@ public class ListaAdapter  extends ArrayAdapter{
 						long inicio;
 						long total;
 						@Override
-						public boolean onTouch(View v, MotionEvent arg1) {
+						public boolean onTouch(final View v, MotionEvent arg1) {
 							View aView = inflater.inflate(R.layout.lista_telefonos, null);
-							TextView tv  = (TextView) aView.findViewById(R.id.numero);
+							final TextView tv  = (TextView) aView.findViewById(R.id.numero);
 							switch(arg1.getAction()){
 							
 								case MotionEvent.ACTION_DOWN: 
@@ -88,14 +94,45 @@ public class ListaAdapter  extends ArrayAdapter{
 									Log.d("emergenciapps", "soltaste con duracion: "+total);
 									if(total > 2000){
 										vibracion.vibrate(500);
-										Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
-										// guardar numero
-										tv.setTextColor(Color.WHITE);
-										numero.setTextColor(Color.GREEN);
-										SharedPreferences.Editor editor = pref.edit();
-										editor.putString("numero_bombero", numero.getText().toString());
-										editor.commit();
-										Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+										final String numeroUsuario = pref.getString("miNumero", "");
+										AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+											@Override
+											protected void onPreExecute() {
+												super.onPreExecute();
+												ringProgressDialog = ProgressDialog.show(v.getContext(), "Por favor espere ...", "Actualizando ...", true);
+												ringProgressDialog.setCancelable(false);
+												
+											}
+											@Override
+											protected String doInBackground(String... arg0) {
+												// TODO Auto-generated method stub
+												Boolean resultado = ServicioWeb.actualizaNumeroCarabinero(numeroUsuario, numero.getText().toString());
+												if(resultado){
+													return "true";
+												}else{
+													return "false";
+												}
+												
+											}
+											@Override
+											protected void onPostExecute(String result) {
+												// TODO Auto-generated method stub
+												super.onPostExecute(result);
+												ringProgressDialog.dismiss();
+												if(result.equals("true")){
+													tv.setTextColor(Color.WHITE);
+													numero.setTextColor(Color.GREEN);
+													SharedPreferences.Editor editor = pref.edit();
+													editor.putString("numero_carabinero", numero.getText().toString());
+													editor.commit();
+													Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+												}
+											}
+											
+										};
+										tarea.execute();
+										
+										
 									}else{
 										numero.setTextColor(Color.WHITE);
 									}
@@ -168,34 +205,65 @@ public class ListaAdapter  extends ArrayAdapter{
 							long inicio;
 							long total;
 							@Override
-							public boolean onTouch(View v, MotionEvent arg1) {
+							public boolean onTouch(final View v, MotionEvent arg1) {
 								View aView = inflater.inflate(R.layout.lista_telefonos, null);
-								TextView tv  = (TextView) aView.findViewById(R.id.numero);
+								final TextView tv  = (TextView) aView.findViewById(R.id.numero);
 								switch(arg1.getAction()){
 								
 								case MotionEvent.ACTION_DOWN: 
-											inicio = System.currentTimeMillis();
-											
-											numero.setTextColor(Color.GREEN);
-											Log.d("emergenciapps", "tocaste a las: "+inicio);
-									break;
+									inicio = System.currentTimeMillis();
+									
+									numero.setTextColor(Color.GREEN);
+									Log.d("emergenciapps", "tocaste a las: "+inicio);
+								break;
 								case MotionEvent.ACTION_UP:
 									total = System.currentTimeMillis() - inicio;
 									Log.d("emergenciapps", "soltaste con duracion: "+total);
 									if(total > 2000){
-										Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
-										// guardar numero
 										vibracion.vibrate(500);
-										tv.setTextColor(Color.WHITE);
-										numero.setTextColor(Color.GREEN);
-										SharedPreferences.Editor editor = prefb.edit();
-										editor.putString("numero_bombero", numero.getText().toString());
-										editor.commit();
-										Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+										final String numeroUsuario = prefb.getString("miNumero", "");
+										AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+											@Override
+											protected void onPreExecute() {
+												super.onPreExecute();
+												ringProgressDialog = ProgressDialog.show(v.getContext(), "Por favor espere ...", "Actualizando ...", true);
+												ringProgressDialog.setCancelable(false);
+												
+											}
+											@Override
+											protected String doInBackground(String... arg0) {
+												// TODO Auto-generated method stub
+												Boolean resultado = ServicioWeb.actualizaNumeroBombero(numeroUsuario, numero.getText().toString());
+												if(resultado){
+													return "true";
+												}else{
+													return "false";
+												}
+												
+											}
+											@Override
+											protected void onPostExecute(String result) {
+												// TODO Auto-generated method stub
+												super.onPostExecute(result);
+												ringProgressDialog.dismiss();
+												if(result.equals("true")){
+													tv.setTextColor(Color.WHITE);
+													numero.setTextColor(Color.GREEN);
+													SharedPreferences.Editor editor = prefb.edit();
+													editor.putString("numero_bombero", numero.getText().toString());
+													editor.commit();
+													Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+												}
+											}
+											
+										};
+										tarea.execute();
+										
+										
 									}else{
 										numero.setTextColor(Color.WHITE);
 									}
-									break;
+								break;
 								}
 								Log.d("emergenciapps", "evento touch");
 								return true;
@@ -238,34 +306,65 @@ public class ListaAdapter  extends ArrayAdapter{
 								long inicio;
 								long total;
 								@Override
-								public boolean onTouch(View v, MotionEvent arg1) {
+								public boolean onTouch(final View v, MotionEvent arg1) {
 									View aView = inflater.inflate(R.layout.lista_telefonos, null);
-									TextView tv  = (TextView) aView.findViewById(R.id.numero);
+									final TextView tv  = (TextView) aView.findViewById(R.id.numero);
 									switch(arg1.getAction()){
 									
 									case MotionEvent.ACTION_DOWN: 
-												inicio = System.currentTimeMillis();
-												
-												numero.setTextColor(Color.GREEN);
-												Log.d("emergenciapps", "tocaste a las: "+inicio);
-										break;
+										inicio = System.currentTimeMillis();
+										
+										numero.setTextColor(Color.GREEN);
+										Log.d("emergenciapps", "tocaste a las: "+inicio);
+									break;
 									case MotionEvent.ACTION_UP:
 										total = System.currentTimeMillis() - inicio;
 										Log.d("emergenciapps", "soltaste con duracion: "+total);
 										if(total > 2000){
 											vibracion.vibrate(500);
-											Log.d("emergenciapps","tiempo capturado mayor a 2 segundos: "+total);
-											// guardar numero
-											tv.setTextColor(Color.WHITE);
-											numero.setTextColor(Color.GREEN);
-											SharedPreferences.Editor editor = prefh.edit();
-											editor.putString("numero_centro_medico", numero.getText().toString());
-											editor.commit();
-											Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+											final String numeroUsuario = prefh.getString("miNumero", "");
+											AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+												@Override
+												protected void onPreExecute() {
+													super.onPreExecute();
+													ringProgressDialog = ProgressDialog.show(v.getContext(), "Por favor espere ...", "Actualizando ...", true);
+													ringProgressDialog.setCancelable(false);
+													
+												}
+												@Override
+												protected String doInBackground(String... arg0) {
+													// TODO Auto-generated method stub
+													Boolean resultado = ServicioWeb.actualizaNumeroCentroMedico(numeroUsuario, numero.getText().toString());
+													if(resultado){
+														return "true";
+													}else{
+														return "false";
+													}
+													
+												}
+												@Override
+												protected void onPostExecute(String result) {
+													// TODO Auto-generated method stub
+													super.onPostExecute(result);
+													ringProgressDialog.dismiss();
+													if(result.equals("true")){
+														tv.setTextColor(Color.WHITE);
+														numero.setTextColor(Color.GREEN);
+														SharedPreferences.Editor editor = prefh.edit();
+														editor.putString("numero_centro_medico", numero.getText().toString());
+														editor.commit();
+														Toast.makeText(v.getContext(), "El número "+numero.getText().toString()+" se ha añadido a sus favoritos", Toast.LENGTH_LONG).show();
+													}
+												}
+												
+											};
+											tarea.execute();
+											
+											
 										}else{
 											numero.setTextColor(Color.WHITE);
 										}
-										break;
+									break;
 									}
 									Log.d("emergenciapps", "evento touch");
 									return true;

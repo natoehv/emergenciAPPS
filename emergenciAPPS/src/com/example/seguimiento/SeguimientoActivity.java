@@ -7,25 +7,34 @@ import com.example.contactos.DetalleContactoActivity;
 import com.example.emergenciapps.R;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.object.Usuario;
+import com.mapquest.android.maps.AnnotationView;
 import com.mapquest.android.maps.DefaultItemizedOverlay;
 import com.mapquest.android.maps.GeoPoint;
+import com.mapquest.android.maps.ItemizedOverlay;
 import com.mapquest.android.maps.MapView;
 import com.mapquest.android.maps.OverlayItem;
+import com.mapquest.android.maps.RouteManager;
+import com.mapquest.android.maps.RouteResponse;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class SeguimientoActivity extends Activity{
 	List<String> myList;
@@ -40,6 +49,7 @@ public class SeguimientoActivity extends Activity{
 	List<DefaultItemizedOverlay> markers = new ArrayList<DefaultItemizedOverlay>();
 	private DefaultItemizedOverlay overlayUserInAlert;
 	OverlayItem item;
+	private AnnotationView annotation;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +65,7 @@ public class SeguimientoActivity extends Activity{
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),(MapView)SeguimientoActivity.this.findViewById(R.id.mapSegumiento));
+				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),lista.get(arg2).getNombre(),(MapView)SeguimientoActivity.this.findViewById(R.id.mapSegumiento));
 				
 			}
 
@@ -146,7 +156,7 @@ public class SeguimientoActivity extends Activity{
 		 
 	}
 	
-	private void setearPunto(Float lat, Float lng, String numero, MapView map){
+	private void setearPunto(Float lat, Float lng, final String numero, final String nombre, MapView map){
 		Log.d("map","inicia map");
 		if(markers.size() > 0){
 			for(int i=0; i<markers.size(); i++){
@@ -159,11 +169,24 @@ public class SeguimientoActivity extends Activity{
 		markers.add(overlayUserInAlert);
 		
 		GeoPoint latlng = new GeoPoint(lat,lng);
-		item = new OverlayItem(latlng, numero, numero);
+		
+		item = new OverlayItem(latlng, numero, nombre);
 		
 		map.getController().animateTo(latlng);
 		overlayUserInAlert.addItem(item);
 		
+		overlayUserInAlert.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+			
+			@Override
+			public void onTap(GeoPoint arg0, MapView arg1) {
+				int lastTouchedIndex = overlayUserInAlert.getLastFocusedIndex();
+				if(lastTouchedIndex > -1){
+					Toast.makeText(SeguimientoActivity.this, "Siguiendo a "+nombre+" ("+numero+")" , Toast.LENGTH_LONG).show();
+				}
+				
+			}
+			
+		});
 		map.getOverlays().add(overlayUserInAlert);
 		map.getController().setZoom(13);
 		map.getController().setCenter(latlng);
@@ -172,6 +195,8 @@ public class SeguimientoActivity extends Activity{
 		
 		
 	}
+	
+	
 	
 
 }

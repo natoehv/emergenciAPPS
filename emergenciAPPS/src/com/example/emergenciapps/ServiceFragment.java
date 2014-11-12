@@ -437,6 +437,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
@@ -520,6 +529,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				new TareaLlenaNumeros(lista, listaTelefonos).execute();
 			}else{
 				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
@@ -565,6 +583,7 @@ public class ServiceFragment extends Fragment {
     	map.getController().setZoom(zoom);
     	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
+    	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
     	myLoc.runOnFirstFix(new Runnable() {
           @Override
           public void run() {
@@ -598,6 +617,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
@@ -681,6 +709,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				new TareaLlenaNumeros(lista, listaTelefonos).execute();
 			}else{
 				 TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
@@ -732,6 +769,7 @@ public class ServiceFragment extends Fragment {
     	map.setBuiltInZoomControls(true);
     	map.getController().setZoom(zoom);
     	myLoc.enableMyLocation();
+    	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
     	myLoc.runOnFirstFix(new Runnable() {
           @Override
           public void run() {
@@ -768,6 +806,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
@@ -858,6 +905,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
@@ -942,6 +998,15 @@ public class ServiceFragment extends Fragment {
 						}
     					
     				});
+    				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+    					@Override
+    					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+    						// when focused item changes, recenter map and show info
+    						map.getController().animateTo(newFocus.getPoint());
+    						
+    						
+    					}    		
+    		    	});
     				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
     				tarea.execute();
     			}else{
@@ -1024,6 +1089,15 @@ public class ServiceFragment extends Fragment {
 					}
 					
 				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
