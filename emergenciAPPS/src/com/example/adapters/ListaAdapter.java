@@ -163,12 +163,12 @@ public class ListaAdapter  extends ArrayAdapter{
 								text_numero =  tv;
 								if(arg1.getAction() ==  MotionEvent.ACTION_DOWN){
 									handler.postDelayed(runnable, 1500);
-									
+									tv.setBackgroundColor(Color.parseColor("#1A4113"));
 									press = true;
 								}else{
 									if(arg1.getAction() ==  MotionEvent.ACTION_UP){
-										
 										if(press){
+											tv.setBackgroundColor(Color.parseColor("#3e5d24"));
 											press = false;
 											handler.removeCallbacks(runnable);
 										}
@@ -326,12 +326,13 @@ public class ListaAdapter  extends ArrayAdapter{
 									text_numero =  tv;
 									if(arg1.getAction() ==  MotionEvent.ACTION_DOWN){
 										handler.postDelayed(runnable, 1500);
-										
+										tv.setBackgroundColor(Color.parseColor("#331900"));
 										press = true;
 									}else{
 										if(arg1.getAction() ==  MotionEvent.ACTION_UP){
 											
 											if(press){
+												tv.setBackgroundColor(Color.parseColor("#961717"));
 												press = false;
 												handler.removeCallbacks(runnable);
 											}
@@ -451,12 +452,13 @@ public class ListaAdapter  extends ArrayAdapter{
 										text_numero =  tv;
 										if(arg1.getAction() ==  MotionEvent.ACTION_DOWN){
 											handler.postDelayed(runnable, 1500);
-											
+											tv.setBackgroundColor(Color.parseColor("#291665"));
 											press = true;
 										}else{
 											if(arg1.getAction() ==  MotionEvent.ACTION_UP){
 												
 												if(press){
+													tv.setBackgroundColor(Color.parseColor("#116d97"));
 													press = false;
 													handler.removeCallbacks(runnable);
 												}
