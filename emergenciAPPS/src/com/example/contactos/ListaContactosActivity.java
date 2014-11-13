@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.adapters.ListaAdapterContacto;
 import com.example.emergenciapps.R;
+import com.example.emergenciapps.ServiceFragment;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.emergenciapps.Utils;
 import com.example.login.LoginActivity;
@@ -75,9 +76,10 @@ public class ListaContactosActivity extends Activity{
 
         	break;
         case R.id.actulizarListaContactos:
-	        	
-				
-				AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void,String >() {
+        	if(!ServiceFragment.verificaConexion(ListaContactosActivity.this)){
+        		Toast.makeText(ListaContactosActivity.this, "Debe activar Internet para actualizar la lista",Toast.LENGTH_LONG).show();
+        	}else{
+        		AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void,String >() {
 					@Override
 					protected void onPreExecute() {
 						super.onPreExecute();
@@ -126,6 +128,9 @@ public class ListaContactosActivity extends Activity{
 				
 				};
 				tarea.execute();
+        	}
+				
+				
 			
 			
 			

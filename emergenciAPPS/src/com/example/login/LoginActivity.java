@@ -8,6 +8,7 @@ import java.util.Locale;
 
 import com.example.emergenciapps.EmergenciAPPSActivity;
 import com.example.emergenciapps.R;
+import com.example.emergenciapps.ServiceFragment;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.object.Usuario;
 import com.google.android.gms.common.ConnectionResult;
@@ -93,52 +94,57 @@ public class LoginActivity  extends Activity{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					if(validarCampos()){
-					AsyncTask<String, Void, String> inicioSesion = new AsyncTask<String, Void,String >() {
-						@Override
-						protected void onPreExecute() {
-							super.onPreExecute();
-							ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Por favor espere ...", "Verificando usuario ...", true);
-							ringProgressDialog.setCancelable(false);
-						}
-						
-						@Override
-						protected String doInBackground(String... params) {
-							if(validarCampos()){
-								Usuario user;
-								user = ServicioWeb.verificaLogin(usuario.getText().toString(), password.getText().toString());
-								if(user == null){
-									//no existe usuario
-									Log.d("emergenciAPPS", "no se encuentra a usuario");
-									return "error";
-								}else{
-									editor.putBoolean("login", true);
-									editor.putBoolean("firstTime", true);
-									editor.commit();
-									registraGCM(usuario.getText().toString());
-									Intent i = new Intent(LoginActivity.this, EmergenciAPPSActivity.class);
-							         i.putExtra("usuario",(Serializable) user);
-							        startActivity(i);
-							        finish();
-								}
-							}
-							return "";
-						}
+					if(!ServiceFragment.verificaConexion(LoginActivity.this)){
+		             	Toast.makeText(LoginActivity.this, "No tienes conexión a internet, actívelo iniciar sesión", Toast.LENGTH_LONG).show();
+		             }else{
+		            	 if(validarCampos()){
+		 					AsyncTask<String, Void, String> inicioSesion = new AsyncTask<String, Void,String >() {
+		 						@Override
+		 						protected void onPreExecute() {
+		 							super.onPreExecute();
+		 							ringProgressDialog = ProgressDialog.show(LoginActivity.this, "Por favor espere ...", "Verificando usuario ...", true);
+		 							ringProgressDialog.setCancelable(false);
+		 						}
+		 						
+		 						@Override
+		 						protected String doInBackground(String... params) {
+		 							if(validarCampos()){
+		 								Usuario user;
+		 								user = ServicioWeb.verificaLogin(usuario.getText().toString(), password.getText().toString());
+		 								if(user == null){
+		 									//no existe usuario
+		 									Log.d("emergenciAPPS", "no se encuentra a usuario");
+		 									return "error";
+		 								}else{
+		 									editor.putBoolean("login", true);
+		 									editor.putBoolean("firstTime", true);
+		 									editor.commit();
+		 									registraGCM(usuario.getText().toString());
+		 									Intent i = new Intent(LoginActivity.this, EmergenciAPPSActivity.class);
+		 							         i.putExtra("usuario",(Serializable) user);
+		 							        startActivity(i);
+		 							        finish();
+		 								}
+		 							}
+		 							return "";
+		 						}
 
-						@Override
-						protected void onPostExecute(String result) {
-							super.onPostExecute(result);
-							ringProgressDialog.dismiss();
-							if(result.equals("error"))
-								Toast.makeText(usuario.getContext(), "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
-							
-						}
-						
-						
-					};
-					inicioSesion.execute("");
+		 						@Override
+		 						protected void onPostExecute(String result) {
+		 							super.onPostExecute(result);
+		 							ringProgressDialog.dismiss();
+		 							if(result.equals("error"))
+		 								Toast.makeText(usuario.getContext(), "Telefono y/o contraseña incorrecta", Toast.LENGTH_LONG).show();
+		 							
+		 						}
+		 						
+		 						
+		 					};
+		 					inicioSesion.execute("");
+		 					
+		 				} 
+		             }
 					
-				}
 					
 				}
 			});

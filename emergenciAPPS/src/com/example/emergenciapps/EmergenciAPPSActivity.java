@@ -106,15 +106,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 		prefs =	getSharedPreferences("miCuenta", this.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         
-        //correoContacto = prefs.getString("correoContacto", "");
-        //String numeroCarabinero = prefs.getString("numeroCarabinero", "133");
-        //String numeroBombero = prefs.getString("numeroBombero", "132");
-        //String numeroHospital = prefs.getString("numeroHospital", "131");
-        
-		//editor.putString("numeroCarabinero", numeroCarabinero);
-		//editor.putString("numeroBombero", numeroBombero);
-		//editor.putString("numeroHospital", numeroHospital);
-		//editor.commit();
+       
 		
 		prefsSesion =	getSharedPreferences("sesion", LoginActivity.MODE_PRIVATE);
 		if(prefsSesion.getBoolean("firstTime",true)){
@@ -529,7 +521,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
 	   		Log.d("EmergenciAPPS","INICIO ENVIO ALERTA");
 	    	AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
 	    	builder.create();
-	    	builder.setTitle("Eliminar");
+	    	builder.setTitle("Estado Alerta");
 	    	builder.setMessage("¿ Realmente desea enviar una Alerta ?");
 	    	builder.setPositiveButton("SI",
     	        new DialogInterface.OnClickListener() {
@@ -538,17 +530,27 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	            	SharedPreferences preferencias = getSharedPreferences("miCuenta", EmergenciAPPSActivity.MODE_PRIVATE);
     	            	String mensajeAlerta = preferencias.getString("mensaje_alerta", "");
     	            	Log.d("mensaje_alerta",mensajeAlerta);
-    	            	for(Contacto c : lista){
-    	            		sendSMSMessage(mensajeAlerta, c.getNumero().toString());
-    	            		Log.d("numero_contacto",c.getNumero());
+    	            	if(!ServiceFragment.verificaConexion(EmergenciAPPSActivity.this)){
+    	            		Toast.makeText(EmergenciAPPSActivity.this, "No tiene activado el Internet, por lo tanto solo se enviarán SMS", Toast.LENGTH_LONG).show();
+    	            		for(Contacto c : lista){
+        	            		sendSMSMessage(mensajeAlerta, c.getNumero().toString());
+        	            		Log.d("numero_contacto",c.getNumero());
+        	            	}
+    	            	}else{
+    	            		for(Contacto c : lista){
+        	            		sendSMSMessage(mensajeAlerta, c.getNumero().toString());
+        	            		Log.d("numero_contacto",c.getNumero());
+        	            	}
+    	            		
+    	            		locManager = (LocationManager)getSystemService(v.getContext().LOCATION_SERVICE);
+        	            	
+        	            	LocationListener locListener = new LocationListenerMensaje( locManager,v, miNumero);
+        	            	
+        	        	    locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locListener);
     	            	}
     	            	
     	            	
-    	            	locManager = (LocationManager)getSystemService(v.getContext().LOCATION_SERVICE);
     	            	
-    	            	LocationListener locListener = new LocationListenerMensaje( locManager,v, miNumero);
-    	            	
-    	        	    locManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locListener);
     	        	    
     	            	
     	            }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.example.adapters.ListaAdapterContacto;
 import com.example.emergenciapps.EmergenciAPPSActivity;
 import com.example.emergenciapps.R;
+import com.example.emergenciapps.ServiceFragment;
 import com.example.emergenciapps.ServicioWeb;
 import com.example.emergenciapps.Utils;
 import com.example.object.Contacto;
@@ -121,6 +122,9 @@ public class DetalleContactoActivity extends Activity{
     public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
         case R.id.guardarConf:
+        	if(!ServiceFragment.verificaConexion(DetalleContactoActivity.this)){
+        		Toast.makeText(DetalleContactoActivity.this, "Debe activar el Internet para crear un contacto",Toast.LENGTH_LONG).show();
+        	}else{
         		final Contacto contacto = new Contacto();
         		contacto.setNumeroTelefono(numero_telefono);
         		contacto.setIdContacto(id_contacto);
@@ -235,6 +239,8 @@ public class DetalleContactoActivity extends Activity{
 		}else{
 			Toast.makeText(DetalleContactoActivity.this, "Ingrese un correo válido", Toast.LENGTH_LONG).show();
 		}
+        	}
+        		
         	break;
         case R.id.eliminarContacto:
         	
@@ -245,44 +251,49 @@ public class DetalleContactoActivity extends Activity{
         	builder.setPositiveButton("SI",
         	        new DialogInterface.OnClickListener() {
         	            public void onClick(DialogInterface dialog, int which) {
-        	            	Log.d("id_contacto_eliminar",""+id_contacto);
-        	            	AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
-        	            		
-        	            		@Override
-        						protected void onPreExecute() {
-        							super.onPreExecute();
-        							ringProgressDialog = ProgressDialog.show(DetalleContactoActivity.this, "Por favor espere ...", "Eliminando ...", true);
-        							ringProgressDialog.setCancelable(false);
-        							
-        						}
-        	            		
-								@Override
-								protected String doInBackground(String... arg0) {
-									boolean resultadoEliminacion = ServicioWeb.eliminaContacto(id_contacto);
-									if(resultadoEliminacion){
-										Utils.deleteContacto(id_contacto, DetalleContactoActivity.this);
-										return "Contacto eliminado exitosamente";
-									}else{
-										return "No fue posible eliminar el contacto";
-									}
-									
-									
-								}
-								
-								@Override
-								protected void onPostExecute(String result) {
-									super.onPostExecute(result);
-									ringProgressDialog.dismiss();
-									Toast.makeText(DetalleContactoActivity.this, result, Toast.LENGTH_LONG).show();
-									
-									Intent i = new Intent(DetalleContactoActivity.this, ListaContactosActivity.class); 
-									i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-									startActivity(i); 
-									finish();
-								}
-        	            		
-        	            	};
-        	            	tarea.execute();
+        	            	if(!ServiceFragment.verificaConexion(DetalleContactoActivity.this)){
+        	            		Toast.makeText(DetalleContactoActivity.this, "Debe activar el Internet para eliminar un contacto",Toast.LENGTH_LONG).show();
+        	            	}else{
+        	            		Log.d("id_contacto_eliminar",""+id_contacto);
+            	            	AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+            	            		
+            	            		@Override
+            						protected void onPreExecute() {
+            							super.onPreExecute();
+            							ringProgressDialog = ProgressDialog.show(DetalleContactoActivity.this, "Por favor espere ...", "Eliminando ...", true);
+            							ringProgressDialog.setCancelable(false);
+            							
+            						}
+            	            		
+    								@Override
+    								protected String doInBackground(String... arg0) {
+    									boolean resultadoEliminacion = ServicioWeb.eliminaContacto(id_contacto);
+    									if(resultadoEliminacion){
+    										Utils.deleteContacto(id_contacto, DetalleContactoActivity.this);
+    										return "Contacto eliminado exitosamente";
+    									}else{
+    										return "No fue posible eliminar el contacto";
+    									}
+    									
+    									
+    								}
+    								
+    								@Override
+    								protected void onPostExecute(String result) {
+    									super.onPostExecute(result);
+    									ringProgressDialog.dismiss();
+    									Toast.makeText(DetalleContactoActivity.this, result, Toast.LENGTH_LONG).show();
+    									
+    									Intent i = new Intent(DetalleContactoActivity.this, ListaContactosActivity.class); 
+    									i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    									startActivity(i); 
+    									finish();
+    								}
+            	            		
+            	            	};
+            	            	tarea.execute();
+        	            	}
+        	            	
         	            }
         	        });
         	

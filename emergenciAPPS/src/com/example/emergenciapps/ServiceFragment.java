@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -70,6 +72,7 @@ public class ServiceFragment extends Fragment {
     private RouteManager routeManager;
     private boolean cercanos;
     private int progreso_a_guardar = 0;
+    private RelativeLayout relativeLayout;
     
     private boolean ok_bom =  false;
     private boolean ok_hos = false;
@@ -133,6 +136,7 @@ public class ServiceFragment extends Fragment {
         	break;
         	//case 1
         	case 1: rootView = inflater.inflate(R.layout.fragment_hospital, container, false);
+        	
         	Button btnHospital = (Button)rootView.findViewById(R.id.llamar131);
         	
         	btnHospital.setOnClickListener(new View.OnClickListener() {
@@ -144,14 +148,18 @@ public class ServiceFragment extends Fragment {
 				}
         	});
         	 
+        	 if(!verificaConexion(rootView.getContext())){
+             	Toast.makeText(rootView.getContext(), "No tienes conexión a internet, actívelo para ver los Centros Médicos", Toast.LENGTH_LONG).show();
+             }else{
+            	 listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroHospital);
+             	if(cercanos){
+             		setupMapHospitalViewCercanos(12, (MapView)rootView.findViewById(R.id.mapHospital));
+             	}else{
+             		setupMapHospitalViewComuna(12, (MapView)rootView.findViewById(R.id.mapHospital));
+             	}
+             	
+             }
    		    
-   		    
-        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroHospital);
-        	if(cercanos){
-        		setupMapHospitalViewCercanos(20, (MapView)rootView.findViewById(R.id.mapHospital));
-        	}else{
-        		setupMapHospitalViewComuna(20, (MapView)rootView.findViewById(R.id.mapHospital));
-        	}
         	
         	
         	break;
@@ -168,12 +176,17 @@ public class ServiceFragment extends Fragment {
 					v.getContext().startActivity(intent);
 				}
         	});
-        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroBombero);
-        	if(cercanos){
-        		setupMapBomberoViewCercanos(14, (MapView)rootView.findViewById(R.id.mapBombero));
-        	}else{
-        		setupMapBomberoViewComuna(14, (MapView)rootView.findViewById(R.id.mapBombero));
-        	}
+        	
+        	if(!verificaConexion(rootView.getContext())){
+             	Toast.makeText(rootView.getContext(), "No tienes conexión a internet, actívelo para ver los Cuerpos de Bomberos", Toast.LENGTH_LONG).show();
+             }else{
+	        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroBombero);
+	        	if(cercanos){
+	        		setupMapBomberoViewCercanos(12, (MapView)rootView.findViewById(R.id.mapBombero));
+	        	}else{
+	        		setupMapBomberoViewComuna(12, (MapView)rootView.findViewById(R.id.mapBombero));
+	        	}
+             }
         	break;
         	
         	// case 3
@@ -189,12 +202,17 @@ public class ServiceFragment extends Fragment {
 					v.getContext().startActivity(intent);
 				}
         	});
-        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
-        	if(cercanos){
-        		setupMapCarabineroViewCercanos(14, (MapView)rootView.findViewById(R.id.mapCarabinero));
-        	}else{
-        		setupMapCarabineroViewComuna(14, (MapView)rootView.findViewById(R.id.mapCarabinero));
-        	}
+        	
+        	if(!verificaConexion(rootView.getContext())){
+             	Toast.makeText(rootView.getContext(), "No tienes conexión a internet, actívelo para ver los Retenes de Carabineros", Toast.LENGTH_LONG).show();
+             }else{
+	        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroCarabinero);
+	        	if(cercanos){
+	        		setupMapCarabineroViewCercanos(12, (MapView)rootView.findViewById(R.id.mapCarabinero));
+	        	}else{
+	        		setupMapCarabineroViewComuna(12, (MapView)rootView.findViewById(R.id.mapCarabinero));
+	        	}
+             }
         	
         	break;        	
         	
@@ -210,14 +228,16 @@ public class ServiceFragment extends Fragment {
 					v.getContext().startActivity(intent);
 				}
         	});
-        	
-        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroPdi);
-        	if(cercanos){
-        		setupMapPDIViewCercanos(20, (MapView)rootView.findViewById(R.id.mapPdi));
-        	}else{
-        		setupMapPDIViewComuna(20, (MapView)rootView.findViewById(R.id.mapPdi));
-        	}
-        	
+        	if(!verificaConexion(rootView.getContext())){
+             	Toast.makeText(rootView.getContext(), "No tienes conexión a internet, actívelo para ver las Policías de Investigaciones", Toast.LENGTH_LONG).show();
+             }else{
+	        	listaTelefonos = (ListView) rootView.findViewById(R.id.listaNroPdi);
+	        	if(cercanos){
+	        		setupMapPDIViewCercanos(12, (MapView)rootView.findViewById(R.id.mapPdi));
+	        	}else{
+	        		setupMapPDIViewComuna(12, (MapView)rootView.findViewById(R.id.mapPdi));
+	        	}
+             }
 
         	break;
         	case 5: 
@@ -297,65 +317,73 @@ public class ServiceFragment extends Fragment {
         	builder.setPositiveButton("SI",
         	        new DialogInterface.OnClickListener() {
         	            public void onClick(DialogInterface dialog, int which) {
+        	            	if(!verificaConexion(contexto)){
+        	            		Toast.makeText(contexto, "Para cerrar sesión debes tener activado tu Internet", Toast.LENGTH_SHORT).show();
+        	            		Intent i = new Intent(getActivity(), EmergenciAPPSActivity.class); 
+        						startActivity(i); 
+        						getActivity().finish();
+        	            	}else{
         	            		AsyncTask<String, Void, String> tarea = new AsyncTask<String, Void, String> (){
+            	            		
+            	            		@Override
+            						protected void onPreExecute() {
+            							super.onPreExecute();
+            							ringProgressDialog = ProgressDialog.show(contexto, "Por favor espere ...", "Cerrando sesión ...", true);
+            							ringProgressDialog.setCancelable(false);
+            							
+            						}
+            	            		
+    								@Override
+    								protected String doInBackground(String... arg0) {
+    										Boolean resultado = ServicioWeb.eliminarRegId(miNumero);
+    										if(resultado){
+    											return "Sesión cerrada correctamente";
+    										}else{
+    											return "No fue posible eliminar identificador";
+    										}
+    										
+    									
+    									
+    									
+    								}
+    								
+    								@Override
+    								protected void onPostExecute(String result) {
+    									super.onPostExecute(result);
+    									ringProgressDialog.dismiss();
+    									Toast.makeText(contexto, result, Toast.LENGTH_SHORT).show();
+    									SharedPreferences prefs = contexto.getSharedPreferences("sesion", contexto.MODE_PRIVATE);
+    									SharedPreferences.Editor editor = prefs.edit();
+    									editor.clear();
+    									editor.commit();	
+    									
+    									SharedPreferences prefs2 = contexto.getSharedPreferences("miCuenta", contexto.MODE_PRIVATE);
+    									SharedPreferences.Editor editor2 = prefs2.edit();
+    									editor2.clear();
+    									editor2.commit();
+    									
+    									SharedPreferences prefs3 = contexto.getSharedPreferences("LoginActivity", contexto.MODE_PRIVATE);
+    									SharedPreferences.Editor editor3 = prefs3.edit();
+    									editor3.clear();
+    									editor3.commit();
+    									
+    									ContactoSQLHelper oData = new ContactoSQLHelper(contexto); 
+    									SQLiteDatabase db = oData.getWritableDatabase();
+    									db.execSQL("delete from contacto");
+    									db.close();
+    									oData.close();
+    									
+    									Intent i = new Intent(getActivity(), LoginActivity.class); 
+    									startActivity(i); 
+    									getActivity().finish();
+    									
+    									
+    								}
+            	            		
+            	            	};
+            	            	tarea.execute();
+        	            	}
         	            		
-        	            		@Override
-        						protected void onPreExecute() {
-        							super.onPreExecute();
-        							ringProgressDialog = ProgressDialog.show(contexto, "Por favor espere ...", "Cerrando sesión ...", true);
-        							ringProgressDialog.setCancelable(false);
-        							
-        						}
-        	            		
-								@Override
-								protected String doInBackground(String... arg0) {
-										Boolean resultado = ServicioWeb.eliminarRegId(miNumero);
-										if(resultado){
-											return "Sesión cerrada correctamente";
-										}else{
-											return "No fue posible eliminar identificador";
-										}
-										
-									
-									
-									
-								}
-								
-								@Override
-								protected void onPostExecute(String result) {
-									super.onPostExecute(result);
-									ringProgressDialog.dismiss();
-									Toast.makeText(contexto, result, Toast.LENGTH_SHORT).show();
-									SharedPreferences prefs = contexto.getSharedPreferences("sesion", contexto.MODE_PRIVATE);
-									SharedPreferences.Editor editor = prefs.edit();
-									editor.clear();
-									editor.commit();	
-									
-									SharedPreferences prefs2 = contexto.getSharedPreferences("miCuenta", contexto.MODE_PRIVATE);
-									SharedPreferences.Editor editor2 = prefs2.edit();
-									editor2.clear();
-									editor2.commit();
-									
-									SharedPreferences prefs3 = contexto.getSharedPreferences("LoginActivity", contexto.MODE_PRIVATE);
-									SharedPreferences.Editor editor3 = prefs3.edit();
-									editor3.clear();
-									editor3.commit();
-									
-									ContactoSQLHelper oData = new ContactoSQLHelper(contexto); 
-									SQLiteDatabase db = oData.getWritableDatabase();
-									db.execSQL("delete from contacto");
-									db.close();
-									oData.close();
-									
-									Intent i = new Intent(getActivity(), LoginActivity.class); 
-									startActivity(i); 
-									getActivity().finish();
-									
-									
-								}
-        	            		
-        	            	};
-        	            	tarea.execute();
         	            	
         	            }
         	        });
@@ -393,7 +421,7 @@ public class ServiceFragment extends Fragment {
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	annotation = new AnnotationView(maps);
-    	map.getController().setZoom(zoom);
+    	map.getController().setZoom(12);
     	map.setBuiltInZoomControls(true);
     	myLoc.enableMyLocation();
     	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
@@ -405,7 +433,7 @@ public class ServiceFragment extends Fragment {
             GeoPoint currentLocation = myLoc.getMyLocation();
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(14);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
            
            
@@ -495,7 +523,7 @@ public class ServiceFragment extends Fragment {
             GeoPoint currentLocation = myLoc.getMyLocation();
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(14);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
            
            
@@ -590,7 +618,7 @@ public class ServiceFragment extends Fragment {
             GeoPoint currentLocation = myLoc.getMyLocation();
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(14);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             List<Carabinero> lista;
         	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
@@ -677,7 +705,7 @@ public class ServiceFragment extends Fragment {
             GeoPoint currentLocation = myLoc.getMyLocation();
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(14);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             List<Carabinero> lista;
         	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
@@ -777,7 +805,7 @@ public class ServiceFragment extends Fragment {
             
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(14);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             @SuppressWarnings("unchecked")
 			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
@@ -868,7 +896,7 @@ public class ServiceFragment extends Fragment {
           public void run() {
             
            
-            map.getController().setZoom(14);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             @SuppressWarnings("unchecked")
 			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
@@ -969,7 +997,7 @@ public class ServiceFragment extends Fragment {
                 GeoPoint currentLocation = myLoc.getMyLocation();
                 map.getController().animateTo(currentLocation);
                 map.getController().setCenter(myLoc.getMyLocation());
-                map.getController().setZoom(14);
+                map.getController().setZoom(12);
                 OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
                 //List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
                 List<PDI> lista;
@@ -1045,6 +1073,9 @@ public class ServiceFragment extends Fragment {
     	overlayServicio = new DefaultItemizedOverlay(iconPDI);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
+    	
+        
+        
     	map.setBuiltInZoomControls(true);
     	annotation = new AnnotationView(maps);
     	myLoc.enableMyLocation();
@@ -1056,7 +1087,7 @@ public class ServiceFragment extends Fragment {
             map.getController().animateTo(currentLocation);
             map.getController().setCenter(currentLocation);
             
-            map.getController().setZoom(zoom);
+            map.getController().setZoom(12);
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             //List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
             List<PDI> lista;
@@ -1150,6 +1181,7 @@ public class ServiceFragment extends Fragment {
         TextView customTitle = (TextView) customInnerView.findViewById(R.id.title);
         TextView customSnippet = (TextView) customInnerView.findViewById(R.id.snippet);
         Button customButton = (Button) customInnerView.findViewById(R.id.boton);
+        
         if(!cercanos)
         	customButton.setVisibility(View.INVISIBLE);
         customTitle.setText(item.getTitle());
@@ -1199,5 +1231,21 @@ public class ServiceFragment extends Fragment {
     	conf.setNumeroCentroMedico(editHospital.getText().toString());
     	conf.setRadioBusqueda(progreso_a_guardar);
     	return conf;
+    }
+    
+    public static boolean verificaConexion(Context ctx) {
+        boolean bConectado = false;
+        ConnectivityManager connec = (ConnectivityManager) ctx
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        // No sólo wifi, también GPRS
+        NetworkInfo[] redes = connec.getAllNetworkInfo();
+        
+        for (int i = 0; i < 2; i++) {
+            // ¿Tenemos conexión? ponemos a true
+            if (redes[i].getState() == NetworkInfo.State.CONNECTED) {
+                bConectado = true;
+            }
+        }
+        return bConectado;
     }
 }

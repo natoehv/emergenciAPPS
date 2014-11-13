@@ -72,6 +72,7 @@ public class SeguimientoActivity extends Activity{
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
 		        // your code here
+				
 		    }
 
 			

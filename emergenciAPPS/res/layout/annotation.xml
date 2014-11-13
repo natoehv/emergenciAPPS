@@ -34,7 +34,7 @@
 		        android:layout_centerVertical="true"
 		        android:layout_width="30dp" 
 		        android:layout_height="30dp" 
-		        android:layout_toRightOf="@+id/snippet"
+		        android:layout_toRightOf="@+id/title"
 		        android:background="@drawable/boton_ir"
 		       	android:layout_marginRight="3dp"
 		        android:text="IR"/>
