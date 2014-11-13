@@ -20,8 +20,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.contactos.DetalleContactoActivity;
 import com.example.contactos.ListaContactosActivity;
+import com.example.emergenciapps.R.color;
 import com.example.login.LoginActivity;
 import com.example.object.Bombero;
 import com.example.object.Carabinero;
@@ -92,6 +95,7 @@ public class ServiceFragment extends Fragment {
     private boolean guadadoExitoso = false;
     private RespuestaServicioWeb respuestaBusqueda;
     
+    private boolean press = false;
     
     public ServiceFragment() {
         // Empty constructor required for fragment subclasses
@@ -253,16 +257,28 @@ public class ServiceFragment extends Fragment {
         			editMensaje = (EditText)rootView.findViewById(R.id.editMensajeAlerta);
         			final Button btnContacto = (Button)rootView.findViewById(R.id.boton_contactos);
         			
-        			btnContacto.setOnClickListener(new View.OnClickListener() {
-						
+        			
+        			btnContacto.setOnTouchListener(new OnTouchListener(){
+
 						@Override
-						public void onClick(View v) {
+						public boolean onTouch(View arg0, MotionEvent arg1) {
+							// TODO Auto-generated method stub
 							
-							Intent i = new Intent(contexto, ListaContactosActivity.class);
-					        startActivity(i);
-							
-						}
-					});
+							if(arg1.getAction() ==  MotionEvent.ACTION_DOWN){
+								btnContacto.setBackgroundColor(Color.BLUE);
+								Intent i = new Intent(contexto, ListaContactosActivity.class);
+						        startActivity(i);
+								press = true;
+							}else{
+								if(arg1.getAction() ==  MotionEvent.ACTION_UP){
+									
+									if(press){
+										btnContacto.setBackgroundColor(Color.BLACK);
+									}
+								}
+							}
+							return press;
+						}});
         			
                     SharedPreferences pref = rootView.getContext().getSharedPreferences("miCuenta", rootView.getContext().MODE_PRIVATE);
                     

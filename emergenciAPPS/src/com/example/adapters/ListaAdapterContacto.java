@@ -69,6 +69,8 @@ public class ListaAdapterContacto extends ArrayAdapter{
 				v.getContext().startActivity(intent);
 			}
     	});
+		
+		
     		
 			
 			return v;

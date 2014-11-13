@@ -31,7 +31,7 @@
     
     <Button
         android:id="@+id/btnEdit"
-        android:background="@drawable/ic_action_content_edit"
+        android:background="@drawable/botoneditpulsado"
         android:layout_width="30dp"
         android:layout_height="31dp"
         android:layout_margin="10dp"
