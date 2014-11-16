@@ -247,7 +247,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
         }
        
         mSearchView = (SearchView) searchItem.getActionView();
-        mSearchView.setQueryHint("Search...");
+        mSearchView.setQueryHint("Nombre Comuna");
         mSearchView.setOnQueryTextListener(this);
         
         return super.onCreateOptionsMenu(menu);

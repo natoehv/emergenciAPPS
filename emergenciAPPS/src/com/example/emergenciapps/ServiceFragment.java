@@ -1,5 +1,6 @@
 package com.example.emergenciapps;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.app.Activity;
@@ -429,7 +430,7 @@ public class ServiceFragment extends Fragment {
      * @param zoom
      * @param maps
      */
-    private void setupMapHospitalViewCercanos(int zoom, MapView maps){
+    private void setupMapHospitalViewCercanos(final int zoom, MapView maps){
     	
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
     	Drawable iconHospital = maps.getContext().getResources().getDrawable(R.drawable.marcadorhospital);
@@ -474,21 +475,26 @@ public class ServiceFragment extends Fragment {
             OverlayItem item;
             overlay.addItem(miPocision);
             
-            
-            for(Hospital h: lista){
-            	GeoPoint punto = new GeoPoint(h.getX(),h.getY());
-            	item = new OverlayItem(punto, h.getNombre(), h.getDireccion());
-            	overlayServicio.addItem(item);
-            	lat = punto.getLatitudeE6();
-            	lng = punto.getLongitudeE6();
-            	maxLat = Math.max(lat, maxLat);
-                minLat = Math.min(lat, minLat);
-                maxLon = Math.max(lng, maxLon);
-                minLon = Math.min(lng, minLon);
-            	
+            if(lista.size() > 0){
+            	for(Hospital h: lista){
+                	GeoPoint punto = new GeoPoint(h.getX(),h.getY());
+                	item = new OverlayItem(punto, h.getNombre(), h.getDireccion());
+                	overlayServicio.addItem(item);
+                	lat = punto.getLatitudeE6();
+                	lng = punto.getLongitudeE6();
+                	maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lng, maxLon);
+                    minLon = Math.min(lng, minLon);
+                	
+                }
+                map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
+                map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+            }else{
+            	map.getController().setZoom(zoom);
+            	map.getController().animateTo(currentLocation);
             }
-            map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
-            map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+            
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
 				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
@@ -634,12 +640,13 @@ public class ServiceFragment extends Fragment {
         });
     	
     }
+
     /**
      * Metodo encargado de cargar mapa de carabineros
      * @param zoom
      * @param maps
      */
-    private void setupMapCarabineroViewCercanos(int zoom, MapView maps){
+    private void setupMapCarabineroViewCercanos(final int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
     	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorcarabinero);
     	overlay = new DefaultItemizedOverlay(iconMiPosicion);
@@ -647,220 +654,65 @@ public class ServiceFragment extends Fragment {
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
     	annotation = new AnnotationView(maps);
-    	map.getController().setZoom(zoom);
+    	
     	map.setBuiltInZoomControls(true);
+    
     	myLoc.enableMyLocation();
     	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
     	myLoc.runOnFirstFix(new Runnable() {
+    		
           @Override
           public void run() {
+        	int minLat = Integer.MAX_VALUE;
+          	int maxLat = Integer.MIN_VALUE;
+          	int minLon = Integer.MAX_VALUE;
+          	int maxLon = Integer.MIN_VALUE;
+          	
             GeoPoint currentLocation = myLoc.getMyLocation();
-            map.getController().animateTo(currentLocation);
-            map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(12);
+            int lat = currentLocation.getLatitudeE6();
+        	int lng = currentLocation.getLongitudeE6();
+        	maxLat = Math.max(lat, maxLat);
+            minLat = Math.min(lat, minLat);
+            maxLon = Math.max(lng, maxLon);
+            minLon = Math.min(lng, minLon);
+            
+          
+            
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+           
+           
+            int radio  ;
+            //List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
             List<Carabinero> lista;
         	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "carabinero");
         	lista = (List<Carabinero>)respuestaBusqueda.getLista();
- 
-            OverlayItem item;
-            overlay.addItem(miPocision);
-            for(Carabinero c: lista){
-            	item = new OverlayItem(c.getGeoPoint(), c.getNombre(), c.getDireccion());
-            	overlayServicio.addItem(item);
-            }
-            TareaLlenaNumeros tarea;
-			if(lista.size()>0){
-				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
-					@Override
-					public void onTap(GeoPoint arg0, MapView arg1) {
-						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
-						if(lastTouchedIndex > -1){
-							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
-							init(tapped);
-							annotation.showAnnotationView(tapped);
-						}
-						
-					}
-					
-				});
-				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
-					@Override
-					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
-						// when focused item changes, recenter map and show info
-						map.getController().animateTo(newFocus.getPoint());
-						
-						
-					}    		
-		    	});
-				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
-				tarea.execute();
-			}else{
-				 TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-				 switch(respuestaBusqueda.getCodigo()){
-				 case ServicioWeb.ERROR_CONEXION: 
-					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
-					 break;
-				 case ServicioWeb.ERROR_JSON:
-					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
-					 break;
-				 case ServicioWeb.ERROR_JSON_GPS:
-					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
-					 break;
-				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
-					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
-					 break;
-				 
-				 
-				 }
-				 
-				 
-    			
-			}
-            map.getOverlays().add(overlayServicio);
-            map.getOverlays().add(overlay);
-            myLoc.disableMyLocation();
-            //myLoc.setFollowing(true);
-          }
-          
-        });
-    	
-    }
-    
-    private void setupMapCarabineroViewComuna(int zoom, MapView maps){
-    	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-    	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorcarabinero);
-    	overlay = new DefaultItemizedOverlay(iconMiPosicion);
-    	overlayServicio = new DefaultItemizedOverlay(iconCarabinero);
-    	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
-    	map = maps;
-    	annotation = new AnnotationView(maps);
-    	map.getController().setZoom(zoom);
-    	map.setBuiltInZoomControls(true);
-    	myLoc.enableMyLocation();
-    	myLoc.runOnFirstFix(new Runnable() {
-          @Override
-          public void run() {
-            GeoPoint currentLocation = myLoc.getMyLocation();
-            map.getController().animateTo(currentLocation);
-            map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(12);
-            OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            List<Carabinero> lista;
-        	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
-        	lista = respuestaBusqueda.getLista();
-        	if(lista.size() > 0){
-            	map.getController().animateTo(lista.get(0).getGeoPoint());
-                map.getController().setCenter(lista.get(0).getGeoPoint());
-        	}
 
-            
             OverlayItem item;
             overlay.addItem(miPocision);
-            for(Carabinero c: lista){
-            	item = new OverlayItem(c.getGeoPoint(), c.getNombre(), c.getDireccion());
-            	overlayServicio.addItem(item);
+            
+            if(lista.size() > 0){
+            	for(Carabinero c: lista){
+                	GeoPoint punto = new GeoPoint(c.getX(),c.getY());
+                	item = new OverlayItem(punto, c.getNombre(), c.getDireccion());
+                	overlayServicio.addItem(item);
+                	lat = punto.getLatitudeE6();
+                	lng = punto.getLongitudeE6();
+                	maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lng, maxLon);
+                    minLon = Math.min(lng, minLon);
+                	
+                }
+                map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
+                map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+            }else{
+            	map.getController().setZoom(zoom);
+            	map.getController().animateTo(currentLocation);
             }
+            
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
 				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
-					@Override
-					public void onTap(GeoPoint arg0, MapView arg1) {
-						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
-						if(lastTouchedIndex > -1){
-							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
-							init(tapped);
-							annotation.showAnnotationView(tapped);
-						}
-						
-					}
-					
-				});
-				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
-					@Override
-					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
-						// when focused item changes, recenter map and show info
-						map.getController().animateTo(newFocus.getPoint());
-						
-						
-					}    		
-		    	});
-				new TareaLlenaNumeros(lista, listaTelefonos).execute();
-			}else{
-				 TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-				 switch(respuestaBusqueda.getCodigo()){
-				 case ServicioWeb.ERROR_CONEXION: 
-					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
-					 break;
-				 case ServicioWeb.ERROR_JSON:
-					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
-					 break;
-				 case ServicioWeb.ERROR_JSON_GPS:
-					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
-					 break;
-				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
-					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
-					 break;
-				 
-				 
-				 }
-				 
-				 
-    			
-			}
-            
-            map.getOverlays().add(overlayServicio);
-            map.getOverlays().add(overlay);
-            myLoc.disableMyLocation();
-            //myLoc.setFollowing(true);
-          }
-          
-        });
-    	
-    }
-    /**
-     * Metodo encargado de cargar mapa de bomberos cercanos a un punto en el 
-     * mapa obtenido desde el GPS
-     * @param zoom distancia de visual de mapa
-     * @param maps mapa al cual se le cargaran los resultados
-     */
-    private void setupMapBomberoViewCercanos(int zoom, MapView maps){
-    	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-    	Drawable iconBombero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
-    	overlay = new DefaultItemizedOverlay(iconMiPosicion);
-    	overlayServicio = new DefaultItemizedOverlay(iconBombero);
-    	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
-    
-    	map = maps;
-    	annotation = new AnnotationView(maps);
-    	map.setBuiltInZoomControls(true);
-    	map.getController().setZoom(zoom);
-    	myLoc.enableMyLocation();
-    	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
-    	myLoc.runOnFirstFix(new Runnable() {
-          @Override
-          public void run() {
-            GeoPoint currentLocation = myLoc.getMyLocation();
-            
-            map.getController().animateTo(currentLocation);
-            map.getController().setCenter(myLoc.getMyLocation());
-            map.getController().setZoom(12);
-            OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            @SuppressWarnings("unchecked")
-			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
-            List<Bombero> lista;
-        	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
-        	lista = (List<Bombero>)respuestaBusqueda.getLista();
-            OverlayItem item;
-            overlay.addItem(miPocision);
-            for(Bombero b: lista){
-            	item = new OverlayItem(new GeoPoint(b.getX(),b.getY()), b.getNombre(), b.getDireccion());
-            	overlayServicio.addItem(item);
-            }
-            TareaLlenaNumeros tarea;
-			if(lista.size()>0){
-				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
-					
 					@Override
 					public void onTap(GeoPoint arg0, MapView arg1) {
 						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
@@ -885,8 +737,8 @@ public class ServiceFragment extends Fragment {
 				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
 				tarea.execute();
 			}else{
-			     TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-			     switch(respuestaBusqueda.getCodigo()){
+				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+				switch(respuestaBusqueda.getCodigo()){
 				 case ServicioWeb.ERROR_CONEXION: 
 					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
 					 break;
@@ -907,22 +759,17 @@ public class ServiceFragment extends Fragment {
             map.getOverlays().add(overlay);
             map.getOverlays().add(overlayServicio);
             myLoc.disableMyLocation();
-            myLoc.setFollowing(true);
+            
           }
           
         });
+    	
     }
     
-    /**
-     * Metodo encargado de mostrar resultados al buscar bomberos por comuna
-     * @param zoom
-     * @param maps
-     */
-    private void setupMapBomberoViewComuna(int zoom, MapView maps){
+    private void setupMapCarabineroViewComuna(int zoom, MapView maps){
+    	Drawable iconCarabinero = maps.getContext().getResources().getDrawable(R.drawable.marcadorcarabinero);
     	
-    	Drawable iconBombero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
-    	
-    	overlayServicio = new DefaultItemizedOverlay(iconBombero);
+    	overlayServicio = new DefaultItemizedOverlay(iconCarabinero);
     	
     
     	map = maps;
@@ -939,15 +786,15 @@ public class ServiceFragment extends Fragment {
             //OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
             @SuppressWarnings("unchecked")
 			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
-            List<Bombero> lista;
+            List<Carabinero> lista;
         	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
         	lista = respuestaBusqueda.getLista();
         	
             OverlayItem item;
            
-            for(Bombero b: lista){
-            	GeoPoint punto = new GeoPoint(b.getX(),b.getY());
-            	item = new OverlayItem(punto, b.getNombre(), b.getDireccion());
+            for(Carabinero c: lista){
+            	GeoPoint punto = new GeoPoint(c.getX(),c.getY());
+            	item = new OverlayItem(punto, c.getNombre(), c.getDireccion());
             	overlayServicio.addItem(item);
             	int lat = punto.getLatitudeE6();
             	int lng = punto.getLongitudeE6();
@@ -1009,155 +856,88 @@ public class ServiceFragment extends Fragment {
 			}
             
             map.getOverlays().add(overlayServicio);
-            
-            //myLoc.setFollowing(true);
-          
-          
-       
+    	
     }
-
     /**
-     * Metodo encargado de mostrar mapa con PDI cercanos a un punto obtenido
-     * por
-     * @param zoom
-     * @param maps
+     * Metodo encargado de cargar mapa de bomberos cercanos a un punto en el 
+     * mapa obtenido desde el GPS
+     * @param zoom distancia de visual de mapa
+     * @param maps mapa al cual se le cargaran los resultados
      */
-    private void setupMapPDIViewCercanos(int zoom, MapView maps){
-        	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-        	Drawable iconPDI = maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
-        	overlay = new DefaultItemizedOverlay(iconMiPosicion);
-        	overlayServicio = new DefaultItemizedOverlay(iconPDI);
-        	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
-        	map = maps;
-        	annotation = new AnnotationView(maps);
-        	map.getController().setZoom(zoom);
-        	map.setBuiltInZoomControls(true);
-        	myLoc.enableMyLocation();
-        	
-        	myLoc.runOnFirstFix(new Runnable() {
-              @Override
-              public void run() {
-                GeoPoint currentLocation = myLoc.getMyLocation();
-                map.getController().animateTo(currentLocation);
-                map.getController().setCenter(myLoc.getMyLocation());
-                map.getController().setZoom(12);
-                OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-                //List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
-                List<PDI> lista;
-            	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
-            	lista = (List<PDI>)respuestaBusqueda.getLista();
-                OverlayItem item;
-                overlay.addItem(miPocision);
-                for(PDI c: lista){
-                	item = new OverlayItem(new GeoPoint(c.getX(),c.getY()), c.getNombre(), c.getDireccion());
-                	overlayServicio.addItem(item);
-                }
-               
-                TareaLlenaNumeros tarea;
-    			if(lista.size()>0){
-    				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
-    					
-						@Override
-						public void onTap(GeoPoint arg0, MapView arg1) {
-							int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
-							if(lastTouchedIndex > -1){
-								OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
-								init(tapped);
-						        annotation.showAnnotationView(tapped);
-							}
-							
-						}
-    					
-    				});
-    				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
-    					@Override
-    					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
-    						// when focused item changes, recenter map and show info
-    						map.getController().animateTo(newFocus.getPoint());
-    						
-    						
-    					}    		
-    		    	});
-    				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
-    				tarea.execute();
-    			}else{
-    				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
-    				switch(respuestaBusqueda.getCodigo()){
-   				 case ServicioWeb.ERROR_CONEXION: 
-   					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
-   					 break;
-   				 case ServicioWeb.ERROR_JSON:
-   					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
-   					 break;
-   				 case ServicioWeb.ERROR_JSON_GPS:
-   					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
-   					 break;
-   				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
-					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
-					 break;
-   				 
-   				 
-   				 }
-    			}
-                map.getOverlays().add(myLoc);
-                map.getOverlays().add(overlay);
-                map.getOverlays().add(overlayServicio);
-                myLoc.disableMyLocation();
-                myLoc.setFollowing(true);
-              }
-              
-            });	
-    }
-    
-    private void setupMapPDIViewComuna(final int zoom, MapView maps){
+    private void setupMapBomberoViewCercanos(final int zoom, MapView maps){
     	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
-    	Drawable iconPDI = maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
+    	Drawable iconBombero = maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
     	overlay = new DefaultItemizedOverlay(iconMiPosicion);
-    	overlayServicio = new DefaultItemizedOverlay(iconPDI);
+    	overlayServicio = new DefaultItemizedOverlay(iconBombero);
     	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
     	map = maps;
-    	
-        
-        
-    	map.setBuiltInZoomControls(true);
     	annotation = new AnnotationView(maps);
-    	myLoc.enableMyLocation();
     	
+    	map.setBuiltInZoomControls(true);
+    
+    	myLoc.enableMyLocation();
+    	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
     	myLoc.runOnFirstFix(new Runnable() {
+    		
           @Override
           public void run() {
+        	int minLat = Integer.MAX_VALUE;
+          	int maxLat = Integer.MIN_VALUE;
+          	int minLon = Integer.MAX_VALUE;
+          	int maxLon = Integer.MIN_VALUE;
+          	
             GeoPoint currentLocation = myLoc.getMyLocation();
-            map.getController().animateTo(currentLocation);
-            map.getController().setCenter(currentLocation);
+            int lat = currentLocation.getLatitudeE6();
+        	int lng = currentLocation.getLongitudeE6();
+        	maxLat = Math.max(lat, maxLat);
+            minLat = Math.min(lat, minLat);
+            maxLon = Math.max(lng, maxLon);
+            minLon = Math.min(lng, minLon);
             
-            map.getController().setZoom(12);
+          
+            
             OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
-            //List<PDI> lista = (List<PDI>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
-            List<PDI> lista;
-        	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
-        	lista = respuestaBusqueda.getLista();
-        	if(lista.size() > 0){
-            	map.getController().animateTo(lista.get(0).getGeoPoint());
-                map.getController().setCenter(lista.get(0).getGeoPoint());
-        	}
+           
+           
+            int radio  ;
+            //List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
+            List<Bombero> lista;
+        	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
+        	lista = (List<Bombero>)respuestaBusqueda.getLista();
+
             OverlayItem item;
             overlay.addItem(miPocision);
-            for(PDI p: lista){
-            	item = new OverlayItem(p.getGeoPoint(), p.getNombre(), p.getDireccion());
-            	overlayServicio.addItem(item);
+            
+            if(lista.size() > 0){
+            	for(Bombero b: lista){
+                	GeoPoint punto = new GeoPoint(b.getX(),b.getY());
+                	item = new OverlayItem(punto, b.getNombre(), b.getDireccion());
+                	overlayServicio.addItem(item);
+                	lat = punto.getLatitudeE6();
+                	lng = punto.getLongitudeE6();
+                	maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lng, maxLon);
+                    minLon = Math.min(lng, minLon);
+                	
+                }
+                map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
+                map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+            }else{
+            	map.getController().setZoom(zoom);
+            	map.getController().animateTo(currentLocation);
             }
             
             TareaLlenaNumeros tarea;
 			if(lista.size()>0){
 				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
-					
 					@Override
 					public void onTap(GeoPoint arg0, MapView arg1) {
 						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
 						if(lastTouchedIndex > -1){
 							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
 							init(tapped);
-					        annotation.showAnnotationView(tapped);
+							annotation.showAnnotationView(tapped);
 						}
 						
 					}
@@ -1187,18 +967,361 @@ public class ServiceFragment extends Fragment {
 					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
 					 break;
 				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
-				 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
-				 break;
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
 				 
 				 
 				 }
 			}
-            map.getOverlays().add(overlayServicio);
+            map.getOverlays().add(myLoc);
             map.getOverlays().add(overlay);
+            map.getOverlays().add(overlayServicio);
             myLoc.disableMyLocation();
+            
           }
           
-        });	
+        });
+    }
+    
+    /**
+     * Metodo encargado de mostrar resultados al buscar bomberos por comuna
+     * @param zoom
+     * @param maps
+     */
+    private void setupMapBomberoViewComuna(final int zoom, MapView maps){
+    	Drawable iconBombero= maps.getContext().getResources().getDrawable(R.drawable.marcadorbombero);
+    	
+    	overlayServicio = new DefaultItemizedOverlay(iconBombero);
+    	
+    
+    	map = maps;
+    	annotation = new AnnotationView(maps);
+    	
+    	map.setBuiltInZoomControls(true);
+    	
+        	int minLat = Integer.MAX_VALUE;
+            int maxLat = Integer.MIN_VALUE;
+            int minLon = Integer.MAX_VALUE;
+            int maxLon = Integer.MIN_VALUE;
+           
+           
+            //OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+            @SuppressWarnings("unchecked")
+			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
+            List<Bombero> lista;
+        	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
+        	lista = respuestaBusqueda.getLista();
+        	respuestaBusqueda = null;
+        	OverlayItem item;
+        	if(lista.size()>1){
+        		for(Bombero p: lista){
+                	GeoPoint punto = new GeoPoint(p.getX(),p.getY());
+                	item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                	overlayServicio.addItem(item);
+                	int lat = punto.getLatitudeE6();
+                	int lng = punto.getLongitudeE6();
+                	maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lng, maxLon);
+                    minLon = Math.min(lng, minLon);
+                	
+                }
+                map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
+                map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+        	}else{
+        		Bombero p = lista.get(0);
+        		GeoPoint punto = new GeoPoint(p.getX(),p.getY());
+        		item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                overlayServicio.addItem(item);
+                
+        		map.getController().setZoom(zoom);
+        		map.getController().setCenter(punto);
+        	}
+           
+           
+            
+            
+            TareaLlenaNumeros tarea;
+			if(lista.size()>0){
+				
+				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+					
+					@Override
+					public void onTap(GeoPoint arg0, MapView arg1) {
+						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
+						if(lastTouchedIndex > -1){
+							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							init(tapped);
+							annotation.showAnnotationView(tapped);
+						}
+						
+					}
+					
+				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
+				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+				tarea.execute();
+			}else{
+			     TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+			     switch(respuestaBusqueda.getCodigo()){
+				 case ServicioWeb.ERROR_CONEXION: 
+					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+					 break;
+				 case ServicioWeb.ERROR_JSON:
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+					 break;
+				 case ServicioWeb.ERROR_JSON_GPS:
+					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+					 break;
+				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
+				 
+				 
+				 }
+			}
+            
+            map.getOverlays().add(overlayServicio);
+          
+       
+    }
+
+    /**
+     * Metodo encargado de mostrar mapa con PDI cercanos a un punto obtenido
+     * por
+     * @param zoom
+     * @param maps
+     */
+    private void setupMapPDIViewCercanos(final int zoom, MapView maps){
+    	Drawable iconMiPosicion = maps.getContext().getResources().getDrawable(R.drawable.miposicion);
+    	Drawable iconPDI = maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
+    	overlay = new DefaultItemizedOverlay(iconMiPosicion);
+    	overlayServicio = new DefaultItemizedOverlay(iconPDI);
+    	this.myLoc = new MyLocationExtends(maps.getContext(), maps);
+    	map = maps;
+    	annotation = new AnnotationView(maps);
+    	
+    	map.setBuiltInZoomControls(true);
+    
+    	myLoc.enableMyLocation();
+    	Toast.makeText(contexto, "Obteniendo mi ubicación", Toast.LENGTH_LONG).show();
+    	myLoc.runOnFirstFix(new Runnable() {
+    		
+          @Override
+          public void run() {
+        	int minLat = Integer.MAX_VALUE;
+          	int maxLat = Integer.MIN_VALUE;
+          	int minLon = Integer.MAX_VALUE;
+          	int maxLon = Integer.MIN_VALUE;
+          	
+            GeoPoint currentLocation = myLoc.getMyLocation();
+            int lat = currentLocation.getLatitudeE6();
+        	int lng = currentLocation.getLongitudeE6();
+        	maxLat = Math.max(lat, maxLat);
+            minLat = Math.min(lat, minLat);
+            maxLon = Math.max(lng, maxLon);
+            minLon = Math.min(lng, minLon);
+            
+          
+            
+            OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+           
+           
+            int radio  ;
+            //List<Hospital> lista = (List<Hospital>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "centro_medico");
+            List<PDI> lista;
+        	respuestaBusqueda = (RespuestaServicioWeb) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "pdi");
+        	lista = (List<PDI>)respuestaBusqueda.getLista();
+
+            OverlayItem item;
+            overlay.addItem(miPocision);
+            
+            if(lista.size() > 0){
+            	for(PDI p: lista){
+                	GeoPoint punto = new GeoPoint(p.getX(),p.getY());
+                	item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                	overlayServicio.addItem(item);
+                	lat = punto.getLatitudeE6();
+                	lng = punto.getLongitudeE6();
+                	maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lng, maxLon);
+                    minLon = Math.min(lng, minLon);
+                	
+                }
+                map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
+                map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+            }else{
+            	map.getController().setZoom(zoom);
+            	map.getController().animateTo(currentLocation);
+            }
+            
+            TareaLlenaNumeros tarea;
+			if(lista.size()>0){
+				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+					@Override
+					public void onTap(GeoPoint arg0, MapView arg1) {
+						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
+						if(lastTouchedIndex > -1){
+							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							init(tapped);
+							annotation.showAnnotationView(tapped);
+						}
+						
+					}
+					
+				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
+				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+				tarea.execute();
+			}else{
+				TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+				switch(respuestaBusqueda.getCodigo()){
+				 case ServicioWeb.ERROR_CONEXION: 
+					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+					 break;
+				 case ServicioWeb.ERROR_JSON:
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+					 break;
+				 case ServicioWeb.ERROR_JSON_GPS:
+					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+					 break;
+				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
+				 
+				 
+				 }
+			}
+            map.getOverlays().add(myLoc);
+            map.getOverlays().add(overlay);
+            map.getOverlays().add(overlayServicio);
+            myLoc.disableMyLocation();
+            
+          }
+          
+        });
+    }
+    
+    private void setupMapPDIViewComuna(final int zoom, MapView maps){
+    	Drawable iconPDI= maps.getContext().getResources().getDrawable(R.drawable.marcadorpdi);
+    	
+    	overlayServicio = new DefaultItemizedOverlay(iconPDI);
+    	
+    
+    	map = maps;
+    	annotation = new AnnotationView(maps);
+    	
+    	map.setBuiltInZoomControls(true);
+    	
+        	int minLat = Integer.MAX_VALUE;
+            int maxLat = Integer.MIN_VALUE;
+            int minLon = Integer.MAX_VALUE;
+            int maxLon = Integer.MIN_VALUE;
+           
+           
+            //OverlayItem miPocision = new OverlayItem(myLoc.getMyLocation(), "Eu estoy aqui", "cr7");
+            @SuppressWarnings("unchecked")
+			//List<Bombero> lista = (List<Bombero>) ServicioWeb.postCercanos(currentLocation, radioBusqueda, "bombero");
+            List<PDI> lista;
+        	Log.d("emergenciAPPS_TAG", "Cargando ubicacion encontrada por comuna");
+        	lista = respuestaBusqueda.getLista();
+        	OverlayItem item;
+        	if(lista.size()>1){
+        		for(PDI p: lista){
+                	GeoPoint punto = new GeoPoint(p.getX(),p.getY());
+                	item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                	overlayServicio.addItem(item);
+                	int lat = punto.getLatitudeE6();
+                	int lng = punto.getLongitudeE6();
+                	maxLat = Math.max(lat, maxLat);
+                    minLat = Math.min(lat, minLat);
+                    maxLon = Math.max(lng, maxLon);
+                    minLon = Math.min(lng, minLon);
+                	
+                }
+                map.getController().zoomToSpan(Math.abs(maxLat - minLat), Math.abs(maxLon - minLon));
+                map.getController().animateTo(new GeoPoint( (maxLat + minLat)/2,(maxLon + minLon)/2 )); 
+        	}else{
+        		PDI p = lista.get(0);
+        		GeoPoint punto = new GeoPoint(p.getX(),p.getY());
+        		item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                item = new OverlayItem(punto, p.getNombre(), p.getDireccion());
+                overlayServicio.addItem(item);
+                
+        		map.getController().setZoom(zoom);
+        		map.getController().setCenter(punto);
+        	}
+           
+           
+            
+            
+            TareaLlenaNumeros tarea;
+			if(lista.size()>0){
+				
+				overlayServicio.setTapListener(new ItemizedOverlay.OverlayTapListener(){
+					
+					@Override
+					public void onTap(GeoPoint arg0, MapView arg1) {
+						int lastTouchedIndex = overlayServicio.getLastFocusedIndex();
+						if(lastTouchedIndex > -1){
+							OverlayItem tapped =  overlayServicio.getItem(lastTouchedIndex);
+							init(tapped);
+							annotation.showAnnotationView(tapped);
+						}
+						
+					}
+					
+				});
+				overlayServicio.setOnFocusChangeListener(new ItemizedOverlay.OnFocusChangeListener() {
+					@Override
+					public void onFocusChanged(ItemizedOverlay overlay, OverlayItem newFocus) {
+						// when focused item changes, recenter map and show info
+						map.getController().animateTo(newFocus.getPoint());
+						
+						
+					}    		
+		    	});
+				tarea = new TareaLlenaNumeros(lista, listaTelefonos);
+				tarea.execute();
+			}else{
+			     TareaMuestraMensaje mensajeNoExistenResultados = new TareaMuestraMensaje(contexto);
+			     switch(respuestaBusqueda.getCodigo()){
+				 case ServicioWeb.ERROR_CONEXION: 
+					 	mensajeNoExistenResultados.execute("No se pudo establecer la conexion con el Servidor");
+					 break;
+				 case ServicioWeb.ERROR_JSON:
+					 mensajeNoExistenResultados.execute("No se encontraron resultados para tu comuna");
+					 break;
+				 case ServicioWeb.ERROR_JSON_GPS:
+					 mensajeNoExistenResultados.execute("No existen resultados en el radio de "+radioBusqueda+" km");
+					 break;
+				 case ServicioWeb.ERROR_NO_EXISTE_COMUNA: 
+					 mensajeNoExistenResultados.execute("No existen resultados para la comuna solicitada");
+					 break;
+				 
+				 
+				 }
+			}
+            
+            map.getOverlays().add(overlayServicio);
 }
     /**
      * Metodo encargado de agregar funcion a boton y mostrar ruta en mapa
