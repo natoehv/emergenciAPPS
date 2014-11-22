@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 public class SeguimientoActivity extends Activity{
 	List<String> myList;
 	Spinner spinner;
+	AsyncTask<Integer, Integer, String> tarea_actualizar;
 	Button btn;
 	String miNumero;
 	private ArrayAdapter<String> myAdapter;
@@ -59,14 +61,69 @@ public class SeguimientoActivity extends Activity{
 		setContentView(R.layout.activity_seguimiento);
 		spinner = (Spinner)findViewById(R.id.spinner);
 		myList = new ArrayList<String>();
+		map = (MapView)SeguimientoActivity.this.findViewById(R.id.mapSegumiento);
+		map.getController().setZoom(15);
 		inititialize_list();
 		myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
 		spinner.setAdapter(myAdapter);
+		
+		/*
+		 * Se inicia tarea
+		 */
+		
+		tarea_actualizar = new AsyncTask<Integer, Integer, String> (){
+			
+			 
+			@Override
+			protected String doInBackground(Integer... arg0) {
+				while(!isCancelled()){
+					try {
+						Thread.sleep(4000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				lista = ServicioWeb.getUserInAlert(miNumero);
+				
+				if(lista != null){
+					myList = new ArrayList<String>();
+					 for(int i=0; i<lista.size(); i++){
+						 myList.add(lista.get(i).getNombre());
+					 }
+					 
+					 publishProgress(arg0[0]);
+					 
+				}else{
+					Log.d("lista", "vacia");
+				}
+				}
+				return null;
+			}
+
+
+
+			@Override
+			protected void onProgressUpdate(Integer... result) {
+				// TODO Auto-generated method stub
+				super.onProgressUpdate(result);
+				//ringProgressDialog.dismiss();
+				myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
+				spinner.setAdapter(myAdapter);
+				spinner.setSelection(result[0]);
+			}};
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
-				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),lista.get(arg2).getNombre(),(MapView)SeguimientoActivity.this.findViewById(R.id.mapSegumiento));
-				
+			public void onItemSelected(AdapterView<?> arg0, View arg1,final int arg2, long arg3) {
+				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),lista.get(arg2).getNombre());
+			
+				if(tarea_actualizar.getStatus() == AsyncTask.Status.FINISHED || tarea_actualizar.getStatus() == AsyncTask.Status.PENDING ){
+					tarea_actualizar.execute(arg2);
+				}else{
+					if(tarea_actualizar.getStatus() == AsyncTask.Status.RUNNING){
+						tarea_actualizar.cancel(true);
+						tarea_actualizar.execute(arg2);
+					}
+				}
 			}
 
 		    @Override
@@ -87,6 +144,7 @@ public class SeguimientoActivity extends Activity{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		tarea_actualizar.cancel(true);
 	}
 
 	@Override
@@ -99,8 +157,18 @@ public class SeguimientoActivity extends Activity{
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
+		tarea_actualizar.cancel(true);
 	}
 	
+	
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		tarea_actualizar.cancel(true);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -157,14 +225,14 @@ public class SeguimientoActivity extends Activity{
 		 
 	}
 	
-	private void setearPunto(Float lat, Float lng, final String numero, final String nombre, MapView map){
+	private void setearPunto(Float lat, Float lng, final String numero, final String nombre){
 		Log.d("map","inicia map");
 		if(markers.size() > 0){
 			for(int i=0; i<markers.size(); i++){
 				markers.get(i).destroy();
 			}
 		}
-		this.map = map;
+		
 		Drawable iconUserInAlert = this.getResources().getDrawable(R.drawable.miposicion);
 		overlayUserInAlert = new DefaultItemizedOverlay(iconUserInAlert);
 		markers.add(overlayUserInAlert);
@@ -189,7 +257,7 @@ public class SeguimientoActivity extends Activity{
 			
 		});
 		map.getOverlays().add(overlayUserInAlert);
-		map.getController().setZoom(13);
+		
 		map.getController().setCenter(latlng);
 		map.setBuiltInZoomControls(true);
 		
