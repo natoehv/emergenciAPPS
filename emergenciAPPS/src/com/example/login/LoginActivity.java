@@ -94,9 +94,9 @@ public class LoginActivity  extends Activity{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					if(!ServiceFragment.verificaConexion(LoginActivity.this)){
-		             	Toast.makeText(LoginActivity.this, "No tienes conexión a internet, actívelo para iniciar sesión", Toast.LENGTH_LONG).show();
-		             }else{
+					//if(!ServiceFragment.verificaConexion(LoginActivity.this)){
+		            // 	Toast.makeText(LoginActivity.this, "No tienes conexión a internet, actívelo para iniciar sesión", Toast.LENGTH_LONG).show();
+		            // }else{
 		            	 if(validarCampos()){
 		 					AsyncTask<String, Void, String> inicioSesion = new AsyncTask<String, Void,String >() {
 		 						@Override
@@ -143,7 +143,7 @@ public class LoginActivity  extends Activity{
 		 					inicioSesion.execute("");
 		 					
 		 				} 
-		             }
+		           //  }
 					
 					
 				}
