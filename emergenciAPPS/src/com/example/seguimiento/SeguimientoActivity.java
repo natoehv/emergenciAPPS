@@ -214,6 +214,7 @@ public class SeguimientoActivity extends Activity{
 		if(markers.size() > 0){
 			for(int i=0; i<markers.size(); i++){
 				markers.get(i).destroy();
+				
 			}
 		}
 		
