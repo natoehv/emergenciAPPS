@@ -75,5 +75,19 @@ public class Usuario implements Serializable {
 	public void setConfiguracion(Configuracion configuracion) {
 		this.configuracion = configuracion;
 	}
+	@Override
+	public boolean equals(Object o) {
+		// TODO Auto-generated method stub
+		if (o == null) return false;
+	    if (o == this) return true;
+	    if (!(o instanceof Usuario))return false;
+	    Usuario oUsuario = (Usuario)o;
+	    if(oUsuario == this) return true;
+	    if(oUsuario.getNumeroTelefono().equals(this.numeroTelefono))
+	    	return true;
+	    return false;
+	}
+	
+	
 	
 }

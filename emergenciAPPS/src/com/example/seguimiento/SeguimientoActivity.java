@@ -40,6 +40,8 @@ import android.widget.Toast;
 public class SeguimientoActivity extends Activity{
 	List<String> myList;
 	Spinner spinner;
+	Integer itemActual;
+	Usuario usuarioActual;
 	AsyncTask<Integer, Integer, String> tarea_actualizar;
 	Button btn;
 	String miNumero;
@@ -71,58 +73,28 @@ public class SeguimientoActivity extends Activity{
 		 * Se inicia tarea
 		 */
 		
-		tarea_actualizar = new AsyncTask<Integer, Integer, String> (){
-			
-			 
-			@Override
-			protected String doInBackground(Integer... arg0) {
-				while(!isCancelled()){
-					try {
-						Thread.sleep(4000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				lista = ServicioWeb.getUserInAlert(miNumero);
-				
-				if(lista != null){
-					myList = new ArrayList<String>();
-					 for(int i=0; i<lista.size(); i++){
-						 myList.add(lista.get(i).getNombre());
-					 }
-					 
-					 publishProgress(arg0[0]);
-					 
-				}else{
-					Log.d("lista", "vacia");
-				}
-				}
-				return null;
-			}
-
-
-
-			@Override
-			protected void onProgressUpdate(Integer... result) {
-				// TODO Auto-generated method stub
-				super.onProgressUpdate(result);
-				//ringProgressDialog.dismiss();
-				myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
-				spinner.setAdapter(myAdapter);
-				spinner.setSelection(result[0]);
-			}};
+		tarea_actualizar = new TareaSeguimiento();
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,final int arg2, long arg3) {
-				setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),lista.get(arg2).getNombre());
-			
-				if(tarea_actualizar.getStatus() == AsyncTask.Status.FINISHED || tarea_actualizar.getStatus() == AsyncTask.Status.PENDING ){
-					tarea_actualizar.execute(arg2);
-				}else{
-					if(tarea_actualizar.getStatus() == AsyncTask.Status.RUNNING){
-						tarea_actualizar.cancel(true);
+				if(lista != null){
+					setearPunto(lista.get(arg2).getLat(), lista.get(arg2).getLng(), lista.get(arg2).getNumeroTelefono(),lista.get(arg2).getNombre());
+					itemActual = arg2;
+					usuarioActual = lista.get(arg2);
+					if(tarea_actualizar.getStatus() == AsyncTask.Status.FINISHED || tarea_actualizar.getStatus() == AsyncTask.Status.PENDING ){
 						tarea_actualizar.execute(arg2);
+					}else{
+						if(tarea_actualizar.getStatus() == AsyncTask.Status.RUNNING){
+							tarea_actualizar.cancel(true);
+							tarea_actualizar = new TareaSeguimiento();
+							tarea_actualizar.execute(arg2);
+						}
 					}
+				}else{
+					/*
+					 * Se vacia mapa
+					 */
+					vaciarMapa();
 				}
 			}
 
@@ -151,6 +123,7 @@ public class SeguimientoActivity extends Activity{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		
 	}
 
 	@Override
@@ -160,7 +133,13 @@ public class SeguimientoActivity extends Activity{
 		tarea_actualizar.cancel(true);
 	}
 	
-	
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+		tarea_actualizar = new TareaSeguimiento();
+		tarea_actualizar.execute(itemActual);
+	}
 	
 	@Override
 	protected void onDestroy() {
@@ -224,7 +203,12 @@ public class SeguimientoActivity extends Activity{
 		
 		 
 	}
-	
+	private void vaciarMapa(){
+		for(com.mapquest.android.maps.Overlay o : map.getOverlays()){
+			map.getOverlays().remove(o);
+		}
+		
+	}
 	private void setearPunto(Float lat, Float lng, final String numero, final String nombre){
 		Log.d("map","inicia map");
 		if(markers.size() > 0){
@@ -265,7 +249,67 @@ public class SeguimientoActivity extends Activity{
 		
 	}
 	
-	
-	
+	private class TareaSeguimiento extends AsyncTask<Integer, Integer, String>{
 
+		@Override
+		protected String doInBackground(Integer... arg0) {
+			while(!isCancelled()){
+				try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			lista = ServicioWeb.getUserInAlert(miNumero);
+			/*
+			 * si el usuario ya no se encuentra en alerta
+			 */
+			Log.d("seguimiento","nro usuario: "+usuarioActual.getNumeroTelefono());
+			if(lista != null && lista.contains(usuarioActual) ){
+				Log.d("seguimiento","todo sigue igual");
+				myList = new ArrayList<String>();
+				 for(int i=0; i<lista.size(); i++){
+					 myList.add(lista.get(i).getNombre());
+				 }
+				 publishProgress(arg0[0]);
+			}else{
+				if(lista != null){
+					Log.d("seguimiento","el usuario ya no se encuentra en alerta");
+					myList = new ArrayList<String>();
+					 for(int i=0; i<lista.size(); i++){
+						 myList.add(lista.get(i).getNombre());
+					 }
+					 
+					 publishProgress(0);
+					 
+				}else{
+					Log.d("seguimiento","ya no existen alertas");
+					myList = new ArrayList<String>();
+					
+					publishProgress();
+					
+					Log.d("lista", "vacia");
+				}
+			}
+			
+			}
+			return null;
+		}
+
+
+
+		@Override
+		protected void onProgressUpdate(Integer... result) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(result);
+			//ringProgressDialog.dismiss();
+			myAdapter = new ArrayAdapter<String>(SeguimientoActivity.this, android.R.layout.simple_spinner_item, myList);
+			spinner.setAdapter(myAdapter);
+			for(Integer i : result)
+				spinner.setSelection(i);
+				
+		}
+		
+	}
 }
+
