@@ -469,14 +469,14 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     
     public void llamar(View v){
     	SharedPreferences prefs =
-				getSharedPreferences("MisContactos", this.MODE_PRIVATE);
+				getSharedPreferences("miCuenta", this.MODE_PRIVATE);
     	
     	String llamarA;
     	
     	int id = v.getId();
     	if(id == R.id.btnCarabinero){
     		Log.d("llamada", "llamando a carabinero");
-    		String numeroCarabinero = prefs.getString("numeroCarabinero", "86575038");
+    		String numeroCarabinero = prefs.getString("numero_carabinero", "133");
     		Log.d("numero",numeroCarabinero);
     		llamarA = "tel:"+numeroCarabinero;
     		Intent intent = new Intent(Intent.ACTION_CALL); 
@@ -485,7 +485,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
    		}else{
     		if(id == R.id.btnBombero){
     			Log.d("llamada", "llamando a bombero");
-    			String numeroBombero = prefs.getString("numeroBombero", "86575038");
+    			String numeroBombero = prefs.getString("numero_bombero", "132");
         		llamarA = "tel:"+numeroBombero;
         		Intent intent = new Intent(Intent.ACTION_CALL);
         		intent.setData(Uri.parse(llamarA)); 
@@ -493,7 +493,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
         	}else{
         		if(id == R.id.btnHospital){
 	        		Log.d("llamada", "llamando a hospital");
-	        		String numeroHospital = prefs.getString("numeroHospital", "82998988");
+	        		String numeroHospital = prefs.getString("numero_centro_medico", "131");
 	        		llamarA = "tel:"+numeroHospital;
 	        		Intent intent = new Intent(Intent.ACTION_CALL);
 	        		intent.setData(Uri.parse(llamarA)); 
@@ -647,7 +647,7 @@ public class EmergenciAPPSActivity extends Activity implements OnQueryTextListen
     	String bombero = prefs.getString("numero_bombero", "132");
     	numeroBombero.setText(bombero);
     	
-    	String hospital = prefs.getString("numero_hospital", "131");
+    	String hospital = prefs.getString("numero_centro_medico", "131");
     	numeroHospital.setText(hospital);
     }
 
