@@ -35,6 +35,7 @@ import com.example.object.Usuario;
 import com.mapquest.android.maps.GeoPoint;
 
 public class ServicioWeb {
+	public static final String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/";
 	public static final int OK_CONEXION = 0;
 	public static final int ERROR_CONEXION = 1;
 	public static final int ERROR_JSON = 2;
@@ -42,7 +43,8 @@ public class ServicioWeb {
 	public static final int ERROR_NO_EXISTE_COMUNA = 4;
 	
 	public static RespuestaServicioWeb postCercanos(GeoPoint punto, int distancia, String tabla){
-    	String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicioweb.php";
+    	String url_ruta = URL+"protected/views/ws/servicioweb.php";
+    	Log.d("ruta",url_ruta);
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -54,7 +56,7 @@ public class ServicioWeb {
     	int timeoutSocket = 10000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -221,7 +223,7 @@ public class ServicioWeb {
 	public static RespuestaServicioWeb buscaPorComuna(String comunaBuscar, String tabla){
 		RespuestaServicioWeb res;
 		Integer codigo = OK_CONEXION;
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_busqueda.php";
+		String url_ruta = URL+"protected/views/ws/servicio_web_busqueda.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	String jsonReturnText="";
     	String respuesta;
@@ -231,7 +233,7 @@ public class ServicioWeb {
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -401,14 +403,14 @@ public class ServicioWeb {
 	}
 	
 	public static String sendNotification(String lat, String lng, String miNumero){
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/enviaAlerta";
+		String url_ruta = URL+"index.php?r=api/enviaAlerta";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	String descripcion = "";
     	Log.d("estado_norificacion","enviando"+miNumero);
@@ -435,7 +437,7 @@ public class ServicioWeb {
 
 	public static Usuario verificaLogin(String user, String pass){
 		Usuario usuario = new Usuario();
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_inicio_sesion.php";
+		String url_ruta = URL+"protected/views/ws/servicio_web_inicio_sesion.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -447,7 +449,7 @@ public class ServicioWeb {
     	int timeoutSocket = 10000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -531,7 +533,7 @@ public class ServicioWeb {
 
 	public static boolean actualizaConfiguracion(Configuracion conf, String idUsuario){
 		boolean guardar = false;
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_configuracion.php";
+		String url_ruta = URL+"protected/views/ws/servicio_web_configuracion.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -542,7 +544,7 @@ public class ServicioWeb {
     	int timeoutSocket = 10000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -556,7 +558,7 @@ public class ServicioWeb {
     			HttpResponse oResp = httpclient.execute(oPost);
     			HttpEntity r_entity = oResp.getEntity();
     			respuesta = EntityUtils.toString(r_entity);
-    			Log.d("emergenciAPPS", "Respuesta Servidor "+respuesta);
+    			Log.d("emergenciAPPS", "Respuesta Servidor1 "+respuesta);
     			if(respuesta.equals("true"))
     				return true;
     		}catch(Exception e){
@@ -572,7 +574,7 @@ public class ServicioWeb {
 	public static boolean ingresaContacto(Contacto contacto, Usuario usuario){
 		
 		boolean guardar = false;
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
+		String url_ruta = URL+"protected/views/ws/servicio_web_administrar_contacto.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -583,7 +585,7 @@ public class ServicioWeb {
     	int timeoutSocket = 10000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -618,7 +620,7 @@ public class ServicioWeb {
 	public static boolean actualizaContacto(Contacto contacto){
 			
 			boolean guardar = false;
-			String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
+			String url_ruta = URL+"protected/views/ws/servicio_web_administrar_contacto.php";
 	    	HttpParams httpParameters = new BasicHttpParams();
 	    	Integer codigo = OK_CONEXION;
 	    	RespuestaServicioWeb res;
@@ -629,7 +631,7 @@ public class ServicioWeb {
 	    	int timeoutSocket = 10000;
 	    	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 	    	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-	    	HttpPost oPost = new HttpPost(URL);
+	    	HttpPost oPost = new HttpPost(url_ruta);
 	    	
 	    		try{
 	    			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -661,7 +663,7 @@ public class ServicioWeb {
 	
 	public static boolean eliminaContacto(int id_contacto) {
 		boolean guardar = false;
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/servicio_web_administrar_contacto.php";
+		String url_ruta = URL+"protected/views/ws/servicio_web_administrar_contacto.php";
 		HttpParams httpParameters = new BasicHttpParams();
 		Integer codigo = OK_CONEXION;
 		RespuestaServicioWeb res;
@@ -672,7 +674,7 @@ public class ServicioWeb {
 		int timeoutSocket = 10000;
 		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 		HttpClient httpclient = new DefaultHttpClient(httpParameters);
-		HttpPost oPost = new HttpPost(URL);
+		HttpPost oPost = new HttpPost(url_ruta);
 		
 			try{
 				List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -698,7 +700,7 @@ public class ServicioWeb {
 
 	public static boolean registraGCMEnServidor(String user, String id){
 		boolean guardar = false;
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/protected/views/ws/registro_cliente_gcm.php";
+		String url_ruta = URL+"protected/views/ws/registro_cliente_gcm.php";
     	HttpParams httpParameters = new BasicHttpParams();
     	Integer codigo = OK_CONEXION;
     	RespuestaServicioWeb res;
@@ -709,7 +711,7 @@ public class ServicioWeb {
     	int timeoutSocket = 10000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	
     		try{
     			List<NameValuePair> oPostParam = new ArrayList<NameValuePair>(2);
@@ -739,14 +741,14 @@ public class ServicioWeb {
 	 * @return
 	 */
 	public static String actualizaPosicion(String lat, String lng, String miNumero){
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaPosicion";
+		String url_ruta = URL+"index.php?r=api/actualizaPosicion";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	
     	try{
@@ -772,14 +774,14 @@ public class ServicioWeb {
 	
 	public static List<Usuario> getUserInAlert(String miNumero){
 		
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/alertas";
+		String url_ruta = URL+"index.php?r=api/alertas";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	List<Usuario> usuarios = new ArrayList<Usuario>();
     	
@@ -823,14 +825,14 @@ public class ServicioWeb {
 
 	public static Boolean eliminarRegId(String miNumero) {
 		// TODO Auto-generated method stub
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/eliminarRegId";
+		String url_ruta = URL+"index.php?r=api/eliminarRegId";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	String descripcion = "";
     	try{
@@ -854,14 +856,14 @@ public class ServicioWeb {
 	}
 
 	public static List<Contacto> getContactos(String miNumero) {
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/getContactos";
+		String url_ruta = URL+"index.php?r=api/getContactos";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	
     	List<Contacto> contactos = new ArrayList<Contacto>();
@@ -915,14 +917,14 @@ public class ServicioWeb {
 	}
 
 	public static Boolean actualizaNumeroCarabinero(String numeroUsuario, String numeroCarabinero) {
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaNumeroCarabinero";
+		String url_ruta = URL+"index.php?r=api/actualizaNumeroCarabinero";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	String descripcion = "";
     	try{
@@ -946,14 +948,14 @@ public class ServicioWeb {
 	}
 	
 	public static Boolean actualizaNumeroBombero(String numeroUsuario, String numeroBombero) {
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaNumeroBombero";
+		String url_ruta = URL+"index.php?r=api/actualizaNumeroBombero";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	String descripcion = "";
     	try{
@@ -977,14 +979,14 @@ public class ServicioWeb {
 	}
 	
 	public static Boolean actualizaNumeroCentroMedico(String numeroUsuario, String numeroCentroMedico) {
-		String URL = "http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=api/actualizaNumeroCentroMedico";
+		String url_ruta = URL+"index.php?r=api/actualizaNumeroCentroMedico";
 		HttpParams httpParameters = new BasicHttpParams();
 		int timeoutConnection = 10000;
 		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
     	int timeoutSocket = 30000;
     	HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
     	HttpClient httpclient = new DefaultHttpClient(httpParameters);
-    	HttpPost oPost = new HttpPost(URL);
+    	HttpPost oPost = new HttpPost(url_ruta);
     	String respuesta;
     	String descripcion = "";
     	try{
