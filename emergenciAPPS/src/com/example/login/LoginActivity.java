@@ -81,7 +81,7 @@ public class LoginActivity  extends Activity{
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse("http://parra.chillan.ubiobio.cl:8070/rhormaza/index.php?r=site/register"));
+				intent.setData(Uri.parse(ServicioWeb.URL+"rhormaza/index.php?r=site/register"));
 				startActivity(intent);
 			}
 		});
